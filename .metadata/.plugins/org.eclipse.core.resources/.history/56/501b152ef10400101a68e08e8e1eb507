@@ -1,0 +1,44 @@
+package ToolsForTasks;
+
+
+import java.util.*;
+
+public class JobList {
+	static ArrayList<Job> JobList = new ArrayList<>();
+	
+	static Scanner scanner = new Scanner(System.in);
+	
+	public static void addJob() {
+		System.out.println("What is job are you doing?: ");
+		String jobType = scanner.nextLine();
+		System.out.println("What is the address of the job?: ");
+		String address = scanner.nextLine();
+		System.out.println("job description: ");
+		String description = scanner.nextLine();
+		
+		Job job = new Job(jobType, address, description);
+		JobList.add(job);
+	}
+	
+	public static void editJob() {
+		
+	}
+	
+	public static void deleteJob() {
+		
+	}
+	
+	public static void searchJob() {
+		for (int i = 0; i <JobList.size(); i ++) {
+			Job job = JobList.get(i);
+			System.out.print(job.toString());
+		}
+	}
+	
+	public static void listJobs() {
+		for (int i = 0; i <JobList.size(); i ++) {
+			Job job = JobList.get(i);
+			System.out.print(job.toString());
+		}
+	}
+}

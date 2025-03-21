@@ -1,0 +1,74 @@
+package ToolsForTasks;
+
+
+import java.io.BufferedReader;
+import java.io.*;
+import java.util.*;
+
+public class JobList {
+	 private static List<Job> JobList = new ArrayList<>();
+	    private static final String FILE_NAME = "jobs.csv";
+	    static Scanner scanner = new Scanner(System.in);
+
+	    public JobList() {
+	        loadFromFile();
+	    }
+
+	    public static void addJob() {
+	    	System.out.println("Name: ");
+	    	String name = scanner.nextLine();
+	    	System.out.println("Description: ");
+	    	String description = scanner.nextLine();
+	    	String option = scanner.nextLine();
+	    	
+	    	do {
+	    	System.out.print("Add tool: ");
+	    	}
+	    	while (!option.equalsIgnoreCase("Exit"));
+	    	
+	    	
+	        JobList.add(new Job(name, description));
+	        saveToFile();
+	    }
+
+	    public static void editJob() {
+	      
+	    }
+
+	    public static void deleteJob() {
+	    }
+
+	    public static void searchJob() {
+	    }
+
+	    public static void listJobs() {
+	    	if (JobList.isEmpty()) {
+	    		System.out.println("Job list is empty");
+	    	}
+	        for (Job job : JobList) {
+	            System.out.println("Name: " + Job.getName() + " Description: " + Job.getDescription());
+	        }
+	    }
+
+	    private void loadFromFile() {
+	        try (BufferedReader br = new BufferedReader(new FileReader(FILE_NAME))) {
+	            String line;
+	            while ((line = br.readLine()) != null) {
+	                String[] data = line.split(",");
+	                JobList.add(new Job(data[0].trim(), data[1].trim()));
+	            }
+	        } catch (IOException ignored) {
+	        }
+	    }
+
+	    private static void saveToFile() {
+	        try (BufferedWriter bw = new BufferedWriter(new FileWriter(FILE_NAME))) {
+	            for (Job job : JobList) {
+	                bw.write(job.getName() + "," + job.getDescription());
+	                bw.newLine();
+	            }
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }
+	    }
+}

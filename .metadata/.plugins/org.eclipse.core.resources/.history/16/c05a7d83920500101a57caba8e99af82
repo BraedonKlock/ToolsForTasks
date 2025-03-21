@@ -1,0 +1,92 @@
+package ToolsForTasks;
+import java.io.*;
+import java.util.*;
+
+public class ToolList {
+	static ArrayList<Tool> ToolList = new ArrayList<>();
+    private static final String FILE_NAME = "tools.csv";
+
+	static Scanner scanner = new Scanner(System.in);
+	
+	public static void addTool() {
+		System.out.println("What is the name of the tool?: ");
+		String name = scanner.nextLine();
+		System.out.println("Enter Quantity: ");
+		String quantity = scanner.nextLine();
+		Tool tool = new Tool(name, quantity);
+		ToolList.add(tool);
+		saveToolList();
+	}
+	public static void editTool() {
+		
+	}
+	
+	public static void deleteTool() {
+		
+	}
+	
+	public static void searchTool() {
+		
+	}
+	
+	public static void listTool() {
+		for (int i = 0; i <ToolList.size(); i++) {
+			 for (Tool tool : ToolList) {
+		            System.out.println(tool);
+		        }
+			
+		}
+	}
+	
+	 static void loadFromFile() {
+		 ToolList.clear();  // Important: Prevents duplication by clearing the list before loading
+
+		    try (BufferedReader reader = new BufferedReader(new FileReader(	FILE_NAME))) {
+		        String line;
+		        boolean firstLine = true; // Skip CSV header if present
+
+		        while ((line = reader.readLine()) != null) {
+		            if (firstLine) { 
+		                firstLine = false; 
+		                continue; 
+		            }
+
+		            String[] data = line.split(",");
+		            if (data.length == 2) { // Ensure data is valid
+		                String name = data[0].trim();
+		                String quantity = (data[1].trim());
+
+		                ToolList.add(new Tool(name, quantity));
+		            }
+		        }
+
+		        System.out.println("\n*** Tool list loaded successfully ***\n");
+
+		    } catch (IOException e) {
+		        System.out.println("Error loading tool list: " + e.getMessage());
+		    }
+	    }
+
+	
+	public static void saveToolList() 
+	{
+
+		    Scanner scanner = new Scanner(System.in);
+
+		    // asking the user to enter the filename
+		   
+		    String fileName = "tools.csv";
+
+		    try (FileWriter writer = new FileWriter(fileName)) {
+		        // Writing the book details to the CSV file
+		        for (Tool tool : ToolList) {
+		            writer.append(tool.getName()).append(",");
+		            writer.append(String.valueOf(tool.getQuantity())).append(",\n");
+		        }
+
+		        System.out.println("\n***ToolList saved successfully" + fileName + "***\n");
+		    } catch (IOException e) {
+		        System.out.println("Error saving the book list: " + e.getMessage());
+		    }
+		}
+}

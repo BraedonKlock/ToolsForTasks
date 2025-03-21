@@ -1,0 +1,68 @@
+package ToolsForTasks;
+import java.io.*;
+import java.util.*;
+
+public class ToolList {
+	static ArrayList<Tool> ToolList = new ArrayList<>();
+    private static final String FILE_NAME = "jobs.csv";
+
+	static Scanner scanner = new Scanner(System.in);
+	
+	public static void addTool() {
+		System.out.println("What is the name of the tool?: ");
+		String name = scanner.nextLine();
+		System.out.println("Enter Quantity: ");
+		Long quantity = Long.parseLong(scanner.nextLine());
+		Tool tool = new Tool(name, quantity);
+		ToolList.add(tool);
+		saveToolList();
+	}
+	public static void editTool() {
+		
+	}
+	
+	public static void deleteTool() {
+		
+	}
+	
+	public static void searchTool() {
+		
+	}
+	
+	public static void listTool() {
+	}
+	
+	 private void loadFromFile() {
+	        try (BufferedReader br = new BufferedReader(new FileReader(FILE_NAME))) {
+	            String line;
+	            while ((line = br.readLine()) != null) {
+	                String[] data = line.split(",");
+	                ToolList.add(new Tool(data[0].trim(), Long.parseLong(data[1].trim())));
+	            }
+	        } catch (IOException ignored) {
+	        }
+	    }
+
+	
+	public static void saveToolList() 
+	{
+
+		    Scanner scanner = new Scanner(System.in);
+
+		    // asking the user to enter the filename
+		   
+		    String fileName = "tools.csv";
+
+		    try (FileWriter writer = new FileWriter(fileName)) {
+		        // Writing the book details to the CSV file
+		        for (Tool tool : ToolList) {
+		            writer.append(tool.getName()).append(",");
+		            writer.append(String.valueOf(tool.getQuantity())).append(",\n");
+		        }
+
+		        System.out.println("\n***ToolList saved successfully" + fileName + "***\n");
+		    } catch (IOException e) {
+		        System.out.println("Error saving the book list: " + e.getMessage());
+		    }
+		}
+}

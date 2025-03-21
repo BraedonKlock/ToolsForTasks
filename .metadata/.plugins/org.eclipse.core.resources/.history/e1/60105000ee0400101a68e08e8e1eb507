@@ -1,0 +1,15 @@
+package ToolsForTasks;
+
+public class Tool {
+	String name;
+	Long quantity;
+	
+	public Tool(String name, Long quantity) {
+		this.name = name;
+		this.quantity = quantity;
+	}
+	
+	public String toString() {
+		return "Name: " + name + " Quantity: ";
+	}
+}

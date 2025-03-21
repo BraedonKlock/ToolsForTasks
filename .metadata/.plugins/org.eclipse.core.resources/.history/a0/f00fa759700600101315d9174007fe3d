@@ -1,0 +1,180 @@
+package ToolsForTasks;
+
+
+import java.io.*;
+import java.util.*;
+
+public class JobList {
+	 static Scanner scanner = new Scanner(System.in);
+	 static List<Job> jobList = new ArrayList<>();
+
+	 public static void listJobs() {
+		  if (jobList.isEmpty()) {
+		        System.out.println("No jobs found.");
+		        return;
+		    }
+
+		    for (int i = 0; i < jobList.size(); i++) {
+		        System.out.println(i + ". " + jobList.get(i));
+		    }
+    }
+	    
+	 public static void addJob() {
+		System.out.println("Enter job name:");
+		String name = scanner.nextLine();
+		
+		System.out.println("Enter job description:");
+		String description = scanner.nextLine();
+		
+		Job job = new Job(name, description);
+		
+		while (true) {
+			System.out.println("Add a tool? (yes/no):");
+			String response = scanner.nextLine();
+			
+			if (response.equalsIgnoreCase("no")) break;
+			
+			System.out.println("Tool name:");
+			String toolName = scanner.nextLine();
+			
+			System.out.println("Quantity:");
+			String quantity = scanner.nextLine();
+			
+			Tool tool = new Tool(toolName, quantity);
+			job.addTool(tool);
+		}
+		
+		jobList.add(job);
+		System.out.println("Job added!\n");
+		saveToFile();
+		System.out.println("Job saved successfully!\n");
+	}
+	    public static void editJob() {
+	    	 listJobs();
+
+	    	    if (jobList.isEmpty()) return;
+
+	    	    System.out.print("Enter job number to edit: ");
+	    	    int index = Integer.parseInt(scanner.nextLine());
+
+	    	    if (index < 0 || index >= jobList.size()) {
+	    	        System.out.println("Invalid job number.");
+	    	        return;
+	    	    }
+
+	    	    Job job = jobList.get(index);
+
+	    	    System.out.println("Editing Job: " + job.getName());
+
+	    	    System.out.print("New name (or press Enter to keep): ");
+	    	    String newName = scanner.nextLine();
+	    	    if (!newName.isEmpty()) job.setName(newName);
+
+	    	    System.out.print("New description (or press Enter to keep): ");
+	    	    String newDesc = scanner.nextLine();
+	    	    if (!newDesc.isEmpty()) job.setDescription(newDesc);
+
+	    	    System.out.print("Do you want to edit tools? (yes/no): ");
+	    	    String toolEdit = scanner.nextLine();
+	    	    if (toolEdit.equalsIgnoreCase("yes")) {
+	    	        job.getTools().clear();
+
+	    	        while (true) {
+	    	            System.out.print("Add a tool? (yes/no): ");
+	    	            String add = scanner.nextLine();
+
+	    	            if (add.equalsIgnoreCase("no")) break;
+
+	    	            System.out.print("Tool name: ");
+	    	            String toolName = scanner.nextLine();
+
+	    	            System.out.print("Quantity: ");
+	    	            String qty = scanner.nextLine();
+
+	    	            job.addTool(new Tool(toolName, qty));
+	    	        }
+	    	    }
+
+	    	    saveToFile();
+	    	    System.out.println("Job updated.");
+	    	}
+	      
+	    }
+
+	    public static void deleteJob() {
+	    	  listJobs();
+
+	    	    if (jobList.isEmpty()) return;
+
+	    	    System.out.print("Enter job number to delete: ");
+	    	    int index = Integer.parseInt(scanner.nextLine());
+
+	    	    if (index < 0 || index >= jobList.size()) {
+	    	        System.out.println("Invalid job number.");
+	    	        return;
+	    	    }
+
+	    	    Job removed = jobList.remove(index);
+	    	    saveToFile();
+
+	    	    System.out.println("Deleted: " + removed.getName());
+	    }
+
+	    public static void searchJob() {
+	    }
+	    
+	    
+	    public static void loadFromFile() {
+	    	jobList.clear(); // in case you reload during runtime
+	    	
+	    	try (BufferedReader br = new BufferedReader(new FileReader("jobs.csv"))) {
+	    		String line;
+	    		while ((line = br.readLine()) != null) {
+	    			String[] parts = line.split(",", 3); // only 3 parts: name, description, tools
+	    			if (parts.length < 3) continue;
+	    			
+	    			Job job = new Job(parts[0], parts[1]);
+	    			
+	    			String[] toolData = parts[2].split("\\|");
+	    			for (String toolEntry : toolData) {
+	    				String[] toolParts = toolEntry.split(":");
+	    				if (toolParts.length == 2) {
+	    					job.addTool(new Tool(toolParts[0], toolParts[1]));
+	    				}
+	    			}
+	    			
+	    			jobList.add(job);
+	    		}
+	    		
+	    		System.out.println("Jobs loaded from file.");
+	    	} catch (IOException e) {
+	    		System.out.println("Error loading file: " + e.getMessage());
+	    	}
+	    }
+
+
+	    public static void saveToFile() {
+	    	try (FileWriter writer = new FileWriter("jobs.csv")) {
+	    		for (Job job : jobList) {
+	    			StringBuilder line = new StringBuilder();
+	    			line.append(job.getName()).append(",");
+	    			line.append(job.getDescription()).append(",");
+	    			
+	    			List<Tool> tools = job.getTools();
+	    			for (int i = 0; i < tools.size(); i++) {
+	    				Tool tool = tools.get(i);
+	    				line.append(tool.getName()).append(":").append(tool.getQuantity());
+	    				if (i < tools.size() - 1) {
+	    					line.append("|"); // delimiter between tools
+	    				}
+	    			}
+	    			
+	    			writer.write(line.toString() + "\n");
+	    		}
+	    		
+	    		System.out.println("Jobs saved to file.");
+	    	} catch (IOException e) {
+	    		System.out.println("Error saving file: " + e.getMessage());
+	    	}
+	    }
+}

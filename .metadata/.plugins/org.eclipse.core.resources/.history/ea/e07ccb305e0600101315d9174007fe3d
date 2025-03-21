@@ -1,0 +1,32 @@
+package ToolsForTasks;
+
+public class Job {
+	 private static String name;
+	    private static String description;
+
+	    public Job(String name, String description) {
+	        this.name = name;
+	        this.description = description;
+	    }
+
+	    public static String getName() {
+	        return name;
+	    }
+
+	    public static String getDescription() {
+	        return description;
+	    }
+
+	    public void setName(String name) {
+	        this.name = name;
+	    }
+
+	    public void setDescription(String description) {
+	        this.description = description;
+	    }
+
+	    @Override
+	    public String toString() {
+	        return name + ", " + description;
+	    }
+}

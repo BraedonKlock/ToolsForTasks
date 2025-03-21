@@ -1,0 +1,36 @@
+package ToolsForTasks;
+
+import java.util.*;
+
+public class ToolList {
+	
+	static ArrayList<Tool> ToolList = new ArrayList<>();
+	static Scanner scanner = new Scanner(System.in);
+	
+	public static void addTool() {
+		System.out.println("What is the name of the tool?: ");
+		String name = scanner.nextLine();
+		System.out.println("Enter Quantity: ");
+		Long quantity = scanner.nextLong();
+		Tool tool = new Tool(name, quantity);
+		ToolList.add(tool);
+	}
+	public static void editTool() {
+		
+	}
+	
+	public static void deleteTool() {
+		
+	}
+	
+	public static void searchTool() {
+		
+	}
+	
+	public static void listTool() {
+		for (int i = 0; i <ToolList.size(); i++ ) {
+			Tool tool = ToolList.get(i);
+			System.out.println(ToolList.toString());
+		}
+	}
+}
