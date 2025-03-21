@@ -7,6 +7,17 @@ public class JobList {
 	 static Scanner scanner = new Scanner(System.in);
 	 static List<Job> jobList = new ArrayList<>();
 
+	 public static void listJobs() {
+		  if (jobList.isEmpty()) {
+		        System.out.println("No jobs found.");
+		        return;
+		    }
+
+		    for (int i = 0; i < jobList.size(); i++) {
+		        System.out.println(i + ". " + jobList.get(i));
+		    }
+    }
+	    
 	 public static void addJob() {
 		System.out.println("Enter job name:");
 		String name = scanner.nextLine();
@@ -20,7 +31,8 @@ public class JobList {
 			System.out.println("Add a tool? (yes/no):");
 			String response = scanner.nextLine();
 			
-			if (response.equalsIgnoreCase("no")) break;
+			if (response.equalsIgnoreCase("no")) 
+				break;
 			
 			System.out.println("Tool name:");
 			String toolName = scanner.nextLine();
@@ -106,39 +118,22 @@ public class JobList {
 	    	    System.out.println("Deleted: " + removed.getName());
 	    }
 
-	    public static void searchJob() {
-	    	if (jobList.isEmpty()) {
-	            System.out.println("No jobs to search.");
-	            return;
-	        }
-
-	        System.out.println("\nEnter any keyword to search (job name, description, or tool name):");
-	        String term = scanner.nextLine().toLowerCase();
-
-	        boolean found = false;
-
-	        System.out.println("\nSearch Results:");
-	        for (int i = 0; i < jobList.size(); i++) {
-	            Job job = jobList.get(i);
-	            String jobName = job.getName().toLowerCase();
-	            String description = job.getDescription().toLowerCase();
-	            StringBuilder toolNames = new StringBuilder();
-
-	            for (Tool tool : job.getTools()) {
-	                toolNames.append(tool.getName().toLowerCase()).append(" ");
-	            }
-
-	            // Match against all three fields
-	            if (jobName.contains(term) || description.contains(term) || toolNames.toString().contains(term)) {
-	                System.out.println(i + ". " + job);
-	                found = true;
-	            }
-	        }
-
-	        if (!found) {
-	            System.out.println("No jobs found matching \"" + term + "\".");
-	        }
+	    public static void searchJob(String data) {
+	    	listJobs();
 	    	
+	    	System.out.println("Enter the name or job number: ");
+	    	String search = scanner.nextLine();
+	    	
+	    	ArrayList<Job> foundJobs = new ArrayList<Job>();
+			
+			for(Job job : jobList)
+			{
+				if(Job.toString().contains(data.toLowerCase()) && data != "")
+				{
+					foundJobs.add(job);
+				}
+				System.out.println(foundJobs);
+			}
 	    }
 	    
 	    public static void loadFromFile() {
@@ -167,17 +162,6 @@ public class JobList {
 	    	} catch (IOException e) {
 	    		System.out.println("Error loading file: " + e.getMessage());
 	    	}
-	    }
-	    
-	    public static void listJobs() {
-			  if (jobList.isEmpty()) {
-			        System.out.println("No jobs found.");
-			        return;
-			    }
-
-			    for (int i = 0; i < jobList.size(); i++) {
-			        System.out.println(i + ". " + jobList.get(i));
-			    }
 	    }
 
 	    public static void saveToFile() {

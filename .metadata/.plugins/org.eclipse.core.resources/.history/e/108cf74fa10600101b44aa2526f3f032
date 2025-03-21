@@ -7,6 +7,17 @@ public class JobList {
 	 static Scanner scanner = new Scanner(System.in);
 	 static List<Job> jobList = new ArrayList<>();
 
+	 public static void listJobs() {
+		  if (jobList.isEmpty()) {
+		        System.out.println("No jobs found.");
+		        return;
+		    }
+
+		    for (int i = 0; i < jobList.size(); i++) {
+		        System.out.println(i + ". " + jobList.get(i));
+		    }
+    }
+	    
 	 public static void addJob() {
 		System.out.println("Enter job name:");
 		String name = scanner.nextLine();
@@ -167,17 +178,6 @@ public class JobList {
 	    	} catch (IOException e) {
 	    		System.out.println("Error loading file: " + e.getMessage());
 	    	}
-	    }
-	    
-	    public static void listJobs() {
-			  if (jobList.isEmpty()) {
-			        System.out.println("No jobs found.");
-			        return;
-			    }
-
-			    for (int i = 0; i < jobList.size(); i++) {
-			        System.out.println(i + ". " + jobList.get(i));
-			    }
 	    }
 
 	    public static void saveToFile() {
