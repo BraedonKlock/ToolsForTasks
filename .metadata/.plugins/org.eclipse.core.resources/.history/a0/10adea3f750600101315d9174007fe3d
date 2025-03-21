@@ -1,5 +1,6 @@
 package ToolsForTasks;
 
+
 import java.io.*;
 import java.util.*;
 
@@ -98,6 +99,7 @@ public class JobList {
 	    	    System.out.println("Job updated.");
 	    	}
 	      
+
 	    public static void deleteJob() {
 	    	  listJobs();
 
@@ -121,6 +123,7 @@ public class JobList {
 	    	listJobs();
 	    	
 	    }
+	    
 	    
 	    public static void loadFromFile() {
 	    	jobList.clear(); // in case you reload during runtime
@@ -149,6 +152,7 @@ public class JobList {
 	    		System.out.println("Error loading file: " + e.getMessage());
 	    	}
 	    }
+
 
 	    public static void saveToFile() {
 	    	try (FileWriter writer = new FileWriter("jobs.csv")) {
