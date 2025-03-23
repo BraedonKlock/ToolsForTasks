@@ -9,25 +9,15 @@ public class ToolList {
 	static Scanner scanner = new Scanner(System.in);
 	
 	public static void addTool() {
-		while (true) {
-			System.out.println("What is the name of the tool?: ");
-			String name = scanner.nextLine();
-			System.out.println("Enter Quantity: ");
-			String quantity = scanner.nextLine();
-			Tool tool = new Tool(name, quantity);
-			ToolList.add(tool);
-			saveToolList();
-			
-			System.out.println("Do you want to add another tool?: ");
-			String continueInput = scanner.nextLine();
-		
-			if (continueInput.equalsIgnoreCase("no")) {
-				break;
-			}
-		}
+		System.out.println("What is the name of the tool?: ");
+		String name = scanner.nextLine();
+		System.out.println("Enter Quantity: ");
+		String quantity = scanner.nextLine();
+		Tool tool = new Tool(name, quantity);
+		ToolList.add(tool);
+		saveToolList();
 	}
 	public static void editTool() {
-		System.out.println("Enter the tool you want to edit");
 		
 	}
 	

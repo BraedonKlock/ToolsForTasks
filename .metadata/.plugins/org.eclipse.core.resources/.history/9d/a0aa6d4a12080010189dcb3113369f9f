@@ -67,64 +67,34 @@ public class JobList {
 	    	    
 	    	    if (toolEdit.equalsIgnoreCase("yes")) {
 	    	        while (true) {
-	    	            System.out.print("Do you want to edit a Tool or add a tool? (Edit/Add/Exit): ");
-	    	            String action = scanner.nextLine();
+	    	            System.out.print("do you want to edit a Tool or add a tool? (Edit/Add): ");
+	    	            String add = scanner.nextLine();
 
-	    	            if (action.equalsIgnoreCase("Edit")) {
-	    	                List<Tool> tools = job.getTools();
-
-	    	                if (tools.isEmpty()) {
-	    	                    System.out.println("No tools to edit.");
-	    	                    continue;
-	    	                }
-
-	    	                System.out.println("Tools for this job:");
-	    	                for (int i = 0; i < tools.size(); i++) {
-	    	                    Tool tool = tools.get(i);
-	    	                    System.out.println(i + ". Name: " + tool.getName() + " | Quantity: " + tool.getQuantity());
-	    	                }
-
-	    	                System.out.print("Enter the tool number to edit: ");
-	    	                int toolNumber = Integer.parseInt(scanner.nextLine());
-
-	    	                if (toolNumber < 0 || toolNumber >= tools.size()) {
-	    	                    System.out.println("Invalid tool number.");
-	    	                    continue;
-	    	                }
-
-	    	                Tool selectedTool = tools.get(toolNumber);
-
-	    	                System.out.print("New tool name (or press Enter to keep): ");
-	    	                String newToolName = scanner.nextLine();
-	    	                if (!newToolName.isEmpty()) {
-	    	                    selectedTool.setName(newToolName);
-	    	                }
-
-	    	                System.out.print("New quantity (or press Enter to keep): ");
-	    	                String newQuantity = scanner.nextLine();
-	    	                if (!newQuantity.isEmpty()) {
-	    	                    selectedTool.setQuantity(newQuantity);
-	    	                }
-
-	    	                System.out.println("Tool updated.");
-
-	    	            } else if (action.equalsIgnoreCase("Add")) {
-	    	                System.out.print("Enter tool name: ");
-	    	                String toolName = scanner.nextLine();
-
-	    	                System.out.print("Enter quantity: ");
-	    	                String quantity = scanner.nextLine();
-
-	    	                job.addTool(new Tool(toolName, quantity));
-	    	                System.out.println("Tool added.");
-	    	            } else if (action.equalsIgnoreCase("Exit")) {
-	    	                break;
-	    	            } else {
-	    	                System.out.println("Invalid input. Please enter Edit, Add, or Exit.");
+	    	            if (add.equalsIgnoreCase("Edit")) {
+	    	            	int toolNumber;
+	    	            	List<Tool> toolsForFirstJob = jobList.get(0).getTools();
+	    	            	
+	    	            	for (int i = 0; i < toolsForFirstJob.size(); i++) {
+	    	            		Tool tool = toolsForFirstJob.get(i);
+	    	            		System.out.println(i + " . Name: " + tool.getName() + "\nQuantity: " + tool.getQuantity());
+	    	            	System.out.println("What tool # do you want to edit ");
+	    	            	toolNumber = scanner.nextInt();
+	    	            	
+	    	            	}
+	    	         
+	    	            	
 	    	            }
+
+	    	            System.out.print("Tool name: ");
+	    	            String toolName = scanner.nextLine();
+
+	    	            System.out.print("Quantity: ");
+	    	            String qty = scanner.nextLine();
+
+	    	            job.addTool(new Tool(toolName, qty));
 	    	        }
 	    	    }
-	    	    
+
 	    	    saveToFile();
 	    	    System.out.println("Job updated.");
 	    	}

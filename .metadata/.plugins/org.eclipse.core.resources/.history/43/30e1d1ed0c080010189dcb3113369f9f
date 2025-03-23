@@ -27,7 +27,6 @@ public class ToolList {
 		}
 	}
 	public static void editTool() {
-		System.out.println("Enter the tool you want to edit");
 		
 	}
 	

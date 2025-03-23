@@ -9,6 +9,7 @@ public class ToolList {
 	static Scanner scanner = new Scanner(System.in);
 	
 	public static void addTool() {
+		boolean addTool = true;
 		while (true) {
 			System.out.println("What is the name of the tool?: ");
 			String name = scanner.nextLine();
@@ -27,7 +28,6 @@ public class ToolList {
 		}
 	}
 	public static void editTool() {
-		System.out.println("Enter the tool you want to edit");
 		
 	}
 	
