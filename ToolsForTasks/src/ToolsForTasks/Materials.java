@@ -1,10 +1,9 @@
 package ToolsForTasks;
 
-public class Tool {
+public class Materials {
 	String name;
 	String quantity;
-	
-	public Tool(String name, String quantity) {
+	public Materials(String name, String quantity) {
 		this.name = name;
 		this.quantity = quantity;
 	}

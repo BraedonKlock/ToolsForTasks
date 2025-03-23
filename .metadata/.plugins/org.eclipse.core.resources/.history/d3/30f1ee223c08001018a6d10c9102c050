@@ -6,21 +6,15 @@ public class Job {
 	 private String name;
 	    private String description;
 	    private List<Tool> tools;
-	    private List<Materials> materials;
 
 	    public Job(String name, String description) {
 	        this.name = name;
 	        this.description = description;
 	        this.tools = new ArrayList<>();
-	        this.materials = new ArrayList<>();
 	    }
 
 	    public void addTool(Tool tool) {
 	        tools.add(tool);
-	    }
-	    
-	    public void addMaterial(Materials material) {
-	    	materials.add(material);
 	    }
 
 	    public String getName() {
@@ -42,12 +36,9 @@ public class Job {
 	    public List<Tool> getTools() {
 	        return tools;
 	    }
-	    public List<Materials> getMaterials() {
-	    	return materials;
-	    }
 
 	    @Override
 	    public String toString() {
-	        return name + " | " + description + " | Tools: " + tools + " | Materials: " + materials;
+	        return name + " | " + description + " | Tools: " + tools;
 	    }	
 }

@@ -1,6 +1,7 @@
 package ToolsForTasks;
 
 public class Tool {
+	 
 	String name;
 	String quantity;
 	

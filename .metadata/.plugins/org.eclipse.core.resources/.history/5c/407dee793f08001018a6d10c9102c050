@@ -221,44 +221,32 @@ public class JobList {
 	    }
 	    
 	    public static void loadFromFile() {
-	        jobList.clear();
-
-	        try (BufferedReader br = new BufferedReader(new FileReader("jobs.csv"))) {
-	            String line;
-	            while ((line = br.readLine()) != null) {
-	                String[] parts = line.split(",", 4); // name, description, tools, materials
-
-	                if (parts.length < 4) continue;
-
-	                Job job = new Job(parts[0], parts[1]);
-
-	                // Tools
-	                String[] toolData = parts[2].split("\\|");
-	                for (String toolEntry : toolData) {
-	                    String[] toolParts = toolEntry.split(":");
-	                    if (toolParts.length == 2) {
-	                        job.addTool(new Tool(toolParts[0], toolParts[1]));
-	                    }
-	                }
-
-	                // Materials
-	                String[] materialData = parts[3].split("\\|");
-	                for (String materialEntry : materialData) {
-	                    String[] materialParts = materialEntry.split(":");
-	                    if (materialParts.length == 2) {
-	                        job.addMaterial(new Materials(materialParts[0], materialParts[1]));
-	                    }
-	                }
-
-	                jobList.add(job);
-	            }
-
-	            System.out.println("Jobs loaded from file.");
-	        } catch (IOException e) {
-	            System.out.println("Error loading file: " + e.getMessage());
-	        }
+	    	jobList.clear(); // in case you reload during runtime
+	    	
+	    	try (BufferedReader br = new BufferedReader(new FileReader("jobs.csv"))) {
+	    		String line;
+	    		while ((line = br.readLine()) != null) {
+	    			String[] parts = line.split(",", 3); // only 3 parts: name, description, tools
+	    			if (parts.length < 3) continue;
+	    			
+	    			Job job = new Job(parts[0], parts[1]);
+	    			
+	    			String[] toolData = parts[2].split("\\|");
+	    			for (String toolEntry : toolData) {
+	    				String[] toolParts = toolEntry.split(":");
+	    				if (toolParts.length == 2) {
+	    					job.addTool(new Tool(toolParts[0], toolParts[1]));
+	    				}
+	    			}
+	    			
+	    			jobList.add(job);
+	    		}
+	    		
+	    		System.out.println("Jobs loaded from file.");
+	    	} catch (IOException e) {
+	    		System.out.println("Error loading file: " + e.getMessage());
+	    	}
 	    }
-
 	    
 	    public static void listJobs() {
 			  if (jobList.isEmpty()) {
@@ -272,41 +260,27 @@ public class JobList {
 	    }
 
 	    public static void saveToFile() {
-	        try (FileWriter writer = new FileWriter("jobs.csv")) {
-	            for (Job job : jobList) {
-	                StringBuilder line = new StringBuilder();
-	                line.append(job.getName()).append(",");
-	                line.append(job.getDescription()).append(",");
-
-	                // Tools
-	                List<Tool> tools = job.getTools();
-	                for (int i = 0; i < tools.size(); i++) {
-	                    Tool tool = tools.get(i);
-	                    line.append(tool.getName()).append(":").append(tool.getQuantity());
-	                    if (i < tools.size() - 1) {
-	                        line.append("|");
-	                    }
-	                }
-
-	                line.append(","); // 🔥 this comma separates tools from materials
-
-	                // Materials
-	                List<Materials> materials = job.getMaterials();
-	                for (int i = 0; i < materials.size(); i++) {
-	                    Materials material = materials.get(i);
-	                    line.append(material.getName()).append(":").append(material.getQuantity());
-	                    if (i < materials.size() - 1) {
-	                        line.append("|");
-	                    }
-	                }
-
-	                writer.write(line.toString() + "\n");
-	            }
-
-	            System.out.println("Jobs saved to file.");
-	        } catch (IOException e) {
-	            System.out.println("Error saving file: " + e.getMessage());
-	        }
+	    	try (FileWriter writer = new FileWriter("jobs.csv")) {
+	    		for (Job job : jobList) {
+	    			StringBuilder line = new StringBuilder();
+	    			line.append(job.getName()).append(",");
+	    			line.append(job.getDescription()).append(",");
+	    			
+	    			List<Tool> tools = job.getTools();
+	    			for (int i = 0; i < tools.size(); i++) {
+	    				Tool tool = tools.get(i);
+	    				line.append(tool.getName()).append(":").append(tool.getQuantity());
+	    				if (i < tools.size() - 1) {
+	    					line.append("|"); // delimiter between tools
+	    				}
+	    			}
+	    			
+	    			writer.write(line.toString() + "\n");
+	    		}
+	    		
+	    		System.out.println("Jobs saved to file.");
+	    	} catch (IOException e) {
+	    		System.out.println("Error saving file: " + e.getMessage());
+	    	}
 	    }
-
 }

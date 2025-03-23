@@ -13,7 +13,7 @@ public class Interface {
 	
 	public static void jobsShowMenu() {
 		System.out.println("|=================|\n" + 
-				  		   "|--- Main Menu ---|\n" +
+				  		   "|--- Job Menu ---|\n" +
 				  		   "|=================|\n" +
 				  		   "1. Add job\n" +
 				  		   "2. Edit job\n" +
