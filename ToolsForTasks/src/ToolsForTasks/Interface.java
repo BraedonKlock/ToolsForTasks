@@ -6,42 +6,10 @@ public class Interface {
 
 	public static void main(String[] args) {
 	   Scanner scanner = new Scanner(System.in);
-        menu();
+        jobsMenu();
 	}
 	
 	static Scanner scanner = new Scanner(System.in);
-	
-	public static void showMenu() {
-		System.out.println("|=================|\n" + 
-						   "|--- Main Menu ---|\n" +
-						   "|=================|\n" +
-						   "1. Jobs\n" +
-						   "2. Tools\n" +
-						   "3. Exit\n" +
-						   "Choose an ooption (enter #): ");
-	}
-	
-	public static void menu() {
-		int option = 0;
-		
-		do {
-	        ToolList.loadFromFile();
-	        JobList.loadFromFile();
-
-			showMenu();
-			option = Integer.parseInt(scanner.nextLine().trim());
-			
-			switch (option) {
-			case 1: jobsMenu();
-					break;
-			case 2: toolsMenu();
-					break;
-			case 3: exit();
-					break;
-			default: System.out.println("Not a valid option");
-			}
-		} while (option != 3);
-	}
 	
 	public static void jobsShowMenu() {
 		System.out.println("|=================|\n" + 
@@ -60,6 +28,7 @@ public class Interface {
 int option = 0;
 		
 		do {
+			JobList.loadFromFile();
 			jobsShowMenu();
 			option = Integer.parseInt(scanner.nextLine().trim());
 			
@@ -79,45 +48,6 @@ int option = 0;
 			default: System.out.println("Not a valid option");
 			}
 		} while (option != 6);
-	}
-	
-	public static void toolsShowMenu() {
-		System.out.println("|=================|\n" + 
-		  		   "|--- Tool Menu ---|\n" +
-		  		   "|=================|\n" +
-		  		   "1. Add Tool\n" +
-		  		   "2. Edit Tool\n" +
-		  		   "3. Delete Tool\n" +
-		  		   "4. Search Tool\n" +
-		  		   "5. List all Tools\n" +
-		  		   "6. Exit\n" +
-		  		   "Choose an ooption (enter #): ");
-		
-	}
-	
-	public static void toolsMenu() {
-		int option = 0;
-		
-		do {
-			toolsShowMenu();
-			option = Integer.parseInt(scanner.nextLine().trim());
-			
-			switch (option) {
-			case 1: ToolList.addTool();
-					break;
-			case 2: ToolList.editTool();
-					break;
-			case 3: ToolList.deleteTool();
-					break;
-			case 4: ToolList.searchTool();
-					break;
-			case 5: ToolList.listTool();
-					break;
-			case 6: exit();
-					break;
-			default: System.out.println("Not a valid option");
-			}
-		} while (option != 6);	
 	}
 	
 	public static void exit() {

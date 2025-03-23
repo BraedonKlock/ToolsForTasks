@@ -12,14 +12,12 @@ public class JobList {
 		System.out.println("Enter job name(or type \"Exit\"): ");
 		String name = scanner.nextLine();
 		if (name.equalsIgnoreCase("Exit")) {
+			save = false;
 			return;
 		}
 		
 		System.out.println("Enter job description:");
 		String description = scanner.nextLine();
-		if (description.equalsIgnoreCase("Exit")) {
-			return;
-		}
 		
 		Job job = new Job(name, description);
 		
@@ -29,25 +27,21 @@ public class JobList {
 			
 			if (response.equalsIgnoreCase("no")) break;
 			
-			System.out.println("Tool name(or type \"exit\"):");
+			System.out.println("Tool name:");
 			String toolName = scanner.nextLine();
-			if (toolName.equalsIgnoreCase("Exit")) {
-				continue;
-			}
 			
 			System.out.println("Quantity:");
 			String quantity = scanner.nextLine();
-			if (quantity.equalsIgnoreCase("Exit")) {
-				continue;
-			}
 			
 			Tool tool = new Tool(toolName, quantity);
 			job.addTool(tool);
 		}
+		if (save == true) {
 		jobList.add(job);
 		System.out.println("Job added!\n");
 		saveToFile();
 		System.out.println("Job saved successfully!\n");
+		}
 	}
 	    public static void editJob() {
 	    	 listJobs();
@@ -79,7 +73,7 @@ public class JobList {
 	    	    
 	    	    if (toolEdit.equalsIgnoreCase("yes")) {
 	    	        while (true) {
-	    	            System.out.print("Do you want to add a tool, edit a tool or delete a tool? (Add/Edit/Delete/Exit): ");
+	    	            System.out.print("Do you want to edit a Tool or add a tool? (Edit/Add/Exit): ");
 	    	            String action = scanner.nextLine();
 
 	    	            if (action.equalsIgnoreCase("Edit")) {

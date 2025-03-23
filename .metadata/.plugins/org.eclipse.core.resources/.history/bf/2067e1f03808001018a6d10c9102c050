@@ -79,7 +79,7 @@ public class JobList {
 	    	    
 	    	    if (toolEdit.equalsIgnoreCase("yes")) {
 	    	        while (true) {
-	    	            System.out.print("Do you want to add a tool, edit a tool or delete a tool? (Add/Edit/Delete/Exit): ");
+	    	            System.out.print("Do you want to edit a Tool or add a tool? (Edit/Add/Exit): ");
 	    	            String action = scanner.nextLine();
 
 	    	            if (action.equalsIgnoreCase("Edit")) {
