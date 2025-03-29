@@ -1,0 +1,56 @@
+package ToolsForTasks;
+
+import java.util.*;
+
+public class Interface {
+
+	public static void main(String[] args) {
+	   Scanner scanner = new Scanner(System.in);
+        jobsMenu();
+	}
+	
+	static Scanner scanner = new Scanner(System.in);
+	
+	public static void jobsShowMenu() {
+		System.out.println("|=================|\n" + 
+				  		   "|--- Main Menu ---|\n" +
+				  		   "|=================|\n" +
+				  		   "1. Add job\n" +
+				  		   "2. Edit job\n" +
+				  		   "3. Delete job\n" +
+				  		   "4. Search job\n" +
+				  		   "5. List all jobs\n" +
+				  		   "6. Exit\n" +
+				  		   "Choose an option (enter #): ");
+	}
+	
+	public static void jobsMenu() {
+		int option = 0;
+		
+		do {
+			JobList.loadFromFile();
+			jobsShowMenu();
+			option = Integer.parseInt(scanner.nextLine().trim());
+			
+			switch (option) {
+			case 1: JobList.addJob();
+					break;
+			case 2: JobList.editJob();
+					break;
+			case 3: JobList.deleteJob();
+					break;
+			case 4: JobList.searchJob();
+					break;
+			case 5: JobList.listJobs();
+					break;
+			case 6: exit();
+					break;
+			default: System.out.println("Not a valid option");
+			}
+		} while (option != 6);
+	}
+	
+	public static void exit() {
+		System.out.println("Exiting");
+	}
+}

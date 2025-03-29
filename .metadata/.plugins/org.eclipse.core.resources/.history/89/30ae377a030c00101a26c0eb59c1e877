@@ -1,0 +1,5 @@
+package ToolsForTasks;
+
+public class Exception extends JobException {
+
+}

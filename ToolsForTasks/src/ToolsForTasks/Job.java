@@ -3,51 +3,66 @@ package ToolsForTasks;
 import java.util.*;
 
 public class Job {
-	 private String name;
-	    private String description;
-	    private List<Tool> tools;
-	    private List<Materials> materials;
+	private String name;
+    private String description;
+    private List<Tool> tools;
+    private List<Materials> materials;
 
-	    public Job(String name, String description) {
-	        this.name = name;
-	        this.description = description;
-	        this.tools = new ArrayList<>();
-	        this.materials = new ArrayList<>();
-	    }
+    public Job(String name, String description) {
+        this.name = name;
+        this.description = description;
+        this.tools = new ArrayList<>();
+        this.materials = new ArrayList<>();
+    }
 
-	    public void addTool(Tool tool) {
-	        tools.add(tool);
-	    }
-	    
-	    public void addMaterial(Materials material) {
-	    	materials.add(material);
-	    }
+    public void addTool(Tool tool) {
+        tools.add(tool);
+    }
+    
+    public void addMaterial(Materials material) {
+    	materials.add(material);
+    }
 
-	    public String getName() {
-	        return name;
-	    }
-	    
-	    public void setName(String name) {
-	        this.name = name;
-	    }
+    public String getName() {
+        return name;
+    }
+    
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	    public void setDescription(String description) {
-	        this.description = description;
-	    }
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	    public String getDescription() {
-	        return description;
-	    }
+    public String getDescription() {
+        return description;
+    }
 
-	    public List<Tool> getTools() {
-	        return tools;
-	    }
-	    public List<Materials> getMaterials() {
-	    	return materials;
-	    }
+    public List<Tool> getTools() {
+        return tools;
+    }
+    public List<Materials> getMaterials() {
+    	return materials;
+    }
 
-	    @Override
-	    public String toString() {
-	        return name + " | " + description + " | Tools: " + tools + " | Materials: " + materials;
-	    }	
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(name).append("\n");
+        sb.append("--Notes--\n").append(description).append("\n");
+
+        sb.append("TOOLS\n");
+        for (Tool tool : tools) {
+            sb.append(tool.getName()).append("\n");
+            sb.append("Quantity: ").append(tool.getQuantity()).append("\n");
+        }
+
+        sb.append("MATERIALS\n");
+        for (Materials material : materials) {
+            sb.append(material.getName()).append("\n");
+            sb.append("Quantity: ").append(material.getQuantity()).append("\n");
+        }
+        return sb.toString();
+    }
 }

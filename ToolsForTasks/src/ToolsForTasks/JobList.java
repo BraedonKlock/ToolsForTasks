@@ -7,74 +7,94 @@ public class JobList {
 	 static Scanner scanner = new Scanner(System.in);
 	 static List<Job> jobList = new ArrayList<>();
 
-	 public static void addJob() {
-		 boolean save = true;
-		System.out.println("Enter job name(or type \"Exit\"): ");
-		String name = scanner.nextLine();
-		if (name.equalsIgnoreCase("Exit")) {
-			return;
-		}
-		
-		System.out.println("Enter job description:");
-		String description = scanner.nextLine();
-		if (description.equalsIgnoreCase("Exit")) {
-			return;
-		}
-		
-		Job job = new Job(name, description);
-		
-		while (true) {
-			System.out.println("Add a tool? (yes/no):");
-			String response = scanner.nextLine();
-			
-			if (response.equalsIgnoreCase("no")) break;
-			
-			System.out.println("Tool name(or type \"exit\"):");
-			String toolName = scanner.nextLine();
-			if (toolName.equalsIgnoreCase("Exit")) {
-				continue;
-			}
-			
-			System.out.println("Quantity:");
-			String quantity = scanner.nextLine();
-			if (quantity.equalsIgnoreCase("Exit")) {
-				continue;
-			}
-			
-			Tool tool = new Tool(toolName, quantity);
-			job.addTool(tool);
-		}
-		
-		while (true) {
-			System.out.println("Do you want to add Material? (Yes/No): ");
-			String response = scanner.nextLine();
-			
-			if (response.equalsIgnoreCase("no")) break;
-			
-			System.out.println("Material name(or type \"Exit\" to exit): ");
-			String materialName = scanner.nextLine();
-			
-			if (materialName.equalsIgnoreCase("exit")) {
-				continue;
-			}
-			
-			System.out.println("Quantity (or type \"Exit\" to exit): ");
-			String quantity = scanner.nextLine();
-			
-			if (quantity.equalsIgnoreCase("exit")) {
-				continue;
-			}
-			Materials materials = new Materials(materialName, quantity);
-			job.addMaterial(materials);
-		}
+	public static void addJob() throws JobException {
+    System.out.println("Enter job name (or type \"Exit\"): ");
+    String name = scanner.nextLine();
+    if (name.equalsIgnoreCase("Exit")) return;
+
+    System.out.println("Enter job description (or type \"Exit\"): ");
+    String description = scanner.nextLine();
+    if (description.equalsIgnoreCase("Exit")) return;
+
+    Job job = new Job(name, description);
+
+    // Add tools
+    while (true) {
+        System.out.println("Add a tool? (yes/no):");
+        String response = scanner.nextLine().trim().toLowerCase();
+
+        if (response.equals("no")) {
+            break;
+        } else if (response.equals("yes")) {
+            while (true) {
+                System.out.println("Tool name (or type \"Exit\" to stop adding tools):");
+                String toolName = scanner.nextLine();
+                if (toolName.equalsIgnoreCase("Exit")) break;
+
+                int quantity = 0;
+                while (true) {
+                    System.out.println("Quantity (must be a number):");
+                    String quantityStr = scanner.nextLine();
+                    if (quantityStr.equalsIgnoreCase("Exit")) break;
+
+                    try {
+                        quantity = Integer.parseInt(quantityStr);
+                        if (quantity < 1) throw new NumberFormatException(); // Enforce positive quantity
+                        break;
+                    } catch (NumberFormatException e) {
+                        System.out.println("\n***Invalid number. Please enter a valid positive number***\n");
+                    }
+                }
+
+                job.addTool(new Tool(toolName, Integer.toString(quantity))); // Still storing as String if needed
+            }
+        } else {
+            System.out.println("\n***Invalid input! Please enter \"yes\" or \"no\"***\n");
+        }
+    }
+
+    // Add materials
+    while (true) {
+        System.out.println("Do you want to add a material? (yes/no): ");
+        String response = scanner.nextLine().trim().toLowerCase();
+
+        if (response.equals("no")) {
+            break;
+        } else if (response.equals("yes")) {
+            while (true) {
+                System.out.println("Material name (or type \"Exit\" to stop adding materials): ");
+                String materialName = scanner.nextLine();
+                if (materialName.equalsIgnoreCase("Exit")) break;
+
+                int quantity = 0;
+                while (true) {
+                    System.out.println("Quantity (must be a number):");
+                    String quantityStr = scanner.nextLine();
+                    if (quantityStr.equalsIgnoreCase("Exit")) break;
+
+                    try {
+                        quantity = Integer.parseInt(quantityStr);
+                        if (quantity < 1) throw new NumberFormatException();
+                        break;
+                    } catch (NumberFormatException e) {
+                        System.out.println("\n***Invalid number. Please enter a valid positive number***\n");
+                    }
+                }
+
+                job.addMaterial(new Materials(materialName, Integer.toString(quantity))); // Again, as String if your model uses it that way
+            }
+        } else {
+            System.out.println("\n***Invalid input! Please enter \"yes\" or \"no\"***\n");
+        }
+    }
+
 		jobList.add(job);
-		System.out.println("Job added!\n");
+		System.out.println("\n***Job added!***\n");
 		saveToFile();
-		System.out.println("Job saved successfully!\n");
-		
-		
+		System.out.println("\n***Job saved successfully!***\n");	
 	}
-	    public static void editJob() {
+	
+	    public static void editJob() throws JobException {
 	    	 listJobs();
 
 	    	    if (jobList.isEmpty()) return;
@@ -166,29 +186,60 @@ public class JobList {
 	    	    System.out.println("Job updated.");
 	    	}
 	      
-	    public static void deleteJob() {
-	    	  listJobs();
+	    public static void deleteJob() throws JobException {
+	        if (jobList.isEmpty()) {
+	            throw new JobException("\n***There are no jobs to delete***\n");
+	        }
 
-	    	    if (jobList.isEmpty()) return;
+	        listJobs(); // only show jobs if there are any
 
-	    	    System.out.print("Enter job number to delete: ");
-	    	    int index = Integer.parseInt(scanner.nextLine());
+	        int index = -1;
+	        while (true) {
+	            System.out.print("Enter job number to delete: ");
+	            String input = scanner.nextLine();
+	            
+	            if(input.equalsIgnoreCase("Exit")) {
+	            	return;
+	            }
 
-	    	    if (index < 0 || index >= jobList.size()) {
-	    	        System.out.println("Invalid job number.");
-	    	        return;
-	    	    }
+	            try {
+	                index = Integer.parseInt(input);
 
-	    	    Job removed = jobList.remove(index);
-	    	    saveToFile();
-
-	    	    System.out.println("Deleted: " + removed.getName());
+	                if (index < 0 || index >= jobList.size()) {
+	                    System.out.println("\n***Invalid job number! Please enter a number between 0 and " + (jobList.size() - 1) + "***\n");
+	                } else {
+	                    break;
+	                }
+	            } catch (NumberFormatException e) {
+	                System.out.println("\n***Invalid input! Please enter a valid number***\n");
+	            }
+	        }
+	        while(true) {
+		        System.out.println("\n***are you sure you want to delete this job:\n" + jobList.get(index) + "***\n");
+		        String confirm= scanner.nextLine();
+		        try {
+		        if (confirm.equalsIgnoreCase("yes")) {
+		        	Job removed = jobList.remove(index);
+		        	System.out.println("Deleted: " + removed.getName());
+		        	saveToFile();
+		        	return;
+		        } else if (confirm.equalsIgnoreCase("no")) {
+		        	System.out.println("\n***Deletion cancelled***\n");
+		        	return;
+		        }
+		        else {
+		        	System.out.println("\n***Invalid input enter \"yes\" or \"no\"***\n");
+		        }
+		        
+		        } catch (NumberFormatException e) {
+		        	System.out.println("\n***Invalid input enter \\\"yes\\\" or \\\"no\\\"***\n");
+		        }
+	        }
 	    }
-
-	    public static void searchJob() {
+ 
+	    public static void searchJob() throws JobException {
 	    	if (jobList.isEmpty()) {
-	            System.out.println("No jobs to search.");
-	            return;
+	            throw new JobException("\n***No jobs to search***\n");
 	        }
 
 	        System.out.println("\nEnter any keyword to search (job name, description, or tool name):");
@@ -215,7 +266,7 @@ public class JobList {
 	        }
 
 	        if (!found) {
-	            System.out.println("No jobs found matching \"" + term + "\".");
+	            System.out.println("\n***No jobs found matching \"" + term + "\"***\n");
 	        }
 	    	
 	    }
@@ -253,21 +304,19 @@ public class JobList {
 	                jobList.add(job);
 	            }
 
-	            System.out.println("Jobs loaded from file.");
+	            System.out.println("\n***Jobs loaded from file***\n");
 	        } catch (IOException e) {
-	            System.out.println("Error loading file: " + e.getMessage());
+	            System.out.println("\n***Error loading file: " + e.getMessage() + "***\n");
 	        }
 	    }
 
-	    
-	    public static void listJobs() {
+	    public static void listJobs() throws JobException {
 			  if (jobList.isEmpty()) {
-			        System.out.println("No jobs found.");
-			        return;
+			        throw new JobException("\n***No jobs found***\n");
 			    }
 
 			    for (int i = 0; i < jobList.size(); i++) {
-			        System.out.println(i + ". " + jobList.get(i));
+			        System.out.println("\nJOB # " + i + "\n" + jobList.get(i));
 			    }
 	    }
 
@@ -288,7 +337,7 @@ public class JobList {
 	                    }
 	                }
 
-	                line.append(","); // 🔥 this comma separates tools from materials
+	                line.append(","); // this comma separates tools from materials
 
 	                // Materials
 	                List<Materials> materials = job.getMaterials();
@@ -303,10 +352,9 @@ public class JobList {
 	                writer.write(line.toString() + "\n");
 	            }
 
-	            System.out.println("Jobs saved to file.");
+	            System.out.println("\n***Jobs saved to file***\n");
 	        } catch (IOException e) {
-	            System.out.println("Error saving file: " + e.getMessage());
+	            System.out.println("\n***Error saving file: " + e.getMessage() + "***\n");
 	        }
 	    }
-
 }

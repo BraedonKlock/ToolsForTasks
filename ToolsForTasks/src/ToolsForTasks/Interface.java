@@ -4,7 +4,7 @@ import java.util.*;
 
 public class Interface {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws JobException {
 	   Scanner scanner = new Scanner(System.in);
         jobsMenu();
 	}
@@ -21,37 +21,67 @@ public class Interface {
 				  		   "4. Search job\n" +
 				  		   "5. List all jobs\n" +
 				  		   "6. Exit\n" +
-				  		   "Choose an ooption (enter #): ");
+				  		   "Choose an option (enter #): ");
 	}
 	
-	public static void jobsMenu() {
-int option = 0;
+	public static void jobsMenu() throws JobException {
+		int option = 0;
 		
 		do {
+			try {
 			JobList.loadFromFile();
 			jobsShowMenu();
 			option = Integer.parseInt(scanner.nextLine().trim());
-			
 			switch (option) {
-			case 1: JobList.addJob();
+			case 1: try {
+					JobList.addJob();
+					} catch (JobException e){
+						System.out.println(e.getMessage());
+					}
 					break;
-			case 2: JobList.editJob();
+					
+			case 2: try {
+					JobList.editJob();
+					} catch (JobException e){
+					System.out.println(e.getMessage());
+					}
 					break;
-			case 3: JobList.deleteJob();
+					
+			case 3: try {
+					JobList.deleteJob();
+					} catch (JobException e){
+					System.out.println(e.getMessage());
+					}
 					break;
-			case 4: JobList.searchJob();
+					
+			case 4:try {
+					JobList.searchJob();
+					} catch (JobException e){
+						System.out.println(e.getMessage());
+					}
 					break;
-			case 5: JobList.listJobs();
+					
+			case 5: try {
+					JobList.listJobs();
+					} catch (JobException e){
+						System.out.println(e.getMessage());
+					}
 					break;
+					
 			case 6: exit();
 					break;
-			default: System.out.println("Not a valid option");
+					
+			default: System.out.println("\n***Not a valid option***\n");
 			}
+			} catch(NumberFormatException e) {
+				throw new JobException("\n***Invalid option! try again***\n");
+			}
+			option = 0;
 		} while (option != 6);
 	}
-	
+
 	public static void exit() {
-		System.out.println("Exiting");
-		return;
+		System.out.println("\n***Exiting***\n");
+		scanner.close();
 	}
 }

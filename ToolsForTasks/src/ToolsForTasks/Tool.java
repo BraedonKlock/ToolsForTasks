@@ -1,8 +1,8 @@
 package ToolsForTasks;
 
 public class Tool {
-	String name;
-	String quantity;
+	private String name;
+	private String quantity;
 	
 	public Tool(String name, String quantity) {
 		this.name = name;
@@ -25,8 +25,8 @@ public class Tool {
 		this.quantity = quantity;
 	}
 	
-	
+	@Override
 	public String toString() {
-		return "Name: " + name + " Quantity: " + quantity;
+		return name + "\nQuantity: " + quantity;
 	}
 }
