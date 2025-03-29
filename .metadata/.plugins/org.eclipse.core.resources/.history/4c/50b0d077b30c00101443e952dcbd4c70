@@ -1,0 +1,74 @@
+package ToolsForTasks;
+
+import java.util.*;
+
+/*
+ * This class represents a Job object that can store associated tools and materials.
+ * Each Job contains an ArrayList of Tool and Material objects, allowing
+ * you to define all the resources required for a specific type of job.
+ */
+
+public class Job {
+	private String name;
+    private String description;
+    private List<Tool> tools;
+    private List<Materials> materials;
+
+    public Job(String name, String description) {
+        this.name = name;
+        this.description = description;
+        this.tools = new ArrayList<>();
+        this.materials = new ArrayList<>();
+    }
+
+    public void addTool(Tool tool) {
+        tools.add(tool);
+    }
+    
+    public void addMaterial(Materials material) {
+    	materials.add(material);
+    }
+
+    public String getName() {
+        return name;
+    }
+    
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public List<Tool> getTools() {
+        return tools;
+    }
+    public List<Materials> getMaterials() {
+    	return materials;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(name).append("\n");
+        sb.append("--Notes--\n").append(description).append("\n");
+
+        sb.append("\n---TOOLS---\n");
+        for (Tool tool : tools) {
+            sb.append(tool.getName()).append("|");
+            sb.append("Quantity: ").append(tool.getQuantity()).append("\n");
+        }
+
+        sb.append("\n---MATERIALS---\n");
+        for (Materials material : materials) {
+            sb.append(material.getName()).append("|");
+            sb.append("Quantity: ").append(material.getQuantity()).append("\n");
+        }
+        return sb.toString();
+    }
+}

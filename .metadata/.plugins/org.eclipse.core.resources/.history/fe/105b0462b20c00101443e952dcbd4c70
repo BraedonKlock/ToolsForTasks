@@ -1,0 +1,92 @@
+package ToolsForTasks;
+
+import java.util.*;
+
+/*
+ * This class is handles menu design and the user interaction
+ */
+
+public class Interface {
+
+	public static void main(String[] args) throws JobException {
+	   Scanner scanner = new Scanner(System.in);
+        jobsMenu();
+	}
+	
+	static Scanner scanner = new Scanner(System.in);
+	
+	public static void jobsShowMenu() {
+		System.out.println("|=================|\n" + 
+				  		   "|--- Main Menu ---|\n" +
+				  		   "|=================|\n" +
+				  		   "1. Add job\n" +
+				  		   "2. Edit job\n" +
+				  		   "3. Delete job\n" +
+				  		   "4. Search job\n" +
+				  		   "5. List all jobs\n" +
+				  		   "6. Exit\n" +
+				  		   "Choose an option (enter #): ");
+	}
+	
+	public static void jobsMenu() throws JobException {
+		int option = 0;
+		
+		do {
+			try {
+			JobList.loadFromFile();
+			jobsShowMenu();
+			option = Integer.parseInt(scanner.nextLine().trim());
+			switch (option) {
+			case 1: try {
+					JobList.addJob();
+					} catch (JobException e){
+						System.out.println(e.getMessage());
+					}
+					break;
+					
+			case 2: try {
+					JobList.editJob();
+					} catch (JobException e){
+					System.out.println(e.getMessage());
+					}
+					break;
+					
+			case 3: try {
+					JobList.deleteJob();
+					} catch (JobException e){
+					System.out.println(e.getMessage());
+					}
+					break;
+					
+			case 4:try {
+					JobList.searchJob();
+					} catch (JobException e){
+						System.out.println(e.getMessage());
+					}
+					break;
+					
+			case 5: try {
+					JobList.listJobs();
+					} catch (JobException e){
+						System.out.println(e.getMessage());
+					}
+					break;
+					
+			case 6: exit();
+					break;
+					
+			default: System.out.println("\n***Not a valid option***\n");
+			}
+			} catch(NumberFormatException e) {
+				throw new JobException("\n***Invalid option! try again***\n");
+			}
+			option = 0;
+		} while (option != 6);
+	}
+
+	public static void exit() {
+		System.out.println("\n***Exiting***\n");
+		scanner.close();
+		return;
+	}
+}

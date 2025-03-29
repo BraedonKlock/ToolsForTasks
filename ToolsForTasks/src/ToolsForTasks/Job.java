@@ -2,11 +2,17 @@ package ToolsForTasks;
 
 import java.util.*;
 
+/*
+ * This class represents a Job object that can store associated tools and materials.
+ * Each Job contains an ArrayList of Tool and Material objects, allowing
+ * you to define all the resources required for a specific type of job.
+ */
+
 public class Job {
 	private String name;
     private String description;
-    private List<Tool> tools;
-    private List<Materials> materials;
+    private List<Tool> tools; // Tool ArrayList
+    private List<Materials> materials; // Material ArrayList
 
     public Job(String name, String description) {
         this.name = name;
@@ -45,22 +51,22 @@ public class Job {
     public List<Materials> getMaterials() {
     	return materials;
     }
-
+    
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append(name).append("\n");
         sb.append("--Notes--\n").append(description).append("\n");
 
-        sb.append("TOOLS\n");
+        sb.append("\n---TOOLS---\n");
         for (Tool tool : tools) {
-            sb.append(tool.getName()).append("\n");
+            sb.append(tool.getName()).append("|");
             sb.append("Quantity: ").append(tool.getQuantity()).append("\n");
         }
 
-        sb.append("MATERIALS\n");
+        sb.append("\n---MATERIALS---\n");
         for (Materials material : materials) {
-            sb.append(material.getName()).append("\n");
+            sb.append(material.getName()).append("|");
             sb.append("Quantity: ").append(material.getQuantity()).append("\n");
         }
         return sb.toString();

@@ -2,6 +2,10 @@ package ToolsForTasks;
 
 import java.util.*;
 
+/*
+ * This class handles menu design and the user interaction.
+ */
+
 public class Interface {
 
 	public static void main(String[] args) throws JobException {
@@ -11,6 +15,7 @@ public class Interface {
 	
 	static Scanner scanner = new Scanner(System.in);
 	
+	// menu design.
 	public static void jobsShowMenu() {
 		System.out.println("|=================|\n" + 
 				  		   "|--- Main Menu ---|\n" +
@@ -23,7 +28,7 @@ public class Interface {
 				  		   "6. Exit\n" +
 				  		   "Choose an option (enter #): ");
 	}
-	
+	// menu interface
 	public static void jobsMenu() throws JobException {
 		int option = 0;
 		
@@ -74,12 +79,13 @@ public class Interface {
 			default: System.out.println("\n***Not a valid option***\n");
 			}
 			} catch(NumberFormatException e) {
-				throw new JobException("\n***Invalid option! try again***\n");
+				System.out.println("\n***Invalid option! try again***\n");
 			}
 			option = 0;
 		} while (option != 6);
 	}
-
+	
+	// exit method
 	public static void exit() {
 		System.out.println("\n***Exiting***\n");
 		scanner.close();
