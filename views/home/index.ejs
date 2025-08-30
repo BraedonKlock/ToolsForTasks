@@ -1,0 +1,39 @@
+<%- include('../includes/head.ejs') %>
+<link rel="stylesheet" href="/css/main.css">
+<link rel="stylesheet" href="/css/jobs.css">
+
+</head>
+
+<body class="body">
+    <%- include('../includes/navigation.ejs') %>
+
+    <main id="jobs-main">
+
+        <% if (path === "/owner") { %>
+        <input class="input-boxes" type="search" name="search" placeholder="Search">
+
+        <section class="jobs-container">
+            <% if (jobs.length > 0) { %>
+                <% for (let job of jobs) { %>
+                    <a href="<%= path %>/job-details/<%= job.id %>" class="job-card">
+                           <img
+                            class="job-image"
+                            src="/photos/<%= (job.jobType).toLowerCase() %>.png"
+                            >
+                        <div class="job-text">
+                            <h6>ID: <%= job.id %></h6>
+                            <h6><%= job.title %></h6>
+                            <h6><%= job.date %></h6>
+                            <h6><%= job.address %></h6>
+                        </div>
+                    </a>
+                <%}%>
+            <% } else { %>
+                <h1>No Jobs Found</h1>
+            <% } %>
+        </section>
+        <% } else { %>
+            <h1>home - not logged  in</h1>
+            <% } %>
+    </main>
+<%- include('../includes/end.ejs') %>

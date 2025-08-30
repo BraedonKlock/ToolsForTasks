@@ -1,0 +1,43 @@
+<%- include('../includes/head.ejs') %>
+<link rel="stylesheet" href="/css/main.css">
+<link rel="stylesheet" href="/css/createAccount.css">
+
+
+</head>
+
+<body class="body">
+    <%- include('../includes/navigation.ejs') %>
+
+    <main id="create-main">
+        <div id="createForm-container">
+            <h1>Create a new account</h1>
+            <h6>It's quick and easy.</h6>
+            <hr>
+            <form id="create-form" action="post-createAccount" method="POST">
+                <select id="createForm-busType" name="businessType" required >
+                    <option value="" disabled selected>Business Type</option>
+                    <option value="roofing">Roofing</option>
+                    <option value="carpentry">Carpentry</option>
+                    <option value="siding">Siding</option>
+                </select>
+                <div class="form-control">
+                    <label for="CompanyName">Company Name:</label>
+                    <input type="text" name="companyName" required>
+                </div>
+                <div class="form-control">
+                    <label for="email">Email:</label>
+                    <input type="text" name="email" required>
+                </div>
+                <div class="form-control">
+                    <label for="password">Password:</label>
+                    <input type="password" name="password" required>
+                </div>
+                <!-- <div class="form-control">
+                    <label for="ConfirmPassword">Confirm Password:</label>
+                    <input type="password" name="confirmPassword" required>
+                </div> -->
+                <button type="submit">Sign Up</button>
+            </form>
+        </div>
+    </main>
+<%- include('../includes/end.ejs') %>

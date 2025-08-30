@@ -1,0 +1,64 @@
+#login-main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 30vw;
+    width: 100%;
+    padding-top: 3vw;
+}
+#login-main h1 {
+    color: rgb(254,149,23);
+}
+#loginForm-container {
+    background-color: rgb(51, 65, 85);
+    width: 60%;
+    padding: 3vw;
+    border-radius: .5rem;
+    box-shadow: 0 4px 8px -2px rgba(0, 0, 0, 0.5);
+    margin-top: 4vw;
+}
+#login-form {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch; /*Forcing  everything to stretch to fill container*/
+    gap: 1.5vw;
+    width: 100%;
+}
+
+#login-form input {
+    text-align: center;
+    width: 100%;
+      box-sizing: border-box; /* ensures padding/border don't overflow */
+
+}
+#login-form button {
+    width: 100%;
+    background-color: rgb(254,149,23);
+    box-sizing: border-box; /* ensures padding/border don't overflow */
+}
+#loginForm-container a {
+    font-size: small;
+    align-self: center;
+}
+#loginForm-container hr {
+    width: 75%;
+    border: solid black .1rem;
+}
+#createAccount-container {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+}
+#createAccount-btn {
+    border: solid black .1rem;
+    border-radius: .2rem;
+    font-family: sans-serif;
+    width: 50%;
+    margin: 1rem auto;             /* centers even without flex */
+    padding: 1vw;
+    background-color: rgb(228, 224, 224);
+    text-align: center;
+    text-decoration: none;
+    color: black;
+    margin: 0;
+}

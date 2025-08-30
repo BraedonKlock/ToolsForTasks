@@ -1,0 +1,68 @@
+<%- include('includes/head.ejs') %>
+<link rel="stylesheet" href="/css/main.css">
+<link rel="stylesheet" href="/css/jobs.css">
+
+</head>
+
+<body class="body">
+    <%- include('includes/navigation.ejs') %>
+
+    <main id="jobs-main">
+        <!--styling for input elements are in main.css-->
+        <input class="input-boxes" type="search" name="search" placeholder="Search">
+
+        <section class="jobs-container">
+            <% if (jobs.length > 0) { %>
+                <% for (let job of jobs) { %>
+                    <div  class="job-card">
+                           <img
+                            class="job-image"
+                            src="/photos/<%= (job.jobType).toLowerCase() %>.png"
+                            >
+                        <div class="job-text">
+                            <h6>ID: <%= job.id %></h6>
+                            <h6><%= job.title %></h6>
+                            <h6><%= job.date %></h6>
+                            <h6><%= job.address %></h6>
+                        </div>
+                        <!--The css styling for this is in main.css-->
+                        <div class="threeDotMenu-container">
+                            <section class="threeDotMenu-options">
+                                <a href="<%= path %>/edit-job/id">EDIT</a>
+                                <button class="delete-btn">DELETE</button>
+                            </section>
+                            <button class="three-dot-menu-icon" aria-label="More options">&vellip;</button>
+                        </div>
+
+                    </div>
+                <%}%>
+            <% } else { %>
+                <h1>No Jobs Found</h1>
+            <% } %>
+        </section>
+        <img id="addJob-image" src="/photos/addJobLogo2.png">
+    </main>
+
+    <section id="addJob-form">
+        <!--Styling for buttons are in main.css-->
+        <a id="addJob-form-closeBtn" class="jobDetails-backBtn" href="<%= path %>/jobs">← Back to Jobs</a>
+        <h1>Add Job</h1>
+        <form class="forms" action="post-addJob" method="POST">
+            <select name="jobType" required >
+                <option value="" disabled selected>Job Type</option>
+                <option value="roofing">Roofing</option>
+                <option value="carpentry">Carpentry</option>
+                <option value="siding">Siding</option>
+            </select>
+            
+            <input type="text" name="id" placeholder="Job ID">
+            <input type="text" name="title" placeholder="Title">
+            <input type="date" name="date" placeholder="Date">
+            <input type="text" name="address" placeholder="address">
+            <input type="text" name="phoneNumber" placeholder="Phone Number">
+            <input type="text" name="notes" placeholder="Notes">
+            <button type="submit">Add</button>
+        </form>
+    </section>
+
+<%- include('includes/end.ejs') %>
