@@ -15,6 +15,8 @@ router.get('/', homeController.getIndex);
 
 router.get('/login', homeController.getLogin);
 
+router.post('/post-login', homeController.postLogin);
+
 router.get('/create-account', homeController.getCreateAccount);
 
 router.post('/post-createAccount', homeController.postCreateAccount);
