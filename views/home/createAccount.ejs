@@ -13,9 +13,11 @@
             <h1>Create a new account</h1>
             <h6>It's quick and easy.</h6>
             <hr>
-            <form id="create-form" action="post-createAccount" method="POST">
+            <form id="create-form" action="/post-createAccount" method="POST">
+                <!--CSRF TOKEN-->
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                 <select id="createForm-busType" name="businessType" required >
-                    <option value="" disabled selected>Business Type</option>
+                    <option value="" disabled selected hidden>Business Type</option>
                     <option value="roofing">Roofing</option>
                     <option value="carpentry">Carpentry</option>
                     <option value="siding">Siding</option>

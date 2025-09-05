@@ -2,14 +2,71 @@
     <header class="mobile">
         <nav>
             <button class="hamburger" id="hamburger">☰</button>
-            <div id="image"><img src="#"></div>
+              <% if (!isLoggedIn) { %>
+                <div id="notLoggedIn-logoContainer">
+                  <img id="notLoggedIn-logo" src="/photos/lg.png">
+                </div>
+              <% } %>
+
+
+            <% if (isLoggedIn && role === "crew" || role === "manager") { %>
+              <div id="logo-container">
+                <img src="/photos/lg.png">
+              </div>
+              <div id="company-h1">
+                <h1><%= companyname %></h1>
+                <h6><%= employeename %></h6>
+              </div>
+            <% } %>
+
+
+            <% if (isLoggedIn && role === "owner") { %>
+              <div id="logo-container">
+                <img src="/photos/lg.png">
+              </div>
+              <div id="company-h1">
+                <h1><%= companyname %></h1>
+              </div>
+            <% } %>
           </nav>
+          <!--NOT loggedin user display-->
+          <% if (!isLoggedIn) { %>
           <div class="mobile" id="hamburger-nav">
-            <a href="/login">Log in / Sign Up<hr class="hamburger-line"></a>
+            <a href="/login">Log in / Sign up<hr class="hamburger-line"></a>
             <a href= "<%= path %>">Home<hr class="hamburger-line"></a>
-            <a href="<%= path %>/jobs">Jobs<hr class="hamburger-line"></a>
-            <a href="<%= path %>/tools">Tools<hr class="hamburger-line"></a>
-            <a href="<%= path %>/materials">Materials<hr class="hamburger-line"></a>
-            <a href="<%= path %>/manageEmployees">Manage Employees</a>
           </div>
+          <% } %>
+
+          <% if (isLoggedIn && role === "crew") { %>
+            <div class="mobile" id="hamburger-nav">
+              <form action="<%= path %>/logout" method="POST">
+                <!--CSRF TOKEN-->
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                <button type="submit" class="nav-link">
+                  Logout
+                  <hr class="hamburger-line">
+                </button>
+              </form>
+              <a href= "<%= path %>">Home<hr class="hamburger-line"></a>
+          <% } %>
+
+          <!--Loggedin user display-->
+          <% if (isLoggedIn && role === "owner") { %>
+            <div class="mobile" id="hamburger-nav">
+              <form action="<%= path %>/logout" method="POST">
+                <!--CSRF TOKEN-->
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                <button type="submit" class="nav-link">
+                  Logout
+                  <hr class="hamburger-line">
+                </button>
+              </form>
+              <a href= "<%= path %>">Home<hr class="hamburger-line"></a>
+              <a href="<%= path %>/jobs">Jobs<hr class="hamburger-line"></a>
+              <a href="<%= path %>/tools">Tools<hr class="hamburger-line"></a>
+              <a href="<%= path %>/materials">Materials<hr class="hamburger-line"></a>
+              <a href="<%= path %>/manageEmployees">Manage Employees</a>
+            </div>
+          <% } %>
+
         </header>

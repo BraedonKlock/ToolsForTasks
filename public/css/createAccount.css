@@ -36,9 +36,18 @@
       box-sizing: border-box; /* ensures padding/border don't overflow */
 
 }
+#create-form input:focus {
+    outline: none;
+    border: solid rgb(254,149,23) .15rem ;
+}
+#create-form select:focus {
+    outline: none;
+    border: solid rgb(254,149,23) .15rem ;
+} 
 #create-form button {
     background-color: rgb(254,149,23);
     box-sizing: border-box; /* ensures padding/border don't overflow */
+    box-shadow: 0 4px 8px -2px rgba(0, 0, 0, 0.5);
 }
 #createForm-container a {
     font-size: small;

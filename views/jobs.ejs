@@ -6,21 +6,23 @@
 
 <body class="body">
     <%- include('includes/navigation.ejs') %>
-
+    
+    <!--OWNER AND MANAGER DISPLAY-->
     <main id="jobs-main">
         <!--styling for input elements are in main.css-->
         <input class="input-boxes" type="search" name="search" placeholder="Search">
-
-        <section class="jobs-container">
+        
+        <section id="jobs-jobsContainer" class="jobs-container">
+            <!--If jobs are in the database-->
             <% if (jobs.length > 0) { %>
                 <% for (let job of jobs) { %>
-                    <div  class="job-card">
-                           <img
-                            class="job-image"
+                    <div data-job-id="job.jobid" class="job-card">
+                        <img
+                        class="job-image"
                             src="/photos/<%= (job.jobType).toLowerCase() %>.png"
                             >
                         <div class="job-text">
-                            <h6>ID: <%= job.id %></h6>
+                            <h6>ID: <%= job.jobid %></h6>
                             <h6><%= job.title %></h6>
                             <h6><%= job.date %></h6>
                             <h6><%= job.address %></h6>
@@ -33,9 +35,9 @@
                             </section>
                             <button class="three-dot-menu-icon" aria-label="More options">&vellip;</button>
                         </div>
-
                     </div>
                 <%}%>
+                <!--If NO jobs are in the database-->
             <% } else { %>
                 <h1>No Jobs Found</h1>
             <% } %>
@@ -43,26 +45,85 @@
         <img id="addJob-image" src="/photos/addJobLogo2.png">
     </main>
 
+    <!--ADD JOB FORM display when the user clicks "addJob-image"-->
     <section id="addJob-form">
         <!--Styling for buttons are in main.css-->
         <a id="addJob-form-closeBtn" class="jobDetails-backBtn" href="<%= path %>/jobs">← Back to Jobs</a>
-        <h1>Add Job</h1>
-        <form class="forms" action="post-addJob" method="POST">
-            <select name="jobType" required >
-                <option value="" disabled selected>Job Type</option>
-                <option value="roofing">Roofing</option>
-                <option value="carpentry">Carpentry</option>
-                <option value="siding">Siding</option>
-            </select>
-            
-            <input type="text" name="id" placeholder="Job ID">
-            <input type="text" name="title" placeholder="Title">
-            <input type="date" name="date" placeholder="Date">
-            <input type="text" name="address" placeholder="address">
-            <input type="text" name="phoneNumber" placeholder="Phone Number">
-            <input type="text" name="notes" placeholder="Notes">
-            <button type="submit">Add</button>
-        </form>
-    </section>
+        <div id="addJob-container">
+            <h1>Add Job</h1>
+            <form class="forms" action="post-addJob" method="POST">
+                <!--CSRF TOKEN-->
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                <div class="form-control">
+                    <label for="jobType">Job Type:</label>
+                    <select name="jobType" id="addJobForm-jobType" required >
+                        <option value="" disabled selected hidden></option>
+                        <option value="roofing">Roofing</option>
+                        <option value="carpentry">Carpentry</option>
+                        <option value="siding">Siding</option>
+                    </select>
 
+                </div>
+                <div class="form-control">
+                    <label for="jobid">Job ID:</label>
+                    <input type="text" name="jobid" >
+                </div>
+
+                <div class="form-control">
+                    <label for="title">Title:</label>
+                    <input type="text" name="title">
+                </div>
+
+                <div class="form-control">
+                    <label for="date">Date:</label>
+                    <input id="addJobForm-date" type="date" name="date">
+                </div>
+
+                <div class="form-control">
+                    <label for="address">Address:</label>
+                    <input type="text" name="address">
+                </div>
+
+                <div class="form-control">
+                    <label for="phoneNumber">Phone #:</label>
+                    <input type="text" name="phoneNumber">
+                </div>
+
+                <div class="form-control">
+                    <label for="notes">Notes:</label>
+                    <input type="text" name="notes">
+                </div>
+
+                <% if (employees.length > 0) { %>
+                    <div class="form-control">
+                        <label for="addEmployee">Choose:</label>
+                        <select name="addEmployee" id="addJob-employeeSelect">
+                            <option value="" disabled selected hidden>Employees</option>
+                                <% for (let employee of employees) { %>
+                                    <option
+                                    value="<%= employee.email %>"
+                                    data-id="<%= employee.employeeid %>"     
+                                    data-role="<%= employee.role %>"
+                                    data-name="<%= employee.name %>"
+                                    >
+                                    <%=  employee.name %> — #<%= employee.employeeid %> • <%= employee.role %>
+                                    </option>
+                                <% } %>
+                        </select>
+                    </div>
+                <button type="button" id="addJob-addEmployeeBtn">Add Employee</button>
+                <div id="addJob-employeeDisplay"></div>
+
+                <!-- Hidden inputs go here -->
+                <div id="addJob-hiddenEmployees"></div>
+                <% } %>
+                
+                <hr id="addJobForm-hr">
+
+                <button type="submit" id="addJob-addJobBtn" >Add Job</button>
+                <!-- Where selected employees will show -->
+            </form>
+
+        </section>
+    </div>
 <%- include('includes/end.ejs') %>

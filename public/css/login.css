@@ -24,17 +24,27 @@
     gap: 1.5vw;
     width: 100%;
 }
-
+#loginForm-accountType {
+    text-align: center;
+}
 #login-form input {
     text-align: center;
     width: 100%;
-      box-sizing: border-box; /* ensures padding/border don't overflow */
-
+    box-sizing: border-box; /* ensures padding/border don't overflow */
+}
+#login-form input:focus {
+    outline: none;
+    border: solid rgb(254,149,23) .15rem ;    
+}
+#login-form select:focus {
+    outline: none;
+    border: solid rgb(254,149,23) .15rem ;  
 }
 #login-form button {
     width: 100%;
     background-color: rgb(254,149,23);
     box-sizing: border-box; /* ensures padding/border don't overflow */
+    box-shadow: 0 4px 8px -2px rgba(0, 0, 0, 0.5);
 }
 #loginForm-container a {
     font-size: small;
