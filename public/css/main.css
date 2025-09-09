@@ -110,7 +110,7 @@
         font-family: serif;
         font-size: large;
     }
-        /*BODY*/
+    /*BODY*/
     .body {
         padding: 0;
         margin:0;
@@ -125,14 +125,17 @@
         border-top: solid black;
         width: 100%;
     }
-
+    .job-text {
+        border-left: solid rgb(254,149,23);
+        border-radius: .3rem;
+        padding-left: 1vw;
+    }
     /*global forms and input elements*/
     .input-boxes {
         border: solid black .15rem;
         text-align: center;
         font-family: sans-serif;
     }
-
     .forms {
         display: flex;
         flex-direction: column;
@@ -149,7 +152,6 @@
         color: rgb(228, 224, 224);
         margin: 0;
     }
-
     /*GLOBAL STYLING FOR BUTTONS*/
     .jobDetails-backBtn {
         width: max-content;
@@ -172,7 +174,7 @@
     .threeDotMenu-options a, .threeDotMenu-options button {
         color: rgb(254,149,23);
     }
-    .delete-btn {
+    .deleteJob-btn {
         all: unset;
         color: rgb(228, 224, 224);
     }

@@ -3,6 +3,7 @@ const express = require('express'); // importing express
 
 const loggedinController = require('../controllers/loggedin');
 const { requireRole } = require('../middleware/auth');  // not '/middleware/auth'
+const { log } = require('console');
 
 /**Creating a mini express router
  * I'm doing this because i dont want to spin up another express() object 
@@ -19,6 +20,18 @@ router.post('/post-addJob', requireRole('owner', 'manager'), loggedinController.
 router.get('/job-details/:id', loggedinController.jobDetailsPage);
 
 router.get('/edit-job/:id', requireRole('owner', 'manager'), loggedinController.jobDetailsPage);
+
+router.delete('/job/:id', requireRole('owner', 'manager'), loggedinController.deleteJob);
+
+router.get('/manageEmployees', requireRole('owner'), loggedinController.manageEmployees);
+
+router.get('/edit-employee/:id', requireRole('owner'), loggedinController.editEmployeePage);
+
+router.post('/post-editEmployee/:id',requireRole('owner'), loggedinController.postEditEmployee);
+
+router.get('/addEmployeePage',requireRole('owner'), loggedinController.addEmployee);
+
+router.post('/post-addEmployee', requireRole('owner'), loggedinController.postAddEmployee);
 
 router.post('/logout', loggedinController.postLogout);
 

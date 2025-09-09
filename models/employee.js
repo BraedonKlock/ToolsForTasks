@@ -10,16 +10,16 @@ module.exports = class employee {
         this.orgID = orgID;
     }
     save() {
-        
-    }
+        return db.execute('INSERT INTO employees (name,employeeid,role,email,password,org_id) VALUES (?,?,?,?,?,?)', [this.name,this.employeeID,this.role,this.email,this.password,this.orgID]);
+    };
 
     static getAllByOrg(orgid) {
         return db.execute('SELECT * FROM employees WHERE org_id = ?', [orgid]);
-    }
+    };
 
     static findEmployee(employeeEmail) {
         return db.execute('SELECT * FROM employees WHERE email = ?',[employeeEmail]);
-    }
+    };
 
     static findDbIdsByEmails(orgid, emails) {
         // re-mapping my emails array to sql query format because i dont know how many emails there are
@@ -37,6 +37,16 @@ module.exports = class employee {
                 
                 return ids; // Return the array of ids
             });
-    }
+    };
 
+    /**This method finds an employee by their employee id.
+     * I use this for the editEmployeePage when i pass in the employees id in the URL params
+     */
+    static findEmployeeById( orgid, employeeid) {
+        return db.execute('SELECT * FROM employees WHERE org_id = ? AND id = ?', [orgid, employeeid]);
+    };
+
+    static updateEmployee(dbid,employeeid,name,role,email,orgid) {
+        return db.execute('UPDATE employees SET employeeid = ?, name = ?, role = ?, email = ? WHERE org_id = ? AND id = ?', [employeeid, name, role, email,orgid, dbid]);
+    };
 }

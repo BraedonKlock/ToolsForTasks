@@ -31,7 +31,8 @@
                         <div class="threeDotMenu-container">
                             <section class="threeDotMenu-options">
                                 <a href="<%= path %>/edit-job/id">EDIT</a>
-                                <button class="delete-btn">DELETE</button>
+                                <button data-job-id="<%= job.jobid %>" class="deleteJob-btn">DELETE</button>
+                                <meta name="csrf-token" content="<%= csrfToken %>">
                             </section>
                             <button class="three-dot-menu-icon" aria-label="More options">&vellip;</button>
                         </div>
@@ -42,7 +43,9 @@
                 <h1>No Jobs Found</h1>
             <% } %>
         </section>
-        <img id="addJob-image" src="/photos/addJobLogo2.png">
+        <% if (role === "owner") { %>
+            <img id="addJob-image" src="/photos/addJobLogo2.png">
+        <% } %>
     </main>
 
     <!--ADD JOB FORM display when the user clicks "addJob-image"-->

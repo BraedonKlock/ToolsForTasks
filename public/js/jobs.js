@@ -5,14 +5,17 @@ const jobMain = document.getElementById('jobs-main');
 const addJobForm = document.getElementById('addJob-form');
 const closeBtn = document.getElementById('addJob-form-closeBtn');
 
-addJobImage.addEventListener('click', () => {
-  jobMain.classList.toggle('active');
-  addJobForm.classList.toggle('active');
+if (addJobImage) {
+  addJobImage.addEventListener('click', () => {
+    jobMain.classList.toggle('active');
+    addJobForm.classList.toggle('active');
+  });
+
+  closeBtn.addEventListener('click', () => {
+    jobMain.classList.toggle('active');
+    addJobForm.classList.toggle('active'); 
 });
-closeBtn.addEventListener('click', () => {
-  jobMain.classList.toggle('active');
-  addJobForm.classList.toggle('active'); 
-});
+}
 
 /**-----------------------------------------------ADD EMPLOYEES ----------------------------------------------------- */
 document.addEventListener('DOMContentLoaded', () => {
@@ -116,11 +119,11 @@ threeDotMenus.forEach(button => {
 // Close menus if clicking anywhere outside
 document.addEventListener('click', (e) => {
   document.querySelectorAll('.threeDotMenu-options.active')
-          .forEach(menu => {
-            if (!menu.contains(e.target)) {
-              menu.classList.toggle('active');
-            }
-          });
+    .forEach(menu => {
+      if (!menu.contains(e.target)) {
+        menu.classList.toggle('active');
+      }
+    });
 });
 
 // Close menus when scrolling
@@ -128,3 +131,30 @@ window.addEventListener('scroll', () => {
   document.querySelectorAll('.threeDotMenu-options.active')
           .forEach(menu => menu.classList.toggle('active'));
 });
+
+/**-----------------------------------------------DELETE JOB BUTTON----------------------------------------------------- */
+const deleteJobBtns = document.querySelectorAll('.deleteJob-btn');
+
+for (let i = 0; i < deleteJobBtns.length; i++) {
+  const deleteJobBtn = deleteJobBtns[i];
+  deleteJobBtn.addEventListener('click', (e) => {
+    const jobId = deleteJobBtn.dataset.jobId;
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+
+    try {
+      const response = fetch(`/loggedin/job/${jobId}`, {
+        method: 'DELETE',
+        headers: {
+        'CSRF-Token': csrfToken
+        }
+      })
+      .then(response => {
+        if(response.ok) {
+          deleteJobBtn.closest('.job-card').remove();
+        };
+      });
+    } catch(err) {
+      console.log("Error deleting job", err);
+    };
+  });
+};

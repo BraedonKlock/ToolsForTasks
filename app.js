@@ -77,13 +77,13 @@ app.use('/', branchLogIn, homeRoute); // home routes
 io.on('connection', (socket) => {
   const sess = socket.request.session;
   if (!sess?.org || !sess?.role) return; // if no org or role in session return
-  // Owners/Managers socket
-  if (sess.role === 'owner' || sess.role === 'manager') {
+  // Owners socket
+  if (sess.role === 'owner') {
     socket.join(`org:${sess.org}`);
-    console.log(`Owner/Manager ${socket.id} joined room org:${sess.org}`);
+    console.log(`Owner ${socket.id} joined room org:${sess.org}`);
   }
   // Employees socket
-  if (sess.role === 'crew' && sess.loginid) {
+  if (sess.role === 'crew' || sess.role === 'manager' && sess.loginid) {
     socket.join(`emp:${sess.loginid}`);
     console.log(`Employee ${socket.id} joined room emp:${sess.loginid}`);
   }

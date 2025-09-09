@@ -29,7 +29,8 @@
               </div>
             <% } %>
           </nav>
-          <!--NOT loggedin user display-->
+
+          <!--NOT LOGGED IN MENU DISPLAY-->
           <% if (!isLoggedIn) { %>
           <div class="mobile" id="hamburger-nav">
             <a href="/login">Log in / Sign up<hr class="hamburger-line"></a>
@@ -37,6 +38,7 @@
           </div>
           <% } %>
 
+          <!--LOGGED IN CREW MENU DISPLAY-->
           <% if (isLoggedIn && role === "crew") { %>
             <div class="mobile" id="hamburger-nav">
               <form action="<%= path %>/logout" method="POST">
@@ -50,7 +52,25 @@
               <a href= "<%= path %>">Home<hr class="hamburger-line"></a>
           <% } %>
 
-          <!--Loggedin user display-->
+        <!--LOGGED IN MANAGER MENU DISPLAY-->
+          <% if (isLoggedIn && role === "manager") { %>
+            <div class="mobile" id="hamburger-nav">
+              <form action="<%= path %>/logout" method="POST">
+                <!--CSRF TOKEN-->
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                <button type="submit" class="nav-link">
+                  Logout
+                  <hr class="hamburger-line">
+                </button>
+              </form>
+              <a href= "<%= path %>">Home<hr class="hamburger-line"></a>
+              <a href="<%= path %>/jobs">Jobs<hr class="hamburger-line"></a>
+              <a href="<%= path %>/tools">Tools<hr class="hamburger-line"></a>
+              <a href="<%= path %>/materials">Materials<hr class="hamburger-line"></a>
+            </div>
+          <% } %>
+
+          <!--LOGGED IN OWNER MENU DISPLAY-->
           <% if (isLoggedIn && role === "owner") { %>
             <div class="mobile" id="hamburger-nav">
               <form action="<%= path %>/logout" method="POST">

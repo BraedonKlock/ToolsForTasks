@@ -5,6 +5,7 @@ const Employee = require('../models/employee');
 
 const bcrypt = require('bcryptjs'); // importing encryption for user passwords
 
+/**-------------------------------------------------GET INDEX------------------------------------------------------ */
 /**Home page route */
 exports.getIndex = (req, res, next) => {
     res.render('home/index', {
@@ -13,6 +14,7 @@ exports.getIndex = (req, res, next) => {
     });
 };
 
+/**-------------------------------------------------GET LOG IN------------------------------------------------------ */
 /**rendering the log in page */
 exports.getLogin = (req, res, next) => {
     res.render('home/login', {
@@ -21,6 +23,7 @@ exports.getLogin = (req, res, next) => {
     });
 };
 
+/**-------------------------------------------------POST LOG IN------------------------------------------------------ */
 /**Handling the post req when a user logs in */
 exports.postLogin = (req, res, next) => {
   const email = (req.body.email || '').trim().toLowerCase(); // triming a string to prevent crashing if email is undefined
@@ -79,7 +82,6 @@ exports.postLogin = (req, res, next) => {
         });
       }
       const emp = rows[0]; // getting the user. which is an object and storing it in user
-
       // bcrypt.compare returns a Promise
       return bcrypt.compare(password, emp.password) // comparing the hashedPassword and using bcrypt to decrypt it 
         .then((ok) => { // storing the returned promise in ok 
@@ -103,6 +105,7 @@ exports.postLogin = (req, res, next) => {
           req.session.isLoggedIn = true; // storing loggedin flag in session to keep user logged in for route auth
           req.session.email = emp.email; //
           req.session.role = emp.role;
+          console.log(req.session.role);
           return req.session.save((err) => { // saving session
           if (err) return next(err);
           return res.redirect('/loggedin'); // redirect to loggedin route
@@ -113,6 +116,7 @@ exports.postLogin = (req, res, next) => {
   }
 };
 
+/**-----------------------------------------------GET CREATE ACCOUNT---------------------------------------------------- */
 /**Rendering create account page upon get request */
 exports.getCreateAccount = (req,res,next) => {
     res.render('home/createAccount', {
@@ -121,6 +125,7 @@ exports.getCreateAccount = (req,res,next) => {
     });
 };
 
+/**----------------------------------------------POST CREATE ACCOUND---------------------------------------------------- */
 /**Handling post request for when a user creates an account */
 exports.postCreateAccount = (req,res,next) => {
     const type = req.body.businessType; // getting the business type for account
@@ -128,7 +133,7 @@ exports.postCreateAccount = (req,res,next) => {
     const email = req.body.email; // getting the email for acccount
     const password = req.body.password; // getting the password for the account
 
-    return bcrypt.hash(password, 12) // encrypting password. second argument is the cost factor (# of times hashed) 
+    bcrypt.hash(password, 12) // encrypting password. second argument is the cost factor (# of times hashed) 
     .then((hashedPassword) => { // bycript returns a promise that encrypted password is stored in hashPassword
     const newUser = new User(type, name, email, hashedPassword) // new user is created
     return newUser.save() // new user saved to database

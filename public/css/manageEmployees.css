@@ -1,0 +1,68 @@
+@font-face {
+    font-family: 'story script';
+    src: url('../font/Story_Script/StoryScript-Regular.ttf') format('truetype');
+} 
+#manageEmployees-main {
+    margin-top: 35vw;
+    width: 100%;
+
+}
+#manageEmployees-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 100%;         /* prevent grid from stretching too wide */
+    box-sizing: border-box;
+    gap: 5vw;
+}
+
+#manageEmployees-container,h1 {
+    font-family: 'story script';
+}
+
+#manageEmployees-managersContainer, #manageEmployees-crewContainer {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    width: 100%;
+    max-width: 100%;         /* prevent grid from stretching too wide */
+    padding: 0 5vw 0 5vw;
+    box-sizing: border-box;
+    justify-content: space-evenly;
+    gap: 5vw;
+    margin-bottom: 5vw;
+}
+
+.manageEmployees-card {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    padding: 1vw;
+    background-color: rgb(51, 65, 85);
+    box-shadow: 0 2px 6px rgb(247, 158, 50);
+    border-top: solid rgb(254,149,23) .5rem;
+    border-radius: .4rem;
+    justify-self: center;
+    width: 100%;
+    -webkit-tap-highlight-color: transparent; /*removes blue tap highlight */
+
+}
+.manageEmployeesCard-Info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    text-align: center;
+    margin-bottom: 4.5vw;
+}
+#addEmployeeLink {
+    -webkit-tap-highlight-color: transparent;
+}
+#addEmployee-image {
+    position: fixed;
+    z-index: 1000;  /* stays above everything */    
+    bottom: 2vw;
+    right: 2vw;
+    width: 25%;
+}

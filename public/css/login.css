@@ -10,6 +10,7 @@
     color: rgb(254,149,23);
 }
 #loginForm-container {
+    border-top: solid rgb(254,149,23) .5rem;
     background-color: rgb(51, 65, 85);
     width: 60%;
     padding: 3vw;

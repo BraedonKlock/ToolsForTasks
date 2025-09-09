@@ -35,7 +35,7 @@ module.exports = class jobs {
 
     /**This utility function gets all the jobs from the database assigned to the user that logged in */
     static getAllJobs(loginID, role) {
-        if (role === "owner") {
+        if (role === "owner" ) {
             return db.execute(
             `SELECT *
             FROM jobs
@@ -43,9 +43,10 @@ module.exports = class jobs {
             ORDER BY \`date\` ASC`,
             [loginID]
             );
-        } else
+        }
 
-        if (role === "manager" || role === "crew") {
+        if (role === "crew"  || role === "manager" ) {
+            console.log("running");
             return db.execute(
             `SELECT j.*
             FROM job_employees je
@@ -59,7 +60,6 @@ module.exports = class jobs {
         throw new Error('Invalid column name');
     }
 
-
     /**This utility function gets a job by its unique id used for job details */
     static findJobById(orgId, id) {
         return db.execute('SELECT * FROM jobs WHERE org_id = ? AND jobid = ? ', [orgId, id]) // returns a promise
@@ -71,4 +71,8 @@ module.exports = class jobs {
         [orgId, jobId]
         ).then(([rows]) => rows.length ? rows[0].id : null);
   }
+
+  static deleteJobById(orgid, jobid) {
+    return db.execute('DELETE FROM jobs WHERE org_id = ? AND jobid = ?', [orgid, jobid]);
+  };
 };

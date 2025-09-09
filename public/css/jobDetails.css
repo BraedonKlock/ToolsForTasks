@@ -1,7 +1,7 @@
 @media (max-width: 800px) {
     #jobDetails-main {
         background-color: rgb(66, 83, 106);
-        margin-top: 30vw;
+        margin-top: 35vw;
         width: 100%;
         height: 500px;
         display: flex;

@@ -1,0 +1,48 @@
+<%- include('./includes/head.ejs') %>
+<link rel="stylesheet" href="/css/main.css">
+<link rel="stylesheet" href="/css/editEmployee.css">
+
+</head>
+
+<body class="body">
+    <%- include('./includes/navigation.ejs') %>
+
+    <main id="editEmployeePage-main">
+        <a id="editEmployeePage-backBtn" href="<%= path %>/manageEmployees">← Back to Employees</a>
+
+        <div id="editEmployeePage-editEmployeeContainer">
+            <h1>Employee</h1>
+            <form class="forms" action="<%= path %>/post-editEmployee/<%= employee.id %>" method="POST">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                <div class="form-control">
+                    <label for="employeeid">ID:</label>
+                    <input type="text" name="employeeid" value="<%= employee.employeeid %>">
+                </div>
+    
+                <div class="form-control">
+                    <label for="name">Name:</label>
+                    <input type="text" name="name" value="<%= employee.name %>">
+                </div>
+    
+                <div class="form-control">
+                    <label for="role">Role:</label>
+                    <select name="role" id="editEmployeePage-roleSelect">
+                        <option value="<%= employee.role %>"><%= employee.role %></option>
+                        <% if (employee.role === "crew") { %>
+                            <option value="manager">manager</option>
+                        <% } else { %>
+                        <option value="crew">Crew</option>
+                        <% } %>
+                    </select>
+                </div>
+    
+                <div class="form-control">
+                    <label for="email">Email:</label>
+                    <input type="text" name="email" value="<%= employee.email %>">
+                </div>
+                <hr id="editEmployeePage-hr">
+                <button type="submit" id="editEmployeePage-updateBtn">Update</button>
+            </form>
+        </div>
+    </main>
+<%- include('./includes/end.ejs') %>
