@@ -73,3 +73,8 @@
     color: black;
     margin: 0;
 }
+.error {
+    text-align: center;
+    color: red;
+    font-size: small;
+}

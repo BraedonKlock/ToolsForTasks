@@ -16,7 +16,7 @@
             <!--If jobs are in the database-->
             <% if (jobs.length > 0) { %>
                 <% for (let job of jobs) { %>
-                    <div data-job-id="job.jobid" class="job-card">
+                    <div data-job-id="<%= job.jobid %>" class="job-card">
                         <img
                         class="job-image"
                             src="/photos/<%= (job.jobType).toLowerCase() %>.png"
@@ -30,7 +30,7 @@
                         <!--The css styling for this is in main.css-->
                         <div class="threeDotMenu-container">
                             <section class="threeDotMenu-options">
-                                <a href="<%= path %>/edit-job/id">EDIT</a>
+                                <a href="<%= path %>/edit-job/<%= job.jobid %>">EDIT</a>
                                 <button data-job-id="<%= job.jobid %>" class="deleteJob-btn">DELETE</button>
                                 <meta name="csrf-token" content="<%= csrfToken %>">
                             </section>
@@ -65,8 +65,8 @@
                         <option value="carpentry">Carpentry</option>
                         <option value="siding">Siding</option>
                     </select>
-
                 </div>
+
                 <div class="form-control">
                     <label for="jobid">Job ID:</label>
                     <input type="text" name="jobid" >
@@ -94,7 +94,7 @@
 
                 <div class="form-control">
                     <label for="notes">Notes:</label>
-                    <input type="text" name="notes">
+                    <textarea id="addJob-notes" type="text" name="notes"></textarea>
                 </div>
 
                 <% if (employees.length > 0) { %>

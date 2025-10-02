@@ -17,9 +17,13 @@ router.get('/jobs', requireRole('owner', 'manager'), loggedinController.jobsPage
 
 router.post('/post-addJob', requireRole('owner', 'manager'), loggedinController.postAddJob);
 
+router.post('/post-editJob/:id', requireRole('owner','manager'), loggedinController.postEditJob);
+
 router.get('/job-details/:id', loggedinController.jobDetailsPage);
 
-router.get('/edit-job/:id', requireRole('owner', 'manager'), loggedinController.jobDetailsPage);
+router.get('/edit-job/:id', requireRole('owner', 'manager'), loggedinController.editJobPage);
+
+router.post('/jobs/:jobid/employees/:empid/remove', loggedinController.removeEmployeeFromJob);
 
 router.delete('/job/:id', requireRole('owner', 'manager'), loggedinController.deleteJob);
 

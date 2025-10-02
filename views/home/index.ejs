@@ -17,7 +17,7 @@
             <!--if there are jobs saved in the database-->
             <% if (jobs.length > 0) { %> 
                 <% for (let job of jobs) { %>
-                    <a href="<%= path %>/job-details/<%= job.jobid %>" class="job-card">
+                    <a href="<%= path %>/job-details/<%= job.jobid %>" data-job-id="<%= job.jobid %>" class="job-card">
                            <img
                             class="job-image"
                             src="/photos/<%= (job.jobType).toLowerCase() %>.png"

@@ -46,7 +46,10 @@
     justify-self: center;
     width: 100%;
     -webkit-tap-highlight-color: transparent; /*removes blue tap highlight */
-
+}
+.manageEmployeesCard-Info hr {
+    width: 75%;
+    color:rgb(254,149,23);
 }
 .manageEmployeesCard-Info {
     display: flex;

@@ -15,11 +15,15 @@
             <form id="login-form" action="/post-login" method="POST">
                 <!--CSRF TOKEN-->
                 <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                <% if (typeof error === 'string' && error) { %>
+                    <p id="login-error" class="error"><%= error %></p>
+                <% } %>
                 <select id="loginForm-accountType" name="accountType" required >
                     <option value="" disabled selected hidden>Account Type</option>
                     <option value="owner">Owner</option>
                     <option value="employee">Employee</option>
                 </select>
+
                 <input type="text" name="email" placeholder="Email" required>
                 <input type="password" name="password" placeholder="Password" required>
                 <button type="submit">Log In</button>

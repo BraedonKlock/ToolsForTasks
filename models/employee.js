@@ -49,4 +49,16 @@ module.exports = class employee {
     static updateEmployee(dbid,employeeid,name,role,email,orgid) {
         return db.execute('UPDATE employees SET employeeid = ?, name = ?, role = ?, email = ? WHERE org_id = ? AND id = ?', [employeeid, name, role, email,orgid, dbid]);
     };
+
+    /**This method is used to find the employee ids associated to a job
+     * used in the DELETE DELETE JOB controller
+     */
+    static findEmployeesforJob(jobid) {
+        return db.execute('SELECT * FROM job_employees WHERE job_id = ?', [jobid]);
+    };
+
+    static findDbIdByEmployeeid(orgId, employeeid) {
+    return db.execute('SELECT id FROM employees WHERE org_id = ? AND employeeid = ? LIMIT 1',[orgId, employeeid])
+    .then(([rows]) => rows.length ? rows[0].id : null);
+    };
 }

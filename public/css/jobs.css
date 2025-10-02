@@ -126,6 +126,18 @@
         align-self: flex-end;
         background-color: rgb(254,149,23);
     }
+    #addJob-notes {
+        width: 62%;
+        height: 25vh;
+        box-sizing: border-box;
+
+        /* enable wrapping and breaking long words */
+        white-space: pre-wrap;       /* keeps newlines, wraps long lines */
+        overflow-wrap: break-word;   /* modern */
+        word-break: break-word;      /* fallback for some browsers */
+        resize: vertical;            /* let user resize vertically */
+        line-height: 1.4;
+    }
     #addJobForm-hr {
         width: 75%;
         border: solid black .1rem;

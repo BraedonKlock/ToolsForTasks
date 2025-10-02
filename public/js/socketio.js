@@ -1,5 +1,6 @@
-/**-------------------------------------SOCKET IO FOR CREATING A JOB IN JOBS.JS ---------------------------------------- */
 const socket = io();
+
+/**-------------------------------------SOCKET IO FOR CREATING A JOB IN JOBS.JS --------------------------------------- */
 
 function renderJobCard(job) {
   const div = document.createElement('div');
@@ -52,7 +53,8 @@ socket.on('job:created', (job) => {
   container.prepend(card);  // or append/insert sorted
 
 });
-/**-------------------------------------SOCKET IO FOR CREATING A JOB IN INDEX.JS ---------------------------------------- */
+
+/**-------------------------------------SOCKET IO FOR CREATING A JOB IN INDEX.JS -------------------------------------- */
 function renderIndexJobCard(job) {
     const anchorTag = document.createElement('a');
     anchorTag.href = `/loggedin/job-details/${job.jobid}`;
@@ -81,4 +83,13 @@ socket.on('job:created-index', (job) => {
 
     const card = renderIndexJobCard(job);
     container.prepend(card);
+});
+
+/**-------------------------------SOCKET IO FOR DELETING A JOB IN JOBS.EJS & INDEX.EJS--------------------------------- */
+function deleteJob(id) {
+  document.querySelector(`.job-card[data-job-id="${id}"]`).remove();
+};
+
+socket.on('job:delete-jobs', ({ id }) => {
+  deleteJob(id);
 });

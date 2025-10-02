@@ -1,0 +1,151 @@
+@font-face {
+    font-family: 'story script';
+    src: url('../font/Story_Script/StoryScript-Regular.ttf') format('truetype');
+} 
+#editJobPage-main {
+        background-color: rgb(66, 83, 106);
+        margin-top: 35vw;
+        width: 100%;
+        height: 500px;
+        display: flex;
+        flex-direction: column;
+}
+#editJobPage-backBtn {
+    margin-left: 2vw;
+    align-self: left;
+    width: max-content;
+    -webkit-tap-highlight-color: transparent; /*removes blue tap highlight */
+}
+
+#editJobPage-main #editJobPage-editJobContainer h1{
+    text-align: center;
+    font-family: 'story script';
+    margin-bottom: 3vw;
+}
+#editJobPage-editJobContainer {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        background-color: rgb(51, 65, 85);
+        width: 75%;
+        padding: 3vw;
+        border-radius: .5rem;
+        box-shadow: 0 4px 8px -2px rgba(0, 0, 0, 0.5);
+        margin-top: 5vw;
+        align-self: center;
+        border-top: solid rgb(254,149,23) .5rem;
+}
+
+#editJobPage-editJobContainer .forms {
+        width: 100%;
+}
+.form-control {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    gap: 2vw;
+}
+.form-control select:focus {
+    outline: none;
+    border: solid rgb(254,149,23) .15rem ;
+}
+.form-control label {
+    color: white;
+}
+.form-control input {
+    width: 62%;
+    box-sizing: border-box;
+}
+.form-control input:focus, .form-control textarea:focus {
+    outline: none;
+    border: solid rgb(254,149,23) .15rem ;
+}
+#editJobForm-jobType {
+    width: 62%;
+}
+#editJobPage-roleSelect {
+    width: 62%;
+    text-align: center;
+}
+#editJobPage-notes {
+  width: 62%;                 /* horizontal size */
+  height: 25vh;                
+  padding: 12px;
+  box-sizing: border-box;
+
+  /* enable wrapping and breaking long words */
+  white-space: pre-wrap;       /* keeps newlines, wraps long lines */
+  overflow-wrap: break-word;   /* modern */
+  word-break: break-word;      /* fallback for some browsers */
+  resize: vertical;            /* let user resize vertically */
+  line-height: 1.4;
+}
+#editJobPage-hr {
+    width: 75%;
+    border: solid black .1rem;
+    margin-top: 5vw;
+}
+
+#addJob-employeeSelect {
+    width: 62%;
+    text-align: center;
+}
+#addJob-addEmployeeBtn {
+    width: 62%;
+    align-self: flex-end;
+    background-color: rgb(254,149,23);
+}
+#addJob-employeeDisplay {
+    display: flex;
+    flex-direction: column;
+    gap: 2vw;
+    width: 100%;
+    margin-top: 3vw;
+}
+.employee-pill{
+    display: flex;
+    flex-direction: row;
+    gap: 3vw;
+    align-items: center;
+    width: 100%;
+    border: none;
+    border-radius: .3rem;
+    padding: 2vw;
+    box-sizing: border-box;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    background-color: rgb(66, 83, 106);
+}
+#addJobForm-employeeData {
+    display: flex;
+    flex-direction: column;
+}
+.emp-div {
+    display: flex;
+    flex-direction: row;
+    align-content: flex-end;
+    gap: 1vw;
+}
+.employee-pill > :first-child {
+    width: 12ch;
+}
+.addJob-removeBtn {
+    margin-left: auto; /* pushes button to the far right */
+    background-color: rgb(66, 83, 106);
+    border: none;
+    color: red;
+
+}
+#editJobPage-updateBtn {
+    width: 75%;
+    box-sizing: border-box; /* ensures padding/border don't overflow */
+    align-self: center;
+    padding: 4vw;
+    margin-top: 3vw;
+    border-radius: .5rem;
+    box-shadow: 0 4px 8px -2px rgba(0, 0, 0, 0.5);
+    font-size: large;
+    font-family: sans-serif;
+    font-weight: bold;
+    border: none;
+    background: linear-gradient(135deg, rgb(254,149,23), rgb(244, 162, 62));
+}

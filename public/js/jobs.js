@@ -5,7 +5,7 @@ const jobMain = document.getElementById('jobs-main');
 const addJobForm = document.getElementById('addJob-form');
 const closeBtn = document.getElementById('addJob-form-closeBtn');
 
-if (addJobImage) {
+if (addJobImage && jobMain && addJobForm) {
   addJobImage.addEventListener('click', () => {
     jobMain.classList.toggle('active');
     addJobForm.classList.toggle('active');
@@ -23,6 +23,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const addBtn = document.getElementById('addJob-addEmployeeBtn'); // add employee button
   const display = document.getElementById('addJob-employeeDisplay'); // added employee display
   const hiddenHolder = document.getElementById('addJob-hiddenEmployees'); // hidden input for form submission
+
+  if (!select || !addBtn || !display || !hiddenHolder) return;
 
   const picked = new Set(); // track by email (unique), using a set to prevent duplicates
 
@@ -79,7 +81,6 @@ document.addEventListener('DOMContentLoaded', () => {
     hiddenInput.value = email; // value set to email because thats our unique identifier
     hiddenHolder.appendChild(hiddenInput); // appending to hidden input 
   }
-
   /**Adding an event listener to the add employee button
    * which takes the select element's option that is selected and passes in the datasets for display
    */
@@ -94,6 +95,52 @@ document.addEventListener('DOMContentLoaded', () => {
 
     addEmployee(id, name, role, email);
     select.selectedIndex = 0; // reset to placeholder
+  });
+});
+
+/**------------------------------------------DELETE EMPLOYEES IN EDIT JOB---------------------------------------------- */
+document.addEventListener('DOMContentLoaded', () => {
+  const display = document.getElementById('addJob-employeeDisplay');
+  if (!display) return;
+
+  // read CSRF from the hidden input you already render in the form
+  const csrf = document.querySelector('input[name="_csrf"]')?.value;
+
+  // grab jobid from URL (/loggedin/jobs/123/edit)
+  const pathParts = window.location.pathname.split('/');
+  const jobid = pathParts[3]; // adjust if your path differs
+
+  display.addEventListener('click', (e) => {
+    const btn = e.target.closest('.addJob-removeBtn');
+    if (!btn) return;
+    e.preventDefault();
+    e.stopPropagation();
+
+    const pill = btn.closest('.employee-pill');
+    // Make sure your EJS pill renders data-empid="..."
+    const empid = pill?.dataset.empid; 
+    if (!empid || !jobid || !csrf) return;
+
+    btn.disabled = true;
+
+    fetch(`/loggedin/jobs/${encodeURIComponent(jobid)}/employees/${encodeURIComponent(empid)}/remove`, {
+      method: 'POST',
+      credentials: 'same-origin', // send session cookie for CSRF validation
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+      },
+      body: new URLSearchParams({ _csrf: csrf }).toString() // send _csrf
+    })
+      .then(r => r.ok ? r.json() : r.json().then(j => Promise.reject(j)))
+      .then(({ ok }) => {
+        if (!ok) throw new Error('Delete failed');
+        pill.remove(); // remove from screen
+      })
+      .catch(err => {
+        console.error(err);
+        btn.disabled = false;
+        alert('Could not remove employee.');
+      });
   });
 });
 
