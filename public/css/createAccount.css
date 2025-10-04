@@ -68,3 +68,9 @@
 .form-control label {
     color: white;
 }
+.error {
+    text-align: center;
+    color: red;
+    font-size: medium;
+    margin: 1vh 0 2vh 0;
+}

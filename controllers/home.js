@@ -2,6 +2,7 @@
 
 const User = require('../models/user');
 const Employee = require('../models/employee');
+const db = require('../util/database');
 
 const bcrypt = require('bcryptjs'); // importing encryption for user passwords
 
@@ -119,9 +120,11 @@ exports.postLogin = (req, res, next) => {
 /**-----------------------------------------------GET CREATE ACCOUNT---------------------------------------------------- */
 /**Rendering create account page upon get request */
 exports.getCreateAccount = (req,res,next) => {
+  const error = req.query.error || null;
     res.render('home/createAccount', {
         pageTitle: 'Tools for Tasks - Create Account',
-        path: '/'
+        path: '/',
+        error
     });
 };
 
@@ -133,13 +136,19 @@ exports.postCreateAccount = (req,res,next) => {
     const email = req.body.email; // getting the email for acccount
     const password = req.body.password; // getting the password for the account
 
-    bcrypt.hash(password, 12) // encrypting password. second argument is the cost factor (# of times hashed) 
-    .then((hashedPassword) => { // bycript returns a promise that encrypted password is stored in hashPassword
-    const newUser = new User(type, name, email, hashedPassword) // new user is created
-    return newUser.save() // new user saved to database
-    })
-    .then(() => {
+    db.execute('SELECT * FROM organizations WHERE email = ? LIMIT 1', [email]).then(([rows]) => {
+      if (rows.length > 0) {
+        return res.redirect('/create-account?error=Email already exists');
+      };
+      
+      return bcrypt.hash(password, 12) // encrypting password. second argument is the cost factor (# of times hashed) 
+      .then((hashedPassword) => { // bycript returns a promise that encrypted password is stored in hashPassword
+        const newUser = new User(type, name, email, hashedPassword) // new user is created
+        return newUser.save() // new user saved to database
+      })
+      .then(() => {
         res.redirect('/loggedin'); // redirecting to loggedin route
+      });
     })
-    .catch(next);
+      .catch(next);
 };

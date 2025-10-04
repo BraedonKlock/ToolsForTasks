@@ -13,6 +13,9 @@
             <h1>Create a new account</h1>
             <h6>It's quick and easy.</h6>
             <hr>
+            <% if (error) { %>
+                <p class="error"><%= error %></p>
+            <% } %>
             <form id="create-form" action="/post-createAccount" method="POST">
                 <!--CSRF TOKEN-->
                 <input type="hidden" name="_csrf" value="<%= csrfToken %>">
