@@ -36,7 +36,8 @@ exports.jobsPage = (req,res,next) => {
   const orgid = req.session.org;
   const name = req.session.companyname;
   const employeeName = req.session.employeename;
-  
+  const error = req.query.error || null;
+
   Promise.all([
     Jobs.getAllJobs(loginID, role),
     Employees.getAllByOrg(orgid)
@@ -51,7 +52,8 @@ exports.jobsPage = (req,res,next) => {
         pageTitle: 'Tools for Tasks - Jobs',
         path: '/loggedin',
         companyname: name,
-        employeename: employeeName
+        employeename: employeeName,
+        error
       });
     })
     .catch(err => next(err));
@@ -73,8 +75,15 @@ exports.postAddJob = (req,res,next) => {
   
   let jobDbId = null;
   
+
+  // check duplicate jobid set by the owner. if yes return 
+  db.execute('SELECT * FROM jobs WHERE org_id = ? AND jobid = ?', [orgid, jobid]).then(([rows]) => {
+    if(rows.length > 0) {
+      return res.redirect('/loggedin/jobs?error=Job was not added! Jobid already exists for this organization');
+    }
+
   // saving job to database first to then get database job ID
-  job.save()
+  return job.save()
   .then(() => Jobs.findDbIdByJobid(orgid, jobid)) // finding jobs databse ID
   .then((foundJobId) => { // saving result in foundJobId
     jobDbId = foundJobId; // storing result in jobDBId
@@ -152,6 +161,7 @@ exports.postAddJob = (req,res,next) => {
     }
   })
   .then(() => res.redirect('/loggedin/jobs')) // redirecting user back to jobs page
+   })
   .catch(next);
   };
 /**------------------------------------------------GET EDIT JOB PAGE---------------------------------------------------- */

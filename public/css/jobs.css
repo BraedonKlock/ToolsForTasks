@@ -197,4 +197,10 @@
         color: red;
 
     }
+    .error {
+        text-align: center;
+        color: red;
+        font-size: medium;
+        margin: 2vh 0 2vh 0;
+    }
 }

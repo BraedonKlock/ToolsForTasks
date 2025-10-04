@@ -11,7 +11,9 @@
     <main id="jobs-main">
         <!--styling for input elements are in main.css-->
         <input class="input-boxes" type="search" name="search" placeholder="Search">
-        
+        <% if (error) { %>
+            <p class="error"><%= error %></p>
+        <% } %>
         <section id="jobs-jobsContainer" class="jobs-container">
             <!--If jobs are in the database-->
             <% if (jobs.length > 0) { %>
