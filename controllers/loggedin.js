@@ -244,7 +244,6 @@ exports.removeEmployeeFromJob = (req, res, next) => {
     .catch(next);
 };
 
-
 /**-------------------------------------------------POST EDIT JOB----------------------------------------------------- */
 exports.postEditJob = (req, res, next) => {
   const { jobType, jobid: newJobid, title, date, address, phoneNumber, notes } = req.body;
@@ -256,60 +255,68 @@ exports.postEditJob = (req, res, next) => {
   let assignedEmpIds = [];
   const job = new Jobs(jobType, newJobid, title, date, address, phoneNumber, notes, orgid);
 
-return job.update(jobid)
-  .then(() => {
-    if (!emails.length) return [];
-    return Employees.findDbIdsByEmails(orgid, emails);
-  })
-  .then((result) => {
-    const rows = Array.isArray(result) && Array.isArray(result[0]) ? result[0] : result;
-    const ids = (rows || [])
-      .map(r => (typeof r === 'object' && r !== null ? Number(r.id) : Number(r)))
-      .filter(n => Number.isFinite(n));
-    assignedEmpIds = ids;
-
-    if (!ids.length) return null;
-    return Jobs.assignEmployees(jobid, ids);
-  }).then(()=> { // SQL query to be able to perform socketio
-    return db.execute('SELECT * FROM jobs WHERE org_id = ? AND id = ? LIMIT 1', [orgid, jobid]);
-  }).then(([rows]) => { // get newly added job
-    if (!rows || rows.length === 0) {
-      throw new Error('Inserted job not found for broadcast');
-    }    
-    const newJob = rows[0]; // newly added job assigned to a variable
-
-    // passing the newly added job into .emit to render in home page (index.ejs) to epmloyees (crew && manager)
-    if (assignedEmpIds.length) {
-      assignedEmpIds.forEach(empId => {
-        req.app.get('io')
-        .to(`emp:${empId}`)
-        .emit('job:created-index', {
-          jobType: newJob.jobType,
-          jobid: newJob.jobid,
-          title: newJob.title,
-          date: newJob.date,       
-          address: newJob.address,
-          phoneNumber: newJob.phoneNumber,
-          notes:newJob.notes        
-        });
-        // adding assigned job to employees job page
-        req.app.get('io')
-        .to(`emp:${empId}`)
-        .emit('job:created', {
-          jobType: newJob.jobType,
-          jobid: newJob.jobid,
-          title: newJob.title,
-          date: newJob.date,       
-          address: newJob.address,
-          phoneNumber: newJob.phoneNumber,
-          notes:newJob.notes
-        });
-      });
+  // check duplicate jobid set by the owner. if yes return 
+  db.execute('SELECT * FROM jobs WHERE org_id = ? AND jobid = ? AND id != ?', [orgid, newJobid, jobid]).then(([rows]) => {
+    if(rows.length >= 1 && jobid != newJobid) {
+      return res.redirect('/loggedin/jobs?error=Job was not updated! Jobid already exists for this organization');
     }
-  })
-  .then(() => res.redirect('/loggedin/jobs')) // redirecting user back to jobs page
-  .catch(next);
-  };
+    
+
+  return job.update(jobid)
+    .then(() => {
+      if (!emails.length) return [];
+      return Employees.findDbIdsByEmails(orgid, emails);
+    })
+    .then((result) => {
+      const rows = Array.isArray(result) && Array.isArray(result[0]) ? result[0] : result;
+      const ids = (rows || [])
+        .map(r => (typeof r === 'object' && r !== null ? Number(r.id) : Number(r)))
+        .filter(n => Number.isFinite(n));
+      assignedEmpIds = ids;
+
+      if (!ids.length) return null;
+      return Jobs.assignEmployees(jobid, ids);
+    }).then(()=> { // SQL query to be able to perform socketio
+      return db.execute('SELECT * FROM jobs WHERE org_id = ? AND id = ? LIMIT 1', [orgid, jobid]);
+    }).then(([rows]) => { // get newly added job
+      if (!rows || rows.length === 0) {
+        throw new Error('Inserted job not found for broadcast');
+      }    
+      const newJob = rows[0]; // newly added job assigned to a variable
+
+      // passing the newly added job into .emit to render in home page (index.ejs) to epmloyees (crew && manager)
+      if (assignedEmpIds.length) {
+        assignedEmpIds.forEach(empId => {
+          req.app.get('io')
+          .to(`emp:${empId}`)
+          .emit('job:created-index', {
+            jobType: newJob.jobType,
+            jobid: newJob.jobid,
+            title: newJob.title,
+            date: newJob.date,       
+            address: newJob.address,
+            phoneNumber: newJob.phoneNumber,
+            notes:newJob.notes        
+          });
+          // adding assigned job to employees job page
+          req.app.get('io')
+          .to(`emp:${empId}`)
+          .emit('job:created', {
+            jobType: newJob.jobType,
+            jobid: newJob.jobid,
+            title: newJob.title,
+            date: newJob.date,       
+            address: newJob.address,
+            phoneNumber: newJob.phoneNumber,
+            notes:newJob.notes
+          });
+        });
+      }
+    })
+    .then(() => res.redirect('/loggedin/jobs')) // redirecting user back to jobs page
+    })
+    .catch(next);
+    };
 
 /**---------------------------------------------DELETE DELETE JOB--------------------------------------------------- */
 exports.deleteJob = (req,res,next) => {

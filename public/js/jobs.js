@@ -26,18 +26,42 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (!select || !addBtn || !display || !hiddenHolder) return;
 
-  const picked = new Set(); // track by email (unique), using a set to prevent duplicates
+  const picked = new Set();   // newly added this session
+  const existing = new Set(); // already assigned when page loads
 
-  /**This function adds an employee to the employee display and hidden input elements to the hidden employeees
-   * passing in id, name, and role for display purposes so the owner knows which employees are being added
-   * email is being passes in because thats the value that will be set since emails are unique
-   * email will set as value because that will be used for searching the db for employee database ID
-   */
+  // build a map from employee id -> email using the <select> options
+  const idToEmail = new Map();
+  for (const opt of select.options) {
+    const empId = opt.dataset?.id;
+    if (empId && opt.value) idToEmail.set(String(empId), opt.value);
+  }
+
+  // seed from pre-rendered pills on the page (existing assignments)
+  display.querySelectorAll('.employee-pill').forEach(pill => {
+    const empId = pill.getAttribute('data-empid');
+    const email = empId ? idToEmail.get(String(empId)) : null;
+    if (email) {
+      existing.add(email); // mark as already assigned
+    }
+
+    // existing pill remove: if user removes it, also remove from existing set
+    const removeBtn = pill.querySelector('.addJob-removeBtn');
+    if (removeBtn) {
+      removeBtn.addEventListener('click', () => {
+        if (email) existing.delete(email);
+        pill.remove();
+        // (We didn't create hidden inputs for existing employees,
+        // so there's nothing to remove from hiddenHolder here.)
+      });
+    }
+  });
+
+  // add new employee (only if not in existing or picked)
   function addEmployee(id, name, role, email) {
-    if (picked.has(email)) return; // confirming set doesnt have employee already
-    picked.add(email); // adding employee to the set
+    if (existing.has(email) || picked.has(email)) return; // block duplicates (old or new)
+    picked.add(email); // track new additions only
 
-    /**Creating the display for the employee added  */
+    // pill for newly added employee
     const pill = document.createElement('div');
     pill.className = 'employee-pill';
     pill.innerHTML = `
@@ -60,35 +84,28 @@ document.addEventListener('DOMContentLoaded', () => {
       </button>
     `;
 
-    // adding an event listener for the remove employee from job button
     pill.querySelector('.addJob-removeBtn').addEventListener('click', () => {
-      picked.delete(email); // deleting employee from set
-      pill.remove(); // removing the pill from employee display
-      const hidden = hiddenHolder.querySelector(`input[value="${email}"]`); // getting the hidden input element by value
-      if (hidden) hidden.remove(); // removing hidden input element by value
+      picked.delete(email); // only affects picked (new) set
+      pill.remove();
+      const hidden = hiddenHolder.querySelector(`input[value="${email}"]`);
+      if (hidden) hidden.remove();
     });
 
-    display.appendChild(pill); // appending employee pill to employee display
+    display.appendChild(pill);
 
-    /**Hidden input element */
-    const hiddenInput = document.createElement('input'); // creating input element
-    hiddenInput.type = 'hidden'; // type hidden so its not seen by the user
-    /**setting name to employees. 
-     * i am not setting it to an array just incase only 1 employee is selected
-     *  if 1 employee is selected then its sent as a string and that would return it as undefined 
-     */
-    hiddenInput.name = 'employees'; 
-    hiddenInput.value = email; // value set to email because thats our unique identifier
-    hiddenHolder.appendChild(hiddenInput); // appending to hidden input 
+    // hidden input ONLY for newly added employees
+    const hiddenInput = document.createElement('input');
+    hiddenInput.type = 'hidden';
+    hiddenInput.name = 'employees';
+    hiddenInput.value = email;
+    hiddenHolder.appendChild(hiddenInput);
   }
-  /**Adding an event listener to the add employee button
-   * which takes the select element's option that is selected and passes in the datasets for display
-   */
+
   addBtn.addEventListener('click', () => {
     const option = select.options[select.selectedIndex];
     if (!option || !option.value) return;
 
-    const id    = option.dataset.id;               
+    const id    = option.dataset.id;
     const name  = option.dataset.name;
     const role  = option.dataset.role;
     const email = option.value;
@@ -97,6 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
     select.selectedIndex = 0; // reset to placeholder
   });
 });
+
 
 /**------------------------------------------DELETE EMPLOYEES IN EDIT JOB---------------------------------------------- */
 document.addEventListener('DOMContentLoaded', () => {

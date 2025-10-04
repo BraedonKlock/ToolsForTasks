@@ -32,7 +32,7 @@
                         <!--The css styling for this is in main.css-->
                         <div class="threeDotMenu-container">
                             <section class="threeDotMenu-options">
-                                <a href="<%= path %>/edit-job/<%= job.jobid %>">EDIT</a>
+                                <a href="<%= path %>/edit-job/<%= job.jobid %>" id="editJobHref">EDIT</a>
                                 <button data-job-id="<%= job.jobid %>" class="deleteJob-btn">DELETE</button>
                                 <meta name="csrf-token" content="<%= csrfToken %>">
                             </section>
