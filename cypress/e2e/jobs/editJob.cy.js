@@ -11,14 +11,28 @@ describe('Edit Job', () => {
     });
   });
 
-    it('edit job test', () => {
+    it('edits job with valid input', () => {
         cy.visit('http://localhost:3000/loggedin/jobs');
         // Click the 3-dot menu to reveal options
         cy.get('button.three-dot-menu-icon').first().click();
 
         // Then click the EDIT link once it appears
         cy.get('#editJobHref').should('be.visible').click();
-        cy.get('input[name=jobid]').clear().type('45');
+        cy.get('input[name=jobid]').clear().type('1');
         cy.get('#editJobPage-updateBtn').click();
+        cy.get('p.error').should('not.exist');
+    });
+
+    it('edits job with invalid input: duplicate id', () => {
+        cy.visit('http://localhost:3000/loggedin/jobs');
+
+        cy.get('.job-card[data-job-id="45"]').within(() => {
+            cy.get('button.three-dot-menu-icon').click();
+            cy.get('a#editJobHref').should('be.visible').click();
+        });
+
+        cy.get('input[name=jobid]').clear().type('1');
+        cy.get('#editJobPage-updateBtn').click();
+        cy.get('p.error').should('be.visible');
     });
 });

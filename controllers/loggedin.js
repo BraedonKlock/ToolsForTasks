@@ -414,6 +414,7 @@ exports.editEmployeePage = (req,res,next) => {
   const companyName = req.session.companyname;
   const { id } = req.params;
   const orgid = req.session.org;
+  const error = req.query.error || null;
 
   Employees.findEmployeeById(orgid, id).then(([rows]) => {
     const employee = rows[0];
@@ -422,56 +423,114 @@ exports.editEmployeePage = (req,res,next) => {
       pageTitle: "Tools for Tasks - Edit Employee",
       path: '/loggedin',
       companyname: companyName,
-      employee
+      employee,
+      error
     });
   });
 }
 
 /**----------------------------------------------POST EDIT EMPLOYEE------------------------------------------------- */
-exports.postEditEmployee = (req,res,next) => {
-  const { id } = req.params;
+exports.postEditEmployee = (req, res, next) => {
+  const { id } = req.params;            // DB PK of this employee
   const orgid = req.session.org;
+  const companyName = req.session.companyname;
 
-
-  const employeeid = req.body.employeeid;
+  const employeeid = req.body.employeeid;  // owner-set ID
   const name = req.body.name;
   const role = req.body.role;
   const email = req.body.email;
+  console.log(id);
+  // 1) Check duplicate employeeid in same org, excluding THIS record
+  return db.execute(
+    'SELECT 1 FROM employees WHERE org_id = ? AND employeeid = ? AND id != ?',
+    [orgid, employeeid, id]
+  )
+  .then(([rows]) => {
+    if (rows.length > 0) {
+      return res.redirect(`/loggedin/edit-employee/${id}?error=Employee id already exists`);
+    }
 
-  Employees.updateEmployee(id,employeeid,name,role,email,orgid)
+    // 2) Check duplicate email in same org, excluding THIS record
+    return db.execute(
+      'SELECT 1 FROM employees WHERE org_id = ? AND email = ? AND id != ?',
+      [orgid, email, id]
+    );
+  })
+  .then(([rows]) => {
+    if (res.headersSent) return; // stop if we already rendered due to duplicate
+    if (rows.length > 0) {
+      return res.redirect(`/loggedin/edit-employee/${id}?error=Employee email already exists`);
+    }
+
+    // 3) No duplicates → update
+    return Employees.updateEmployee(id, employeeid, name, role, email, orgid);
+  })
   .then(() => {
-    res.redirect('/loggedin/manageEmployees')})
-    .catch(next);
-  };
+    if (!res.headersSent) {
+      return res.redirect('/loggedin/manageEmployees');
+    }
+  })
+  .catch(next);
+};
+
 
 /**-------------------------------------------------ADD EMPLOYEE---------------------------------------------------- */
 exports.addEmployee = (req,res,next) => {
   const companyName = req.session.companyname;
-  
+    const error = null;
+
   res.render('addEmployeePage', {
       pageTitle: "Tools for Tasks - Edit Employee",
       path: '/loggedin',
-      companyname: companyName,    
+      companyname: companyName,
+      error    
   });
 };
 
 /**-----------------------------------------------POST ADD EMPLOYEE------------------------------------------------- */
-exports.postAddEmployee = (req,res,next) => {
+exports.postAddEmployee = (req, res, next) => {
   const employeeid = req.body.employeeid;
   const name = req.body.name;
   const role = req.body.role;
   const email = req.body.email;
   const password = req.body.password;
 
+  const companyName = req.session.companyname;
   const orgid = req.session.org;
 
-  bcrypt.hash(password,12)
-  .then((hashedPassword) => {
-      const employee = new Employees(name,role,employeeid,email,hashedPassword,orgid);
-      return employee.save(); 
-    })
-    .then(() => {
-      res.redirect('/loggedin/manageEmployees');
+  return db.execute('SELECT * FROM employees WHERE org_id = ? AND employeeid = ?', [orgid, employeeid])
+    .then(([rows]) => {
+      if (rows.length > 0) {
+        return res.render('addEmployeePage', {
+          pageTitle: "Tools for Tasks - Edit Employee",
+          path: '/loggedin',
+          companyname: companyName,
+          error: 'Employee id already exists'
+        });
+      }
+
+      // IMPORTANT: return this promise so the outer chain waits
+      return db.execute('SELECT * FROM employees WHERE org_id = ? AND email = ?', [orgid, email])
+        .then(([rows]) => {
+          if (rows.length > 0) {
+            return res.render('addEmployeePage', {
+              pageTitle: "Tools for Tasks - Edit Employee",
+              path: '/loggedin',
+              companyname: companyName,
+              error: 'Employee email already exists'
+            });
+          }
+
+          // No duplicates → proceed
+          return bcrypt.hash(password, 12)
+            .then((hashedPassword) => {
+              const employee = new Employees(name, role, employeeid, email, hashedPassword, orgid);
+              return employee.save();
+            })
+            .then(() => {
+              return res.redirect('/loggedin/manageEmployees');
+            });
+        });
     })
     .catch(next);
 };

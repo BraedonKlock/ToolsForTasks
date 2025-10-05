@@ -206,20 +206,22 @@ for (let i = 0; i < deleteJobBtns.length; i++) {
     const jobId = deleteJobBtn.dataset.jobId;
     const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
 
-    try {
-      const response = fetch(`/loggedin/job/${jobId}`, {
-        method: 'DELETE',
-        headers: {
-        'CSRF-Token': csrfToken
-        }
-      })
-      .then(response => {
-        if(response.ok) {
-          deleteJobBtn.closest('.job-card').remove();
-        };
-      });
-    } catch(err) {
-      console.log("Error deleting job", err);
-    };
+    fetch(`/loggedin/job/${encodeURIComponent(jobId)}`, {
+      method: 'DELETE',
+      credentials: 'same-origin',           // send session cookie
+      headers: { 'csrf-token': csrfToken || '' } // header name csurf likes
+    })
+    .then((res) => {
+      if (!res.ok) {
+        return res.text().then(t => { throw new Error(`HTTP ${res.status} ${res.statusText} ${t||''}`); });
+      }
+      // success (200/204)
+      deleteJobBtn.closest('.job-card')?.remove();
+    })
+    .catch((err) => {
+      // Abort during navigation shows up here as TypeError: Failed to fetch
+      console.error('Delete failed:', err);
+      // optional UI message
+    });
   });
 };

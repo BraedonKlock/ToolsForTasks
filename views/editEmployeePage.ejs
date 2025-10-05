@@ -12,16 +12,19 @@
 
         <div id="editEmployeePage-editEmployeeContainer">
             <h1>Employee</h1>
+            <% if (error) { %>
+                <p class="error"><%= error %></p>
+            <% } %>
             <form class="forms" action="<%= path %>/post-editEmployee/<%= employee.id %>" method="POST">
                 <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                 <div class="form-control">
                     <label for="employeeid">ID:</label>
-                    <input type="text" name="employeeid" value="<%= employee.employeeid %>">
+                    <input type="text" name="employeeid" value="<%= employee.employeeid %>" required>
                 </div>
     
                 <div class="form-control">
                     <label for="name">Name:</label>
-                    <input type="text" name="name" value="<%= employee.name %>">
+                    <input type="text" name="name" value="<%= employee.name %>" required>
                 </div>
     
                 <div class="form-control">
@@ -38,7 +41,7 @@
     
                 <div class="form-control">
                     <label for="email">Email:</label>
-                    <input type="text" name="email" value="<%= employee.email %>">
+                    <input type="text" name="email" value="<%= employee.email %>" required>
                 </div>
                 <hr id="editEmployeePage-hr">
                 <button type="submit" id="editEmployeePage-updateBtn">Update</button>

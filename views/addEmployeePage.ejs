@@ -12,21 +12,25 @@
 
         <div id="addEmployeePage-addEmployeeContainer">
             <h1>Add Employee</h1>
-            <form class="forms" action="post-addEmployee" method="POST">
+            <% if (error) { %>
+                <p class="error"><%= error %></p>
+            <% } %>
+                <form class="forms" action="post-addEmployee" method="POST">
                 <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                 <div class="form-control">
                     <label for="employeeid">ID:</label>
-                    <input type="text" name="employeeid" >
+                    <input type="text" name="employeeid" required>
                 </div>
     
                 <div class="form-control">
                     <label for="name">Name:</label>
-                    <input type="text" name="name" >
+                    <input type="text" name="name" required>
                 </div>
     
                 <div class="form-control">
                     <label for="role">Role:</label>
-                    <select name="role" id="addEmployeePage-roleSelect">
+                    <select name="role" id="addEmployeePage-roleSelect" required>
+                        <option value="" disabled selected hidden>Select</option>
                         <option value="manager">manager</option>
                         <option value="crew">Crew</option>
                     </select>
@@ -34,12 +38,12 @@
     
                 <div class="form-control">
                     <label for="email">Email:</label>
-                    <input type="text" name="email">
+                    <input type="text" name="email" required>
                 </div>
 
                 <div class="form-control">
                     <label for="password">Password:</label>
-                    <input type="text" name="password">
+                    <input type="text" name="password" required>
                 </div>
                 <hr id="addEmployeePage-hr">
                 <button type="submit" id="addEmployeePage-addBtn">Add</button>

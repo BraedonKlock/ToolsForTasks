@@ -83,3 +83,9 @@
     border: none;
     background: linear-gradient(135deg, rgb(254,149,23), rgb(244, 162, 62));
 }
+.error {
+    text-align: center;
+    color: red;
+    font-size: medium;
+    margin: 0 0 2vh 0;
+}
