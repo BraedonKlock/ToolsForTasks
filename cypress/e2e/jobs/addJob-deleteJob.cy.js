@@ -58,5 +58,4 @@ describe('Add Job', () => {
         cy.get('[data-job-id="50"] .three-dot-menu-icon').first().click(); // get three dot meu for job deletion
         cy.get('button[data-job-id="50"').should('be.visible').click(); // click delete job button
     })
-
 });

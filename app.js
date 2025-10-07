@@ -19,8 +19,8 @@ const loggedinRoutes = require('./routes/loggedin'); // importing loggedin.js fr
 const { requireLogin, branchLogIn, attachCsrfToken } = require('./middleware/auth');  // not '/middleware/auth'
 const viewLocals = require('./middleware/viewLocals');
 
-const app = express(); // creating an express object that acts like a server and router
-const server = http.createServer(app);
+const app = express(); // creating an express object thats a request handler
+const server = http.createServer(app); // create the HTTP and pass the app as handler 
 const io = new Server(server);
 
 /**mysql store object for storing session data */

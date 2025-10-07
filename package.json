@@ -7,7 +7,10 @@
   "type": "commonjs",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
+    "test:loggedinController": "jest _tests_/controllers/loggedin",
+    "test:404render": "jest _tests_/controller/loggedin",
+    "test:loggedinRoute": "jest _tests_/routes/loggedin",
     "start": "nodemon app.js",
     "start-server": "node app.js"
   },
@@ -23,6 +26,7 @@
   },
   "devDependencies": {
     "cypress": "^13.6.4",
+    "jest": "^30.2.0",
     "nodemon": "^3.1.10"
   }
 }

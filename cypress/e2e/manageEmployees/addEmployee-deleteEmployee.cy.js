@@ -47,4 +47,38 @@ describe('Add Employee', () => {
         cy.get('#addEmployeePage-addBtn').click();
         cy.get('p.error').should('not.exist');
     })
+
+it('renders the error page when postAddEmployee fails after redirect', () => {
+    // Intercept the redirect target and force a 500 HTML page
+    cy.intercept('GET', '/loggedin/manageEmployees', {
+      statusCode: 500,
+      headers: { 'content-type': 'text/html' },
+      body: `
+        <!doctype html>
+        <html>
+          <head><title>Server Error</title></head>
+          <body>
+            <div id="error-page">
+              <h1>Server Error</h1>
+              <p>Something went wrong while loading manage employees.</p>
+            </div>
+          </body>
+        </html>
+      `,
+    }).as('manage');
+
+    cy.visit('http://localhost:3000/loggedin/addEmployeePage');
+
+    cy.get('input[name=employeeid]').type('E12345');
+    cy.get('input[name=name]').type('Alice');
+    cy.get('select[name=role]').select('manager');
+    cy.get('input[name=email]').type('alice@example.com');
+    cy.get('input[name=password]').type('secret123');
+
+    cy.get('#addEmployeePage-addBtn').click();
+
+    cy.title().should('contain', 'Server Error');
+    cy.get('title').should('contain.text', 'Server Error');
+    cy.get('h1').should('contain', 'Something went wrong while adding employee');
+  });
 });

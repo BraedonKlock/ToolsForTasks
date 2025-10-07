@@ -187,4 +187,9 @@
         color: white;
         font-size: x-large;
     }
+    .error-message {
+        margin-top: 20vh;
+        color: red;
+        text-align: center;
+    }
 }

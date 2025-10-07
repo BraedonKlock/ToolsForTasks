@@ -10,4 +10,16 @@ describe('Edit Employee', () => {
         cy.url().should('include', '/loggedin'); // ensure session is set
         });
     });
+
+    it('edits employee with valid input', () => {
+        cy.visit('http://localhost:3000/loggedin/manageEmployees');
+
+    });
+
+    it('displays custom error page when employee not found', () => {
+        cy.visit('http://localhost:3000/loggedin/edit-employee/999999', { failOnStatusCode: false });
+
+        cy.title().should('contain', 'Employee not found');
+        cy.get('h1').should('contain.text', 'Could not find employee');
+    });
   });
