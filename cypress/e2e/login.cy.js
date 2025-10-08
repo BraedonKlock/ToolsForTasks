@@ -13,7 +13,7 @@ describe('Login', () => {
     cy.get('input[name=password]').type('3');  
     cy.get('button[type=submit]').click();
 
-    cy.url().should('include', '/post-login'); 
+    cy.url().should('include', '/login?error=Invalid%20password.'); 
     cy.get('#login-error').should('be.visible');
   });
 

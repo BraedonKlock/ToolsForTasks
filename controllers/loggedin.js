@@ -25,15 +25,7 @@ exports.getIndex = (req,res,next) => {
           employeename
       });
   })
-  .catch(() => {
-    res.status(500).render('error', {
-      pageTitle: 'Server Error',
-      path: '/loggedin',
-      companyname: name,
-      employeename,
-      message: 'Something went wrong while loading jobs.'
-    });
-  });
+  .catch(next);
 };
 
 /**-------------------------------------------------GET JOBS PAGE--------------------------------------------------- */
@@ -64,15 +56,7 @@ exports.jobsPage = (req,res,next) => {
         error
       });
     })
-    .catch(() => {
-      res.status(500).render('error', {
-        pageTitle: 'Server Error',
-        path: '/loggedin',
-        companyname: name,
-        employeename: employeeName,
-        message: 'Something went wrong while loading jobs.'
-      });
-    });
+    .catch(next);
   };
 
 /**-------------------------------------------------POST ADDJOB----------------------------------------------------- */
@@ -97,15 +81,14 @@ exports.postAddJob = (req,res,next) => {
   // check duplicate jobid set by the owner. if yes return 
   db.execute('SELECT * FROM jobs WHERE org_id = ? AND jobid = ?', [orgid, jobid]).then(([rows]) => {
     if(rows.length > 0) {
-      return res.status(409).redirect('/loggedin/jobs?error=Job was not added! Jobid already exists for this organization');
+      return res.redirect(303,'/loggedin/jobs?error=Job was not added! Jobid already exists for this organization');
     }
 
   // saving job to database first to then get database job ID
   return job.save()
   .then(() => Jobs.findDbIdByJobid(orgid, jobid)) // finding jobs databse ID
   .then((foundJobId) => { // saving result in foundJobId
-    jobDbId = foundJobId; // storing result in jobDBId
-    if (!jobDbId) throw new Error('Job DB id not found after insert');
+    jobDbId = foundJobId[0].id; // storing result in jobDBId
     
     if (!emails.length) return [];  // if aray is empty
     return Employees.findDbIdsByEmails(orgid, emails); // returning employees database ID's
@@ -180,15 +163,7 @@ exports.postAddJob = (req,res,next) => {
   })
   .then(() => res.redirect(303,'/loggedin/jobs')) // redirecting user back to jobs page
    })
-    .catch(() => {
-      res.status(500).render('error', {
-        pageTitle: 'Server Error',
-        path: '/loggedin',
-        companyname: name,
-        employeename: employeeName,
-        message: err.message || 'Something went wrong while adding the job.'
-      });
-    });
+    .catch(next);
   };
 /**------------------------------------------------GET EDIT JOB PAGE---------------------------------------------------- */
 exports.editJobPage = (req, res, next) => {
@@ -198,45 +173,31 @@ exports.editJobPage = (req, res, next) => {
   const { id: publicJobId } = req.params;
 
   let job;
-  let employeesForJob = [];   // employees assigned to this job
-  let allEmployees = [];      // all employees in the org
+  let employeesForJob = [];
+  let allEmployees = [];
 
   return Jobs.findDbIdByJobid(orgid, publicJobId)
-    .then((dbJobId) => {
-      if (!dbJobId) {
-        return res.status(404).render('error', {
-          pageTitle: 'Job not found',
-          path: '/loggedin',
-          companyname,
-          employeename,
-          message: 'Could not load job'
-        });
-      }
-      // in parallel: get job_employees refs, job row, and all org employees
+    .then((rows) => {
+      const dbJobId = Array.isArray(rows) ? rows[0]?.id : rows; // rows -> [{id:261}] → 261
+      console.log('dbJobId:', dbJobId);
+
       return Promise.all([
-        Employees.findEmployeesforJob(dbJobId), // -> [refRows, fields]
-        Jobs.findJobById(orgid, publicJobId),   // -> [jobRows, fields]
-        Employees.getAllByOrg(orgid)            // -> [allRows, fields]
+        // normalize each to raw arrays we actually want
+        Employees.findEmployeesforJob(dbJobId).then(([refRows]) => refRows), // refRows[]
+        Jobs.findJobById(orgid, publicJobId)                                 
+          .then((jobRows) => {
+            return jobRows; // rows[]
+          }),
+        Employees.getAllByOrg(orgid).then(([allRows]) => allRows)            // allRows[]
       ]);
     })
-    .then(([[refRows], [jobRows], [allRows]]) => {
-      if (!jobRows || !jobRows.length) {
-        return res.status(404).render('error', { 
-          pageTitle: 'Job not found',
-          path: '/loggedin',
-          companyname,
-          employeename,
-          message: 'Could not find job'
-        });
-      }
-
+    .then(([refRows, jobRows, allRows]) => {
       job = jobRows[0];
       allEmployees = allRows || [];
 
       const ids = (refRows || []).map(r => r.employee_id);
-      if (!ids.length) return []; // no employees on this job
+      if (!ids.length) return []; 
 
-      // fetch each assigned employee by id in parallel
       return Promise.all(ids.map(empId => Employees.findEmployeeById(orgid, empId)));
     })
     .then((empResults) => {
@@ -251,20 +212,12 @@ exports.editJobPage = (req, res, next) => {
         path: '/loggedin',
         companyname,
         employeename,
-        employees: employeesForJob,  // employees attached to this job
-        allEmployees,                // all employees in the org
+        employees: employeesForJob,
+        allEmployees,
         job
       });
     })
-    .catch(() => {
-      res.status(500).render('error', {
-        pageTitle: 'Server Error',
-        path: '/loggedin',
-        companyname,
-        employeename,
-        message: 'Something went wrong while displaying the job.'
-      });
-    });
+    .catch(next);
 };
 
 /**---------------------------------------POST REMOVE EMPLOYEE FROM JOB--------------------------------------------- */
@@ -276,9 +229,7 @@ exports.removeEmployeeFromJob = (req, res, next) => {
 
   Jobs.findDbIdByJobid(orgid, jobid)
     .then((foundJobId) => {
-      console.log(foundJobId);
-      if (!foundJobId) return res.status(404).json({ ok: false, error: 'Job not found' });
-      dbJobId = foundJobId;
+      dbJobId = foundJobId[0].id;
       return Employees.findDbIdByEmployeeid(orgid, empid);
     })
     .then((dbEmpId) => {
@@ -363,15 +314,7 @@ exports.postEditJob = (req, res, next) => {
     })
     .then(() => res.redirect(303,'/loggedin/jobs')) // redirecting user back to jobs page
     })
-    .catch(() => {
-      res.status(500).render('error', {
-        pageTitle: 'Server Error',
-        path: '/loggedin',
-        companyname,
-        employeename,
-        message: err.message || 'Something went wrong while updating the job.'
-      });
-    });
+    .catch(next);
   };
 
 /**---------------------------------------------DELETE DELETE JOB--------------------------------------------------- */
@@ -383,8 +326,8 @@ exports.deleteJob = (req,res,next) => {
   const jobEmployees = []; //initializing an array to store the employee db ids that are associated with the deleted job
 
 Jobs.findDbIdByJobid(orgid, id) // finding the db id for the deleted job
-  .then((foundJobId) => { // db id stored in variable
-    if (!foundJobId) throw new Error('Job not found');
+  .then((rows) => { // db id stored in variable
+    const foundJobId = rows[0].id;
 
     return Employees.findEmployeesforJob(foundJobId); //finding employee db ids that are associated with the deleted job
   })
@@ -406,15 +349,7 @@ Jobs.findDbIdByJobid(orgid, id) // finding the db id for the deleted job
 
     res.redirect(303,'/loggedin/jobs'); // redirecting back to jobs.ejs
   })
-    .catch(() => {
-      res.status(500).render('error', {
-        pageTitle: 'Server Error',
-        path: '/loggedin',
-        companyname,
-        employeename,
-        message: err.mesage || 'Something went wrong while deleting the job.'
-      });
-    });
+    .catch(next);
   };
 
 /**-----------------------------------------------GET JOBS DETAILS-------------------------------------------------- */
@@ -428,16 +363,7 @@ exports.jobDetailsPage = (req,res,next) => {
 
   Jobs.findJobById(orgId, id)
   // finding the job in the database by its unique job id
-  .then(([rows]) => { // returns a promise which is a 2d array. getting the firat index where the job details are stored
-    if (!rows || rows.length === 0) { // if unsuccessful
-      return res.status(404).render('error', { 
-        pageTitle: 'Job not found',
-        path: '/loggedin',
-        companyname: name,
-        employeename: employeeName,
-        message: 'Could not find job'
-      });
-    }
+  .then((rows) => { // returns a promise which is a 2d array. getting the firat index where the job details are stored
     const job = rows[0] // storing the job object in job
     res.status(200).render('jobDetails', { // rendering the job details page
       pageTitle: 'Tools for Tasks - Job Details',
@@ -447,15 +373,7 @@ exports.jobDetailsPage = (req,res,next) => {
       employeename: employeeName 
     });
   })
-    .catch(() => {
-      res.status(500).render('error', {
-        pageTitle: 'Server Error',
-        path: '/loggedin',
-        companyname: name,
-        employeename: employeeName, 
-        message: 'Something went wrong while loading the jobs details page.'
-      });
-    });
+    .catch(next);
   };
 
 /**---------------------------------------------GET MANAGE EMPLOYEES------------------------------------------------ */
@@ -485,14 +403,7 @@ exports.manageEmployees = (req,res,next) => {
       crew
     });
   })
-  .catch(() => {
-    res.status(500).render('error', {
-      pageTitle: 'Server Error',
-      path:'/loggedin',
-      companyname: companyName,
-      message: 'Something went wrong while loading the manage employees page.'
-    });
-  });
+  .catch(next);
 } 
 
 /**---------------------------------------------EDIT EMPLOYEE PAGE-------------------------------------------------- */
@@ -504,12 +415,9 @@ exports.editEmployeePage = (req,res,next) => {
 
   Employees.findEmployeeById(orgid, id).then(([rows]) => {
     if (rows.length === 0) {
-      return res.status(404).render('error', { 
-        pageTitle: 'Employee not found',
-        path: '/loggedin',
-        companyname: companyName,
-        message: 'Could not find employee'
-      });
+      const err = new Error();
+      err.status = 404;
+      throw err;
     }
     const employee = rows[0];
 
@@ -521,14 +429,7 @@ exports.editEmployeePage = (req,res,next) => {
       error
     });
   })
-  .catch(() => {
-    res.status(500).render('error', {
-      pageTitle: 'Server Error',
-      path: '/loggedin',
-      companyname: companyName,
-      message: 'Something went wrong while loading the edit employee page.'
-    });
-  });
+  .catch(next);
 }
 
 /**----------------------------------------------POST EDIT EMPLOYEE------------------------------------------------- */
@@ -541,7 +442,6 @@ exports.postEditEmployee = (req, res, next) => {
   const name = req.body.name;
   const role = req.body.role;
   const email = req.body.email;
-  console.log(id);
   // 1) Check duplicate employeeid in same org, excluding THIS record
   return db.execute(
     'SELECT 1 FROM employees WHERE org_id = ? AND employeeid = ? AND id != ?',
@@ -572,21 +472,14 @@ exports.postEditEmployee = (req, res, next) => {
       return res.redirect(303,'/loggedin/manageEmployees');
     }
   })
-  .catch(() => {
-    res.status(500).render('error', {
-      pageTitle: 'Server Error',
-      path:'/loggedin',
-      companyname: companyName,
-      message: 'Something went wrong while updating employee.'
-    });
-  });
+  .catch(next);
 };
 
 
 /**-------------------------------------------------ADD EMPLOYEE---------------------------------------------------- */
 exports.addEmployee = (req,res,next) => {
   const companyName = req.session.companyname;
-    const error = null;
+  const error = req.query.error || null;
 
   res.status(200).render('addEmployeePage', {
       pageTitle: "Tools for Tasks - Edit Employee",
@@ -610,24 +503,14 @@ exports.postAddEmployee = (req, res, next) => {
   return db.execute('SELECT * FROM employees WHERE org_id = ? AND employeeid = ?', [orgid, employeeid])
     .then(([rows]) => {
       if (rows.length > 0) {
-        return res.status(409).render('addEmployeePage', {
-          pageTitle: "Tools for Tasks - Edit Employee",
-          path: '/loggedin',
-          companyname: companyName,
-          error: 'Employee id already exists'
-        });
-      }
+        return res.redirect(303,'/loggedin/addEmployeePage?error=Employee was not added! id already exists for another employee');
+      };
 
     return db.execute('SELECT * FROM employees WHERE org_id = ? AND email = ?', [orgid, email])
       .then(([rows]) => {
         if (rows.length > 0) {
-          return res.status(409).render('addEmployeePage', {
-            pageTitle: "Tools for Tasks - Edit Employee",
-            path: '/loggedin',
-            companyname: companyName,
-            error: 'Employee email already exists'
-          });
-        }
+          return res.redirect(303,'/loggedin/addEmployeePage?error=Employee was not added! Email already exists for another employee');
+        };
 
         // No duplicates → proceed
         return bcrypt.hash(password, 12)
@@ -640,14 +523,7 @@ exports.postAddEmployee = (req, res, next) => {
           });
       });
   })
-  .catch(() => {
-    res.status(500).render('error', {
-      pageTitle: 'Server Error',
-      path:'/loggedin',
-      companyname: companyName,
-      message: 'Something went wrong while adding employee.'
-    });
-  });
+  .catch(next);
 };
 
 /**-------------------------------------------------POST LOGOUT----------------------------------------------------- */

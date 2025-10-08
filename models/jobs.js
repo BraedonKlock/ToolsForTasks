@@ -71,14 +71,30 @@ module.exports = class jobs {
 
 /**This utility function gets a job by its unique id used for job details */
 static findJobById(orgId, id) {
-    return db.execute('SELECT * FROM jobs WHERE org_id = ? AND jobid = ? ', [orgId, id]) // returns a promise
+    return db.execute('SELECT * FROM jobs WHERE org_id = ? AND jobid = ? ', [orgId, id])
+    .then(([rows]) => { // returns a promise which is a 2d array. getting the firat index where the job details are stored
+        if (!rows || rows.length === 0) {
+            const err = new Error();
+            err.status = 404;
+            throw err;
+        }
+        console.log(rows + "functions");
+        return rows
+    });
 }
 
 static findDbIdByJobid(orgId, jobId) {
     return db.execute(
         'SELECT id FROM jobs WHERE org_id = ? AND jobid = ? LIMIT 1',
         [orgId, jobId]
-    ).then(([rows]) => rows.length ? rows[0].id : null);
+    ).then(([rows]) => {
+        if (!rows || rows.length === 0) {
+            const err = new Error();
+            err.status = 404;
+            throw err;
+        }
+        return rows;
+    });
 }
 
 static deleteJobById(orgid, jobid) {

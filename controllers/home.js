@@ -9,7 +9,7 @@ const bcrypt = require('bcryptjs'); // importing encryption for user passwords
 /**-------------------------------------------------GET INDEX------------------------------------------------------ */
 /**Home page route */
 exports.getIndex = (req, res, next) => {
-    res.render('home/index', {
+    res.status(200).render('home/index', {
         pageTitle: 'Tools for Tasks - Home',
         path: '/'
     });
@@ -18,9 +18,12 @@ exports.getIndex = (req, res, next) => {
 /**-------------------------------------------------GET LOG IN------------------------------------------------------ */
 /**rendering the log in page */
 exports.getLogin = (req, res, next) => {
-    res.render('home/login', {
+    const error = req.query.error || null;
+
+    res.status(200).render('home/login', {
         pageTitle: 'Tools for Tasks - Login',
-        path: '/'
+        path: '/',
+        error
     });
 };
 
@@ -36,11 +39,7 @@ exports.postLogin = (req, res, next) => {
     User.findUser(email) // finding the user by the email they entered               
     .then(([rows]) => { // when promise is returned im destructuring the first index of the 2d array where the user info is
       if (!rows || rows.length === 0) { // if login didnt work
-        return res.status(401).render('home/login', {
-          pageTitle: 'Tools for Tasks - Login',
-          path: '/',
-          error: 'Invalid email, password or account type.'
-        });
+      return res.redirect(303,`/login?error=Invalid email.`);
       }
 
       const org = rows[0]; // getting the user. which is an object and storing it in user
@@ -49,11 +48,7 @@ exports.postLogin = (req, res, next) => {
       return bcrypt.compare(password, org.password) // comparing the hashedPassword and using bcrypt to decrypt it 
         .then((ok) => { // storing the returned promise in ok 
           if (!ok) { // if unsuccessful (password isnt equal)
-            return res.status(401).render('home/login', {
-              pageTitle: 'Tools for Tasks - Login',
-              path: '/',
-              error: 'Invalid email or password.'
-            });
+            return res.redirect(303,`/login?error=Invalid password.`);
           }
 
             /**Success */
@@ -65,7 +60,7 @@ exports.postLogin = (req, res, next) => {
             req.session.role = org.role;
             return req.session.save((err) => { // saving session
             if (err) return next(err);
-            return res.redirect('/loggedin'); // redirect to loggedin route
+            return res.redirect(303,'/loggedin'); // redirect to loggedin route
             });
         });
     })
@@ -76,22 +71,14 @@ exports.postLogin = (req, res, next) => {
   if (accountType === 'employee') {
     Employee.findEmployee(email).then(([rows]) => {
       if (!rows || rows.length === 0) { // if login didnt work
-        return res.status(401).render('home/login', {
-          pageTitle: 'Tools for Tasks - Login',
-          path: '/',
-          error: 'Invalid email, password or account type.'
-        });
+        return res.redirect(303,`/login?error=Invalid email.`);
       }
       const emp = rows[0]; // getting the user. which is an object and storing it in user
       // bcrypt.compare returns a Promise
       return bcrypt.compare(password, emp.password) // comparing the hashedPassword and using bcrypt to decrypt it 
         .then((ok) => { // storing the returned promise in ok 
           if (!ok) { // if unsuccessful (password isnt equal)
-            return res.status(401).render('home/login', {
-              pageTitle: 'Tools for Tasks - Login',
-              path: '/',
-              error: 'Invalid email or password.'
-            });
+            return res.redirect(303,`/login?error=Invalid password.`);
           }
 
           User.findUserbyId(emp.org_id).then(([orgInfo]) => {
@@ -109,7 +96,7 @@ exports.postLogin = (req, res, next) => {
           console.log(req.session.role);
           return req.session.save((err) => { // saving session
           if (err) return next(err);
-          return res.redirect('/loggedin'); // redirect to loggedin route
+          return res.redirect(303,'/loggedin'); // redirect to loggedin route
           });
       });
     })
@@ -121,7 +108,7 @@ exports.postLogin = (req, res, next) => {
 /**Rendering create account page upon get request */
 exports.getCreateAccount = (req,res,next) => {
   const error = req.query.error || null;
-    res.render('home/createAccount', {
+    res.status(200).render('home/createAccount', {
         pageTitle: 'Tools for Tasks - Create Account',
         path: '/',
         error
@@ -138,7 +125,7 @@ exports.postCreateAccount = (req,res,next) => {
 
     db.execute('SELECT * FROM organizations WHERE email = ? LIMIT 1', [email]).then(([rows]) => {
       if (rows.length > 0) {
-        return res.redirect('/create-account?error=Email already exists');
+        return res.redirect(303,'/create-account?error=Email already exists');
       };
       
       return bcrypt.hash(password, 12) // encrypting password. second argument is the cost factor (# of times hashed) 
@@ -147,7 +134,7 @@ exports.postCreateAccount = (req,res,next) => {
         return newUser.save() // new user saved to database
       })
       .then(() => {
-        res.redirect('/loggedin'); // redirecting to loggedin route
+        res.redirect(303,'/loggedin'); // redirecting to loggedin route
       });
     })
       .catch(next);

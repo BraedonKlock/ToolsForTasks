@@ -18,6 +18,7 @@ const homeRoute = require('./routes/home'); // importing routes for not loggedin
 const loggedinRoutes = require('./routes/loggedin'); // importing loggedin.js from routes
 const { requireLogin, branchLogIn, attachCsrfToken } = require('./middleware/auth');  // not '/middleware/auth'
 const viewLocals = require('./middleware/viewLocals');
+const errorHandler = require('./middleware/errorHandler');
 
 const app = express(); // creating an express object thats a request handler
 const server = http.createServer(app); // create the HTTP and pass the app as handler 
@@ -72,6 +73,7 @@ app.set('io', io);
 app.use(viewLocals); // using locals for what the user sees in views files
 app.use('/loggedin', requireLogin, loggedinRoutes); // loggedin user routes
 app.use('/', branchLogIn, homeRoute); // home routes
+app.use(errorHandler);
 
 // socket.io handlers
 io.on('connection', (socket) => {

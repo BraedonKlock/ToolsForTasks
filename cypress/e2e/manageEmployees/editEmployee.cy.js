@@ -19,7 +19,7 @@ describe('Edit Employee', () => {
     it('displays custom error page when employee not found', () => {
         cy.visit('http://localhost:3000/loggedin/edit-employee/999999', { failOnStatusCode: false });
 
-        cy.title().should('contain', 'Employee not found');
-        cy.get('h1').should('contain.text', 'Could not find employee');
+        cy.title().should('contain', 'Not Found');
+        cy.get('h1').should('contain.text', 'The page or resource you were looking for was not found');
     });
   });
