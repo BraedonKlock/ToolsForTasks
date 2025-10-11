@@ -1,69 +1,105 @@
-// backend/app.js
+/**
+ * backend/app.js — SPA-only server (no EJS)
+ */
 const express = require("express");
+const http = require("http");
+const { Server } = require("socket.io");
+const path = require("path");
 const session = require("express-session");
-// If you already use MySQL session store, uncomment the next 2 lines:
-// const MySQLStore = require("express-mysql-session")(session);
-// const store = new MySQLStore({ host: "localhost", user: "root", password: "Kloc0004", database: "tools_for_tasks" });
+const MySQLStoreFactory = require("express-mysql-session");
+const csrf = require("@dr.pogodin/csurf");
 
-// Routers (you’ll create these two files)
-//   - routes/notLoggedIn.js  (public endpoints like /login, /signup, etc.)
-//   - routes/loggedIn.js     (protected endpoints that require auth)
-const notLoggedInRoutes = require("./routes/notLoggedIn");
-const loggedInRoutes = require("./routes/loggedin");
+// ---- Routers (create these files) ----
+// Public API routes like /api/auth/login etc.
+const notLoggedInRoutes = require("./api/notLoggedIn");   // e.g., login, signup, etc.
+// Protected API routes like /api/loggedin/jobs, /api/loggedin/profile, etc.
+const loggedInRoutes = require("./api/loggedin");   // requires session auth
 
+// ---- App/Server/Socket.IO setup ----
 const app = express();
-
-/**mysql store object for storing session data */
-const store = new MySQLStore({
-  host: 'localhost',
-  user: 'root',
-  password: 'Kloc0004',
-  database: 'tools_for_tasks',
-  createDatabaseTable: true,
-  clearExpired: true,
-  checkExpirationInterval: 15 * 60 * 1000,
-  expiration: 7 * 24 * 60 * 60 * 1000
+const server = http.createServer(app);
+const io = new Server(server, {
+  // In dev (FE on 5173), allow socket connection from Vite origin if you connect directly
+  cors: { origin: ["http://localhost:5173"], credentials: true },
 });
 
-/* ---------- Core middleware ---------- */
+// ---- Parsers ----
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-app.use(
-  session({
-    secret: process.env.SESSION_SECRET || "change-me",
-    resave: false,
-    saveUninitialized: false,
-    // store,            // ← uncomment if using MySQLStore above
-    name: "tft.sid",
-    cookie: {
-      httpOnly: true,
-      sameSite: "lax",
-      secure: process.env.NODE_ENV === "production",
-    },
-  })
-);
+// ---- Sessions (MySQL store) ----
+const MySQLStore = MySQLStoreFactory(session);
+const sessionStore = new MySQLStore({
+  host: "localhost",
+  user: "root",
+  password: "Kloc0004",
+  database: "tools_for_tasks",
+  createDatabaseTable: true,
+  clearExpired: true,
+  checkExpirationInterval: 15 * 60 * 1000,
+  expiration: 7 * 24 * 60 * 60 * 1000,
+});
 
-/* ---------- Auth gate middleware ---------- */
-// Hard gate: only allow through if logged in.
-function requireLogin(req, res, next) {
-  if (req.session && req.session.isLoggedIn) return next();
-  return res.status(401).json({ error: "Unauthorized" });
-}
+const sessionMiddleware = session({
+  secret: process.env.SESSION_SECRET || "change-me",
+  resave: false,
+  saveUninitialized: false,
+  store: sessionStore,
+  name: "tft.sid",
+  cookie: {
+    httpOnly: true,
+    sameSite: "lax",
+    secure: process.env.NODE_ENV === "production",
+  },
+});
+app.use(sessionMiddleware);
 
-// Soft branch helper (optional): if you later want to redirect or branch,
-// you can inspect req.session.isLoggedIn here. For now, we just mount routers.
+// // ---- CSRF (session-based) ----
+// const csrfProtection = csrf(); // protects all non-GET requests
+// app.use(csrfProtection);
 
-/* ---------- Route mounting ---------- */
-// All protected app routes live under /loggedin and require a valid session.
-app.use("/loggedin", requireLogin, loggedInRoutes);
 
-// All public routes (not logged in yet) live under / (root).
-app.use("/", notLoggedInRoutes);
 
-/* ---------- Start server ---------- */
+// ---- Mount APIs ----
+app.use("/api", notLoggedInRoutes);
+
+
+app.use("/api/loggedIn", loggedInRoutes);
+
+// ---- Socket.IO shares the session ----
+const wrap = (mw) => (socket, next) => mw(socket.request, {}, next);
+io.use(wrap(sessionMiddleware));
+
+io.on("connection", (socket) => {
+  const sess = socket.request.session;
+  if (!sess?.org || !sess?.role) return;
+
+  if (sess.role === "owner") {
+    socket.join(`org:${sess.org}`);
+    console.log(`Owner ${socket.id} joined room org:${sess.org}`);
+  }
+  if ((sess.role === "crew" || sess.role === "manager") && sess.loginid) {
+    socket.join(`emp:${sess.loginid}`);
+    console.log(`Employee ${socket.id} joined room emp:${sess.loginid}`);
+  }
+
+  socket.on("disconnect", () => {});
+});
+
+// ---- Serve React build (same-server prod) ----
+app.use(express.static(path.join(__dirname, "../frontend/dist")));
+
+
+// ---- Simple error handler ----
+app.use((err, _req, res, _next) => {
+  console.error(err);
+  const status = err.status || 500;
+  res.status(status).json({ error: err.message || "Server error" });
+});
+
+// ---- Start server ----
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`API listening on http://localhost:${PORT}`);
 });
 

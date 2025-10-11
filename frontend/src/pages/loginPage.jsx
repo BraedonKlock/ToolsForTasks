@@ -1,6 +1,6 @@
-// src/pages/LoginPage.jsx
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "../styles/LoginPage.css";
 
 export default function LoginPage() {
@@ -8,37 +8,17 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const [csrfToken, setCsrfToken] = useState("");
-
-  // Grab CSRF token once when the page loads
-  useEffect(() => {
-    (async () => {
-      try {
-        const r = await fetch("/api/csrf", { credentials: "include" });
-        if (!r.ok) throw new Error("Failed to fetch CSRF token");
-        const { csrfToken } = await r.json();
-        setCsrfToken(csrfToken);
-      } catch (e) {
-        console.error(e);
-        setError("Security token error. Please refresh and try again.");
-      }
-    })();
-  }, []);
+  const navigate = useNavigate();
 
   async function handleSubmit(e) {
     e.preventDefault();
     setError("");
 
     try {
-      const res = await fetch("/api/auth/login", {
+      const res = await fetch("/api/login", {
         method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-          // send the CSRF token in a header (accepted by csurf/csurf-compatible libs)
-          "CSRF-Token": csrfToken
-          // You could also use "X-CSRF-Token" or include `_csrf` in JSON body if you prefer.
-        },
+        credentials: "include", // send/receive session cookie
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ accountType, email, password }),
       });
 
@@ -47,8 +27,7 @@ export default function LoginPage() {
         throw new Error(msg);
       }
 
-      // success: redirect or navigate
-      // navigate("/");
+      navigate("http://localhost:5173/", { replace: true });
     } catch (err) {
       setError(err.message);
     }
@@ -93,12 +72,11 @@ export default function LoginPage() {
             required
           />
 
-          <button type="submit" disabled={!csrfToken}>Log In</button>
+          <button type="submit">Log In</button>
           <Link to="/forgot-password">Forgot Password?</Link>
         </form>
 
         <hr />
-
         <div id="createAccount-container">
           <Link id="createAccount-btn" to="/create-account">Create Account</Link>
         </div>
