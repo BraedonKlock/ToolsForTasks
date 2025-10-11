@@ -36,7 +36,7 @@ exports.postLogin = (req, res, next) => {
   
   /**OWNER account type */
   if (accountType === 'owner') {
-    User.findUser(email) // finding the user by the email they entered               
+    User.findUser(email) // finding the user by the email they entered
     .then(([rows]) => { // when promise is returned im destructuring the first index of the 2d array where the user info is
       if (!rows || rows.length === 0) { // if login didnt work
       return res.redirect(303,`/login?error=Invalid email.`);
@@ -45,8 +45,8 @@ exports.postLogin = (req, res, next) => {
       const org = rows[0]; // getting the user. which is an object and storing it in user
 
       // bcrypt.compare returns a Promise
-      return bcrypt.compare(password, org.password) // comparing the hashedPassword and using bcrypt to decrypt it 
-        .then((ok) => { // storing the returned promise in ok 
+      return bcrypt.compare(password, org.password) // comparing the hashedPassword and using bcrypt to decrypt it
+        .then((ok) => { // storing the returned promise in ok
           if (!ok) { // if unsuccessful (password isnt equal)
             return res.redirect(303,`/login?error=Invalid password.`);
           }
@@ -54,7 +54,7 @@ exports.postLogin = (req, res, next) => {
             /**Success */
             req.session.org = org.id; // used for socketio to join rooms
             req.session.companyname = org.companyName;
-            req.session.loginid = org.id; 
+            req.session.loginid = org.id;
             req.session.isLoggedIn = true; // storing loggedin flag in session to keep user logged in for route auth
             req.session.email = org.email; //
             req.session.role = org.role;
@@ -75,8 +75,8 @@ exports.postLogin = (req, res, next) => {
       }
       const emp = rows[0]; // getting the user. which is an object and storing it in user
       // bcrypt.compare returns a Promise
-      return bcrypt.compare(password, emp.password) // comparing the hashedPassword and using bcrypt to decrypt it 
-        .then((ok) => { // storing the returned promise in ok 
+      return bcrypt.compare(password, emp.password) // comparing the hashedPassword and using bcrypt to decrypt it
+        .then((ok) => { // storing the returned promise in ok
           if (!ok) { // if unsuccessful (password isnt equal)
             return res.redirect(303,`/login?error=Invalid password.`);
           }
@@ -89,7 +89,7 @@ exports.postLogin = (req, res, next) => {
           });
           req.session.employeename = emp.name;
           req.session.org = emp.org_id; // used for socketio to join rooms
-          req.session.loginid = emp.id; 
+          req.session.loginid = emp.id;
           req.session.isLoggedIn = true; // storing loggedin flag in session to keep user logged in for route auth
           req.session.email = emp.email; //
           req.session.role = emp.role;
@@ -128,7 +128,7 @@ exports.postCreateAccount = (req,res,next) => {
         return res.redirect(303,'/create-account?error=Email already exists');
       };
       
-      return bcrypt.hash(password, 12) // encrypting password. second argument is the cost factor (# of times hashed) 
+      return bcrypt.hash(password, 12) // encrypting password. second argument is the cost factor (# of times hashed)
       .then((hashedPassword) => { // bycript returns a promise that encrypted password is stored in hashPassword
         const newUser = new User(type, name, email, hashedPassword) // new user is created
         return newUser.save() // new user saved to database

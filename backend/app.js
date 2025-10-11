@@ -1,28 +1,17 @@
-/**
- * This file is the entry point of the web app and handles entry points to routes
- */
+// backend/app.js
+const express = require("express");
+const session = require("express-session");
+// If you already use MySQL session store, uncomment the next 2 lines:
+// const MySQLStore = require("express-mysql-session")(session);
+// const store = new MySQLStore({ host: "localhost", user: "root", password: "Kloc0004", database: "tools_for_tasks" });
 
-/**Dependancy imports */
-const express = require('express'); // importing express
-const http = require('http');
-const { Server } = require('socket.io');
-const bodyParser = require('body-parser'); // importing body parser to parse raw binary data 
-const path = require('path'); // importing path so that paths work on linux OS
-const session = require('express-session'); // importing express sessions for user authentication
-const MySQLStore = require('express-mysql-session')(session); // importing mysql session to store sessions in database
-const csrf = require('@dr.pogodin/csurf'); // installing csrf to implement tokens to protect against attacks
+// Routers (you’ll create these two files)
+//   - routes/notLoggedIn.js  (public endpoints like /login, /signup, etc.)
+//   - routes/loggedIn.js     (protected endpoints that require auth)
+const notLoggedInRoutes = require("./routes/notLoggedIn");
+const loggedInRoutes = require("./routes/loggedin");
 
-/**File imports */
-const db = require('./util/database'); // importing the database
-const homeRoute = require('./routes/home'); // importing routes for not loggedin user
-const loggedinRoutes = require('./routes/loggedin'); // importing loggedin.js from routes
-const { requireLogin, branchLogIn, attachCsrfToken } = require('./middleware/auth');  // not '/middleware/auth'
-const viewLocals = require('./middleware/viewLocals');
-const errorHandler = require('./middleware/errorHandler');
-
-const app = express(); // creating an express object thats a request handler
-const server = http.createServer(app); // create the HTTP and pass the app as handler 
-const io = new Server(server);
+const app = express();
 
 /**mysql store object for storing session data */
 const store = new MySQLStore({
@@ -36,63 +25,46 @@ const store = new MySQLStore({
   expiration: 7 * 24 * 60 * 60 * 1000
 });
 
-/**creating csrf object */
-const csrfProtection = csrf();
+/* ---------- Core middleware ---------- */
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
 
-/**ExpressJS settings */
-app.set('view engine', 'ejs'); // setting the servers view to ejs 
-app.set('views', 'views'); // setting the view path to the views folder
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET || "change-me",
+    resave: false,
+    saveUninitialized: false,
+    // store,            // ← uncomment if using MySQLStore above
+    name: "tft.sid",
+    cookie: {
+      httpOnly: true,
+      sameSite: "lax",
+      secure: process.env.NODE_ENV === "production",
+    },
+  })
+);
 
-/** */
-app.use(bodyParser.urlencoded({ extended: false })); // using body-parser to parse raw data
-app.use(express.static(path.join(__dirname, 'public'))); // importing css files
+/* ---------- Auth gate middleware ---------- */
+// Hard gate: only allow through if logged in.
+function requireLogin(req, res, next) {
+  if (req.session && req.session.isLoggedIn) return next();
+  return res.status(401).json({ error: "Unauthorized" });
+}
 
-/**Setting up session */
-const sessionMiddleware = session({
-  secret: process.env.SESSION_SECRET || 'change-me',
-  resave: false,
-  saveUninitialized: false,
-  store,
-  name: 'tft.sid',
-  cookie: {
-    httpOnly: true,
-    sameSite: 'lax',
-    secure: process.env.NODE_ENV === 'production'
-  }
+// Soft branch helper (optional): if you later want to redirect or branch,
+// you can inspect req.session.isLoggedIn here. For now, we just mount routers.
+
+/* ---------- Route mounting ---------- */
+// All protected app routes live under /loggedin and require a valid session.
+app.use("/loggedin", requireLogin, loggedInRoutes);
+
+// All public routes (not logged in yet) live under / (root).
+app.use("/", notLoggedInRoutes);
+
+/* ---------- Start server ---------- */
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`API listening on http://localhost:${PORT}`);
 });
 
-app.use(sessionMiddleware);
-app.use(csrfProtection);
-app.use(attachCsrfToken);
-
-const wrap = (mw) => (socket, next) => mw(socket.request, {}, next);
-io.use(wrap(sessionMiddleware));
-app.set('io', io);
-
-/**calls to routers */
-app.use(viewLocals); // using locals for what the user sees in views files
-app.use('/loggedin', requireLogin, loggedinRoutes); // loggedin user routes
-app.use('/', branchLogIn, homeRoute); // home routes
-app.use(errorHandler);
-
-// socket.io handlers
-io.on('connection', (socket) => {
-  const sess = socket.request.session;
-  if (!sess?.org || !sess?.role) return; // if no org or role in session return
-  // Owners socket
-  if (sess.role === 'owner') {
-    socket.join(`org:${sess.org}`);
-    console.log(`Owner ${socket.id} joined room org:${sess.org}`);
-  }
-  // Employees socket
-  if (sess.role === 'crew' || sess.role === 'manager' && sess.loginid) {
-    socket.join(`emp:${sess.loginid}`);
-    console.log(`Employee ${socket.id} joined room emp:${sess.loginid}`);
-  }
-  socket.on('disconnect', () => {
-  });
-});
-
-
-// start listening
-server.listen(3000);
+module.exports = app;
