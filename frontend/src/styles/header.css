@@ -1,0 +1,86 @@
+
+@media (max-width: 800px) {
+    header {
+        background-color: rgb(51, 65, 85);
+        border-bottom: solid black;
+        display: flex;
+        margin-top: 0;
+        position: fixed;
+        z-index: 1000;  /* stays above everything */
+        width: 100%;
+        padding: 0;
+    }
+
+    #logoContainer {
+        display: flex;
+        background-color: rgb(51, 65, 85);
+        width: 100%;
+        justify-content: center;
+    }
+    header nav #logoContainer img {
+        width: 200px;
+    }
+    #logo-container {
+        display: flex;
+        background-color: rgb(51, 65, 85);
+        width: 100%;
+        justify-content: center;
+    }
+    nav {
+        display: flex;
+        flex-direction: column;
+        margin: 0vh 0 0vh 0;
+        width: 100%;
+        background-color: rgb(51, 65, 85);
+        justify-content: center;
+    }
+    .hamburger {
+        display: block;
+        position: absolute;
+        bottom: 3vw;
+        left: 3vw;
+        font-size: 24px;
+        cursor: pointer;
+        -webkit-tap-highlight-color: transparent; /*removes blue tap highlight */
+        background-color: rgb(51, 65, 85);
+        border: none;
+    }
+    #hamburger-nav {
+        display: none;
+        position: absolute;
+        left: 0;
+        flex-direction: column;
+        background: rgb(51, 65, 85);
+        top: 100%;
+        width: 100%;
+        gap: 2vh;
+        padding: 5vw 5vh 2.4vw 5vh;
+        border-bottom: solid black;
+        border-width: .15rem;
+    }
+
+    #hamburger-nav a {
+        font-family: serif;
+        font-size: large;
+        background-color: rgb(51, 65, 85);
+        -webkit-tap-highlight-color: transparent; /*removes blue tap highlight */
+    }
+    .hamburger-line {
+        width: 75%;
+        border: solid black .1rem;
+        margin-left: 0;
+    }
+    #hamburger-nav.open {
+        display: flex;
+    }
+    a {
+        text-decoration: none;
+        font-family: serif;
+        font-size: large;
+    }
+    .error-message {
+        margin-top: 20vh;
+        color: red;
+        text-align: center;
+    }
+}

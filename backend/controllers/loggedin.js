@@ -1,5 +1,5 @@
 /**
- * This file is responsible for handling post and get requests 
+ * This file is responsible for handling post and get requests
  */
 
 const Jobs = require('../models/jobs'); // importing jobs object from models
