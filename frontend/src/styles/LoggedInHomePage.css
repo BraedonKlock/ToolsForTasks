@@ -1,0 +1,16 @@
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 30vh;
+    width: 100%;
+    padding-top: 3vw;
+}
+main h1 {
+    color: rgb(254,149,23);
+}
+.error {
+    text-align: center;
+    color: red;
+    font-size: small;
+}

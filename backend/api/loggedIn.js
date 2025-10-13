@@ -1,6 +1,5 @@
 const path = require('path'); // importing path for linux OS path compatability
 const express = require('express'); // importing express
-
 const loggedinController = require('../controllers/loggedin');
 
 /**Creating a mini express router
@@ -10,7 +9,8 @@ const loggedinController = require('../controllers/loggedin');
 const router = express.Router(); // creating a mini express router
 
 
-router.get("/", (_req, res) => res.json({ ok: true, area: "protected" }));
+router.get("/jobs", loggedinController.listForHome);
+
 
 
 module.exports = router;

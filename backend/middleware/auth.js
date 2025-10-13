@@ -3,18 +3,15 @@
  */
 const jwt = require("jsonwebtoken");
 
-exports.requireAuth = (roles = []) => (req, res, next) => {
+function requireAuth(req, res, next) {
   const auth = req.headers.authorization || "";
   const token = auth.startsWith("Bearer ") ? auth.slice(7) : null;
   if (!token) return res.status(401).json({ error: "Missing token" });
-  
   try {
-    const payload = jwt.verify(token, process.env.JWT_ACCESS_SECRET);
-    if (roles.length && !roles.includes(payload.role)) return res.status(403).json({ error: "Forbidden" });
-    req.user = payload; // { sub, role, ... }
+    req.user = jwt.verify(token, process.env.JWT_ACCESS_SECRET); // { sub, role, ... }
     next();
-  } catch (e) {
-    return res.status(401).json({ error: "Invalid/expired token" });
+  } catch {
+    res.status(401).json({ error: "Invalid/expired token" });
   }
 };
 
@@ -44,4 +41,4 @@ function attachCsrfToken(req, res, next) {
   next();
 }
 
-module.exports = { requireLogin, branchLogIn,attachCsrfToken, requireRole };
+module.exports = { requireAuth, requireLogin, branchLogIn,attachCsrfToken, requireRole };

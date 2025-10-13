@@ -4,6 +4,10 @@ import { BrowserRouter } from "react-router-dom";
 import './styles/index.css'
 import App from './App.jsx'
 
+// Hydrate the token before anything renders
+const saved = sessionStorage.getItem("tft_token");
+if (saved) window.accessToken = saved;
+
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>

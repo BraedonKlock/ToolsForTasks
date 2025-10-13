@@ -1,4 +1,7 @@
-
+@font-face {
+    font-family: 'story script';
+    src: url('../assets/font/Story_Script/StoryScript-Regular.ttf') format('truetype');
+}
 @media (max-width: 800px) {
     header {
         background-color: rgb(51, 65, 85);
@@ -59,7 +62,7 @@
         border-width: .15rem;
     }
 
-    #hamburger-nav a {
+    #hamburger-nav .nav-link {
         font-family: serif;
         font-size: large;
         background-color: rgb(51, 65, 85);
@@ -73,10 +76,25 @@
     #hamburger-nav.open {
         display: flex;
     }
-    a {
+    .nav-link {
         text-decoration: none;
         font-family: serif;
         font-size: large;
+    }
+    #company-h1 {
+        background-color: rgb(51, 65, 85);
+        width: 100%;
+        text-align: center;
+        margin-top: auto;
+    }
+    #company-h1 h6 {
+        margin-bottom: 2vh;
+    }
+    header nav h1 {
+        font-family: 'story script';
+        margin: 0 0 1vw 0;
+        background-color: rgb(51, 65, 85);
+        color: rgb(254,149,23);
     }
     .error-message {
         margin-top: 20vh;

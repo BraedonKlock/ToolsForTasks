@@ -1,4 +1,5 @@
 /**This file is holds the controllers for a user who is NOT logged in */
+const jwt = require("jsonwebtoken");
 
 const User = require('../models/user');
 const Employee = require('../models/employee');
@@ -8,6 +9,17 @@ const bcrypt = require('bcryptjs'); // importing encryption for user passwords
 
 /**-------------------------------------------------POST LOG IN------------------------------------------------------ */
 /**Handling the post req when a user logs in */
+const ACCESS_TTL = "15m"; // short-lived is best
+const ACCESS_SECRET = process.env.JWT_ACCESS_SECRET; // set this in env
+
+function signAccess({ id, role, orgId }) {
+  return jwt.sign(
+    { sub: String(id), role, orgId: String(orgId) }, // minimal claims
+    ACCESS_SECRET,
+    { algorithm: "HS256", expiresIn: ACCESS_TTL }
+  );
+}
+
 exports.login = async (req, res, next) => {
   try {
     const email = (req.body.email || "").trim().toLowerCase();
@@ -18,66 +30,37 @@ exports.login = async (req, res, next) => {
       return res.status(400).json({ error: "Missing fields" });
     }
 
+    // ---- OWNER ----
     if (accountType === "owner") {
       const [rows] = await User.findUser(email);
-      if (!rows || rows.length === 0) {
-        return res.status(401).json({ error: "Invalid email" });
-      }
+      if (!rows || rows.length === 0) return res.status(401).json({ error: "Invalid email" });
 
       const org = rows[0];
       const ok = await bcrypt.compare(password, org.password);
       if (!ok) return res.status(401).json({ error: "Invalid password" });
 
-      // success: set session
-      req.session.org = org.id;                  // for socket rooms
-      req.session.companyname = org.companyName;
-      req.session.loginid = org.id;
-      req.session.isLoggedIn = true;
-      req.session.email = org.email;
-      req.session.role = org.role;
+      const accessToken = signAccess({ id: org.id, role: org.role, orgId: org.id });
 
-      return req.session.save(err => {
-        if (err) return next(err);
-        // Return JSON instead of redirect
-        return res.json({
-          ok: true,
-          user: { id: org.id, role: org.role, companyName: org.companyName, email: org.email },
-        });
+      return res.json({
+        accessToken,
+        user: { id: org.id, role: org.role, orgId: org.id, companyName: org.companyName },
       });
     }
 
+    // ---- EMPLOYEE ----
     if (accountType === "employee") {
       const [rows] = await Employee.findEmployee(email);
-      if (!rows || rows.length === 0) {
-        return res.status(401).json({ error: "Invalid email" });
-      }
+      if (!rows || rows.length === 0) return res.status(401).json({ error: "Invalid email" });
 
       const emp = rows[0];
       const ok = await bcrypt.compare(password, emp.password);
       if (!ok) return res.status(401).json({ error: "Invalid password" });
 
-      // (optional) fetch org for display name
-      try {
-        const [orgInfo] = await User.findUserbyId(emp.org_id);
-        if (orgInfo && orgInfo.length > 0) {
-          req.session.companyname = orgInfo[0].companyName;
-        }
-      } catch (_) { /* non-fatal */ }
+      const accessToken = signAccess({ id: emp.id, role: emp.role, orgId: emp.org_id });
 
-      // success: set session
-      req.session.employeename = emp.name;
-      req.session.org = emp.org_id;
-      req.session.loginid = emp.id;
-      req.session.isLoggedIn = true;
-      req.session.email = emp.email;
-      req.session.role = emp.role;
-
-      return req.session.save(err => {
-        if (err) return next(err);
-        return res.json({
-          ok: true,
-          user: { id: emp.id, role: emp.role, org: emp.org_id, email: emp.email, name: emp.name },
-        });
+      return res.json({
+        accessToken,
+        user: { id: emp.id, role: emp.role, orgId: emp.org_id, name: emp.name, companyName: emp.companyName },
       });
     }
 

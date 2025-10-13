@@ -8,24 +8,31 @@ const db = require('../util/database');
 const bcrypt = require('bcryptjs'); // importing encryption for user passwords
 
 /**-------------------------------------------------GET INDEX------------------------------------------------------- */
-/**Rendering the home page for logged in users */
-exports.getIndex = (req,res,next) => {
-  const role = req.session.role;
+/**Rendering the home page for logged in users
+ *  Returns the data the SPA needs for the logged-in home.
+ */
+exports.listForHome = async (req, res, next) => {
+  try {
+    if (!req.user) return res.status(401).json({ error: "Unauthenticated" });
 
-  const loginID = req.session.loginid;
-  const name = req.session.companyname;
-  const employeename = req.session.employeename;
+    const { sub: userId, role, orgId, company } = req.user; // from JWT claims
 
-  return Jobs.getAllJobs(loginID, role).then(([rows]) => { // getting all jobs from database by destructuring the 2d arrays first index
-      res.status(200).render('home/index', {
-          jobs: rows, // passing in rows with jobs keyword
-          pageTitle: 'Tools for Tasks - Home',
-          path: '/loggedin',
-          companyname: name,
-          employeename
-      });
-  })
-  .catch(next);
+    const [rows] = await Jobs.getAllJobs(userId, role);
+
+    // Return JSON;
+    res.status(200).json({
+      ok: true,
+      company,
+      role,
+      orgId,
+      userId,
+      jobs: rows,
+      // companyName/employeename:
+      // companyName, employeeName
+    });
+  } catch (err) {
+    next(err);
+  }
 };
 
 /**-------------------------------------------------GET JOBS PAGE--------------------------------------------------- */

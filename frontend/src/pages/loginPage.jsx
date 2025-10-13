@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../styles/LoginPage.css";
 
 export default function LoginPage() {
@@ -17,7 +16,6 @@ export default function LoginPage() {
     try {
       const res = await fetch("/api/login", {
         method: "POST",
-        credentials: "include", // send/receive session cookie
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ accountType, email, password }),
       });
@@ -27,7 +25,17 @@ export default function LoginPage() {
         throw new Error(msg);
       }
 
-      navigate("http://localhost:5173/", { replace: true });
+      const { accessToken, user } = await res.json();
+      if (!accessToken) throw new Error("No accessToken from server");
+
+      // Quick-n-dirty: keep in memory (better: a React Context)
+      // after successful login
+      window.accessToken = accessToken;   
+      sessionStorage.setItem("tft_token", accessToken);
+      sessionStorage.setItem("tft_user", JSON.stringify(user));
+      window.dispatchEvent(new Event("tft-auth-changed"));
+      
+      navigate("/loggedin", { replace: true });
     } catch (err) {
       setError(err.message);
     }
