@@ -1,16 +1,52 @@
-main {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 30vh;
-    width: 100%;
-    padding-top: 3vw;
-}
-main h1 {
-    color: rgb(254,149,23);
-}
-.error {
-    text-align: center;
-    color: red;
-    font-size: small;
+@media (max-width: 800px) {
+    main {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 25vh;
+        width: 100%;
+        padding-top: 3vw;
+    }
+    main h1 {
+        color: rgb(254,149,23);
+    }
+
+    .jobs-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        gap: 3vw;
+        margin-top: 2vw;
+        box-sizing: border-box;
+        padding: 0 2vw 0 2vw;
+    }
+    .job-card {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 5vw;
+        width: 100%;
+        border-radius: .4rem;
+        box-shadow: 0 4px 8px -2px rgba(0, 0, 0, 0.5);
+        padding: 1vw 0 1vw 0;
+        background-color: rgb(51, 65, 85);
+        -webkit-tap-highlight-color: transparent; /*removes blue tap highlight */
+    }
+    .job-image {
+        width: 25%;
+    }
+    .job-text {
+        display: flex;
+        flex-direction: column;
+        text-align: left;
+        gap: 1vw;
+    }
+    #addJob-image {
+        position: fixed;
+        z-index: 1000;  /* stays above everything */
+        bottom: 2vw;
+        right: 2vw;
+        width: 25%;
+    }
 }

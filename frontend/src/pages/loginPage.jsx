@@ -30,11 +30,10 @@ export default function LoginPage() {
 
       // Quick-n-dirty: keep in memory (better: a React Context)
       // after successful login
-      window.accessToken = accessToken;   
+      window.accessToken = accessToken;
       sessionStorage.setItem("tft_token", accessToken);
       sessionStorage.setItem("tft_user", JSON.stringify(user));
       window.dispatchEvent(new Event("tft-auth-changed"));
-      
       navigate("/loggedin", { replace: true });
     } catch (err) {
       setError(err.message);

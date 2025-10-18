@@ -57,7 +57,6 @@ exports.login = async (req, res, next) => {
       if (!ok) return res.status(401).json({ error: "Invalid password" });
 
       const accessToken = signAccess({ id: emp.id, role: emp.role, orgId: emp.org_id });
-
       return res.json({
         accessToken,
         user: { id: emp.id, role: emp.role, orgId: emp.org_id, name: emp.name, companyName: emp.companyName },

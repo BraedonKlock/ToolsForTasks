@@ -20,16 +20,13 @@ if (!ACCESS_SECRET) {
 }
 
 // ---- Routers ----
-// Public API routes: login/signup, etc. (should ISSUE JWTs; no auth required here)
 const notLoggedInRoutes = require("./api/notLoggedIn");
-// Protected API routes: require a valid JWT
 const loggedInRoutes = require("./api/loggedIn");
 
 // ---- App/Server/Socket.IO setup ----
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
-  // In dev (Vite on 5173), allow socket connection from that origin
   cors: { origin: ["http://localhost:5173"], credentials: false },
 });
 
@@ -37,12 +34,10 @@ const io = new Server(server, {
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-// For local dev, allow the Vite dev server to hit this API.
-// In prod, you’ll normally serve the React build from the same origin and can remove/relax this.
 app.use(
   cors({
     origin: ["http://localhost:5173"],
-    credentials: false, // not using cookies for auth with JWT access tokens
+    credentials: false,
   })
 );
 
@@ -60,17 +55,15 @@ function requireAuth(req, res, next) {
 }
 
 // ---- Mount APIs ----
-// Public endpoints (e.g., POST /api/login)
+// Public endpoints
 app.use("/api", notLoggedInRoutes);
 
-// Protected endpoints (must send Authorization: Bearer <token>)
+// Protected endpoints
 app.use("/api/loggedIn", requireAuth, loggedInRoutes);
 
-// ---- Socket.IO auth (verify JWT during handshake) ----
+// ---- Socket.IO auth ----
 io.use((socket, next) => {
   try {
-    // Expect the client to pass token in the connection auth payload:
-    // io("http://localhost:3000", { auth: { token: accessToken } })
     const token =
       socket.handshake.auth?.token ||
       (socket.handshake.headers.authorization || "").replace(/^Bearer\s+/i, "");
@@ -88,11 +81,9 @@ io.use((socket, next) => {
 io.on("connection", (socket) => {
   const u = socket.user;
   if (!u?.orgId || !u?.role) {
-    // not enough info to room users; still connected though
     return;
   }
 
-  // Example: room strategy similar to your old session-based logic
   if (u.role === "owner") {
     socket.join(`org:${u.orgId}`);
     console.log(`Owner ${socket.id} joined room org:${u.orgId}`);
