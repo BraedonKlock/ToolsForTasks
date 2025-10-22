@@ -10,7 +10,6 @@
     main h1 {
         color: rgb(254,149,23);
     }
-
     .jobs-container {
         display: flex;
         flex-direction: column;
@@ -49,7 +48,19 @@
         right: 2vw;
         width: 25%;
     }
-    .job-card-link {
+    .threeDotMenu-container {
+        display: flex;
+        flex-direction: row;
+    }
+    .threeDotMenu-options {
+        display: flex;
+        flex-direction: column;
+        gap: 1vh;
+        padding: 1vh 1vw 1vh 1vw;
+        margin: 0;
+    }
+    .threeDotMenu-options #editJobHref, .threeDotMenu-options button {
+        color: rgb(254,149,23);
         text-decoration: none;
     }
 }

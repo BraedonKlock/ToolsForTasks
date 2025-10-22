@@ -11,7 +11,7 @@ const bcrypt = require('bcryptjs'); // importing encryption for user passwords
 /**Rendering the home page for logged in users
  *  Returns the data the SPA needs for the logged-in home.
  */
-exports.listForHome = async (req, res, next) => {
+exports.getAllJobs = async (req, res, next) => {
   try {
     if (!req.user) return res.status(401).json({ error: "Unauthenticated" });
 

@@ -1,68 +1,29 @@
-import { useEffect, useState } from "react";
+import { useState, useContext, useEffect } from "react";
 import { NavLink, Link, useNavigate } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
 import "../styles/header.css";
 
-function decodeJwt(t){
-  try{
-    const b=t.split(".")[1].replace(/-/g,"+").replace(/_/g,"/");
-    return JSON.parse(atob(b))
-  }catch{return null}
-}
-
-function isJwtValid(t){
-  const p=decodeJwt(t);
-  return !!p && p.exp*1000 > Date.now()
-}
 
 export default function Header() {
-  // read once for first render
-  const userRaw = sessionStorage.getItem("tft_user");
-  let user = null;
-  try { user = userRaw ? JSON.parse(userRaw) : null; } catch {}
-
-  const initialToken = sessionStorage.getItem("tft_token") || "";
-  if (!window.accessToken) window.accessToken = initialToken;
+  const { user, isLoggedIn, logout } = useContext(AuthContext);
+  const [isOpen, setIsOpen] = useState(false);
 
   const [companyName, setCompanyName] = useState(user?.companyName ?? "");
   const [role, setRole] = useState(user?.role ?? null);
   const [employeeName, setEmployeeName] = useState(user?.name ?? "");
-  const [loggedIn, setLoggedIn] = useState(!!initialToken && isJwtValid(initialToken));
-  const [isOpen, setIsOpen] = useState(false);
-  const navigate = useNavigate();
-  //listen for the custom event and rehydrate state
+
   useEffect(() => {
-    const onAuthChanged = () => {
-      const t = sessionStorage.getItem("tft_token") || "";
-      const raw = sessionStorage.getItem("tft_user");
-      let u = null; try { u = raw ? JSON.parse(raw) : null; } catch {}
+    if (user) {
+      setCompanyName(user.companyName ?? "");
+      setRole(user.role ?? null);
+      setEmployeeName(user.name ?? "");
+    }
+  }, [user]);
 
-      window.accessToken = t;
-      setLoggedIn(!!t && isJwtValid(t));
-      setCompanyName(u?.companyName ?? "");
-      setRole(u?.role ?? null);
-      setEmployeeName(u?.name ?? "");
-    };
-
-    window.addEventListener("tft-auth-changed", onAuthChanged);
-    return () => window.removeEventListener("tft-auth-changed", onAuthChanged);
-  }, []);
-
-  const logout = () => {
-    window.accessToken = "";
-    sessionStorage.removeItem("tft_token");
-    sessionStorage.removeItem("tft_user");
-    setLoggedIn(false);
-    setRole(null);
-    setCompanyName("");
-    setEmployeeName("");
-    setIsOpen(false);
-    navigate("/login", { replace: true });
-  };
-
-  const showNotLoggedIn = !loggedIn;
-  const showCrew = loggedIn && role === "crew";
-  const showManager = loggedIn && role === "manager";
-  const showOwner = loggedIn && role === "owner";
+  const showNotLoggedIn = !isLoggedIn;
+  const showCrew = isLoggedIn && role === "crew";
+  const showManager = isLoggedIn && role === "manager";
+  const showOwner = isLoggedIn && role === "owner";
 
   return (
     <header className="mobile">
@@ -99,7 +60,7 @@ export default function Header() {
             Log in / Sign up
             <hr className="hamburger-line" />
           </NavLink>
-          <NavLink to="/" end className="nav-link" onClick={() => setIsOpen(false)}>
+          <NavLink to="/loggedIn" end className="nav-link" onClick={() => setIsOpen(false)}>
             Home
             <hr className="hamburger-line" />
           </NavLink>
@@ -129,7 +90,7 @@ export default function Header() {
             Home
             <hr className="hamburger-line" />
           </NavLink>
-          <NavLink to="/jobs" className="nav-link" onClick={() => setIsOpen(false)}>
+          <NavLink to="/loggedIn/Jobs" className="nav-link" onClick={() => setIsOpen(false)}>
             Jobs
             <hr className="hamburger-line" />
           </NavLink>
@@ -154,7 +115,7 @@ export default function Header() {
             Home
             <hr className="hamburger-line" />
           </NavLink>
-          <NavLink to="/jobs" className="nav-link" onClick={() => setIsOpen(false)}>
+          <NavLink to="/loggedIn/Jobs" className="nav-link" onClick={() => setIsOpen(false)}>
             Jobs
             <hr className="hamburger-line" />
           </NavLink>

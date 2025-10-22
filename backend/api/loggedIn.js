@@ -9,7 +9,7 @@ const loggedinController = require('../controllers/loggedin');
 const router = express.Router(); // creating a mini express router
 
 
-router.get("/jobs", loggedinController.listForHome);
+router.get("/jobs", loggedinController.getAllJobs);
 
 
 

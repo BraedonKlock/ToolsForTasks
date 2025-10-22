@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../styles/LoginPage.css";
+import { useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
 
 export default function LoginPage() {
   const [accountType, setAccountType] = useState("");
@@ -8,6 +10,7 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const { login } = useContext(AuthContext);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -28,12 +31,8 @@ export default function LoginPage() {
       const { accessToken, user } = await res.json();
       if (!accessToken) throw new Error("No accessToken from server");
 
-      // Quick-n-dirty: keep in memory (better: a React Context)
       // after successful login
-      window.accessToken = accessToken;
-      sessionStorage.setItem("tft_token", accessToken);
-      sessionStorage.setItem("tft_user", JSON.stringify(user));
-      window.dispatchEvent(new Event("tft-auth-changed"));
+      login(accessToken, user);
       navigate("/loggedin", { replace: true });
     } catch (err) {
       setError(err.message);
