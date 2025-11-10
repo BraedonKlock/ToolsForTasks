@@ -9,7 +9,7 @@ const bcrypt = require('bcryptjs'); // importing encryption for user passwords
 
 /**-------------------------------------------------POST LOG IN------------------------------------------------------ */
 /**Handling the post req when a user logs in */
-const ACCESS_TTL = "15m"; // short-lived is best
+const ACCESS_TTL = "60m";
 const ACCESS_SECRET = process.env.JWT_ACCESS_SECRET; // set this in env
 
 function signAccess({ id, role, orgId }) {
@@ -69,38 +69,6 @@ exports.login = async (req, res, next) => {
   }
 };
 
-/**-----------------------------------------------GET CREATE ACCOUNT---------------------------------------------------- */
-/**Rendering create account page upon get request */
-exports.getCreateAccount = (req,res,next) => {
-  const error = req.query.error || null;
-    res.status(200).render('home/createAccount', {
-        pageTitle: 'Tools for Tasks - Create Account',
-        path: '/',
-        error
-    });
-};
+exports.createAccount = (req, res) => {
 
-/**----------------------------------------------POST CREATE ACCOUND---------------------------------------------------- */
-/**Handling post request for when a user creates an account */
-exports.postCreateAccount = (req,res,next) => {
-    const type = req.body.businessType; // getting the business type for account
-    const name = req.body.companyName;  //getting the company name for account
-    const email = req.body.email; // getting the email for acccount
-    const password = req.body.password; // getting the password for the account
-
-    db.execute('SELECT * FROM organizations WHERE email = ? LIMIT 1', [email]).then(([rows]) => {
-      if (rows.length > 0) {
-        return res.redirect(303,'/create-account?error=Email already exists');
-      };
-      
-      return bcrypt.hash(password, 12) // encrypting password. second argument is the cost factor (# of times hashed)
-      .then((hashedPassword) => { // bycript returns a promise that encrypted password is stored in hashPassword
-        const newUser = new User(type, name, email, hashedPassword) // new user is created
-        return newUser.save() // new user saved to database
-      })
-      .then(() => {
-        res.redirect(303,'/loggedin'); // redirecting to loggedin route
-      });
-    })
-      .catch(next);
-};
+}

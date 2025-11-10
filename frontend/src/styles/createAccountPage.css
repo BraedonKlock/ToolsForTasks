@@ -1,0 +1,76 @@
+#create-main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 30vw;
+    width: 100%;
+    padding-top: 3vw;
+}
+#create-main h1 {
+    color: rgb(254,149,23);
+}
+#createForm-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: rgb(51, 65, 85);
+    width: fit-content;
+    padding: 3vw;
+    border-radius: .5rem;
+    box-shadow: 0 4px 8px -2px rgba(0, 0, 0, 0.5);
+    margin-top: 4vw;
+    border-top: solid rgb(254,149,23) .5rem;
+}
+#create-form {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch; /*Forcing  everything to stretch to fill container*/
+    gap: 1.5vw;
+    width: 100%;
+}
+#createForm-busType {
+    text-align: center;
+}
+
+#create-form input {
+    text-align: center;
+      box-sizing: border-box; /* ensures padding/border don't overflow */
+
+}
+#create-form input:focus {
+    outline: none;
+    border: solid rgb(254,149,23) .15rem ;
+}
+#create-form select:focus {
+    outline: none;
+    border: solid rgb(254,149,23) .15rem ;
+}
+#create-form button {
+    background-color: rgb(254,149,23);
+    box-sizing: border-box; /* ensures padding/border don't overflow */
+    box-shadow: 0 4px 8px -2px rgba(0, 0, 0, 0.5);
+}
+
+#createForm-container hr {
+    width: 75%;
+    border: solid black .1rem;
+    margin: 2vw 0 2vw 0;
+}
+.form-control {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    gap: 1vw;
+}
+
+.form-control label {
+    color: white;
+    text-align: right;
+}
+
+.error {
+    text-align: center;
+    color: red;
+    font-size: medium;
+    margin: 1vh 0 2vh 0;
+}

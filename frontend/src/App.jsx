@@ -1,20 +1,29 @@
-import reactLogo from "./assets/react.svg";
 import { Routes, Route } from "react-router-dom";
 
 import "./styles/App.css";
 import Header from "./components/header.jsx";
+import NotLoggedInHomePage from "./pages/notLoggedInHomePage.jsx";
 import LoginPage from "./pages/loginPage.jsx";
-import LoggedInHomePage from "./pages/LoggedInHomePage.jsx";
+import CreateAccountPage from "./pages/createAccountPage.jsx";
+import LoggedInHomePage from "./pages/loggedInHomePage.jsx";
 import JobsPage from "./pages/JobsPage.jsx";
+import AddJobPage from "./pages/addJobPage"
+import JobDetailsPage from "./pages/jobDetailsPage";
+import EditJobPage from "./pages/editJobPage";
 
 export default function App() {
   return (
     <>
       <Header />
       <Routes>
+        <Route path="/" element={<NotLoggedInHomePage />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/create-account" element={<CreateAccountPage />} />
         <Route path="/loggedIn" element={<LoggedInHomePage />} />
         <Route path="/loggedIn/Jobs" element={<JobsPage />} />
+        <Route path="/loggedIn/add-job" element={<AddJobPage />} />
+        <Route path="/loggedIn/job-details/:id" element={<JobDetailsPage />} />
+        <Route path="/loggedIn/edit-job/:id" element={<EditJobPage />} />
       </Routes>
     </>
   );

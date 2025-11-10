@@ -4,8 +4,7 @@
 }
 @media (max-width: 800px) {
     header {
-        background-color: rgb(51, 65, 85);
-        border-bottom: solid black;
+        background-color: #1B2A41;
         display: flex;
         margin-top: 0;
         position: fixed;
@@ -16,7 +15,7 @@
 
     #logoContainer {
         display: flex;
-        background-color: rgb(51, 65, 85);
+        background-color: #1B2A41;
         width: 100%;
         justify-content: center;
     }
@@ -25,7 +24,7 @@
     }
     #logo-container {
         display: flex;
-        background-color: rgb(51, 65, 85);
+        background-color: #1B2A41;
         width: 100%;
         justify-content: center;
     }
@@ -34,7 +33,7 @@
         flex-direction: column;
         margin: 0vh 0 0vh 0;
         width: 100%;
-        background-color: rgb(51, 65, 85);
+        background-color: #1B2A41;
         justify-content: center;
     }
     .hamburger {
@@ -45,15 +44,18 @@
         font-size: 24px;
         cursor: pointer;
         -webkit-tap-highlight-color: transparent; /*removes blue tap highlight */
-        background-color: rgb(51, 65, 85);
+        background-color: #1B2A41;
         border: none;
+    }
+    .menu-image {
+        color: white;
     }
     #hamburger-nav {
         display: none;
         position: absolute;
         left: 0;
         flex-direction: column;
-        background: rgb(51, 65, 85);
+        background: #1B2A41;
         top: 100%;
         width: 100%;
         gap: 2vh;
@@ -65,7 +67,7 @@
     #hamburger-nav .nav-link {
         font-family: serif;
         font-size: large;
-        background-color: rgb(51, 65, 85);
+        background-color: #1B2A41;
         -webkit-tap-highlight-color: transparent; /*removes blue tap highlight */
     }
     .hamburger-line {
@@ -82,7 +84,7 @@
         font-size: large;
     }
     #company-h1 {
-        background-color: rgb(51, 65, 85);
+        background-color: #1B2A41;
         width: 100%;
         text-align: center;
         margin-top: auto;
@@ -93,7 +95,7 @@
     header nav h1 {
         font-family: 'story script';
         margin: 0 0 1vw 0;
-        background-color: rgb(51, 65, 85);
+        background-color: #1B2A41;
         color: rgb(254,149,23);
     }
     .error-message {

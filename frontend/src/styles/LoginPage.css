@@ -11,7 +11,7 @@ main h1 {
 }
 #loginForm-container {
     border-top: solid rgb(254,149,23) .5rem;
-    background-color: rgb(51, 65, 85);
+    background-color: #1B2A41;
     width: 60%;
     padding: 3vw;
     border-radius: .5rem;

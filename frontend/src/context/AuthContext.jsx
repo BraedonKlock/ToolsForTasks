@@ -1,4 +1,5 @@
 import { createContext, useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 export const AuthContext = createContext();
 
@@ -6,6 +7,7 @@ export function AuthProvider({ children }) {
   const [accessToken, setAccessToken] = useState("");
   const [user, setUser] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate();
 
   // Hydrate from sessionStorage on first load
   useEffect(() => {
@@ -34,6 +36,7 @@ export function AuthProvider({ children }) {
     setAccessToken("");
     setUser(null);
     setIsLoggedIn(false);
+    navigate("/login");
   };
 
   return (

@@ -13,36 +13,15 @@ module.exports = class jobs {
         this.notes = notes,
         this.orgId = orgId
     }
-
-    /**This method saves a job to the database*/
-    save() {
-        return db.execute(
-        'INSERT INTO jobs (jobid, jobType, title, date, address, phoneNumber, notes, org_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
-        [this.jobID, this.jobType, this.title, this.date, this.address, this.phoneNumber, this.notes, this.orgId]
-        ).then(([result]) => result.id);
-    }
-    update(dbid) {
-        return db.execute(
-            `UPDATE jobs
-            SET jobid = ?, jobType = ?, title = ?, date = ?, address = ?, phoneNumber = ?, notes = ?
-            WHERE org_id = ? AND id = ?`,
-            [this.jobID, this.jobType, this.title, this.date, this.address, this.phoneNumber, this.notes, this.orgId, dbid]
-        );
-    }
-
-    static assignEmployees(jobDbId, employeeDbIds) {
-        if (!employeeDbIds || !employeeDbIds.length) return Promise.resolve();
-
-        const values = employeeDbIds.map(eid => [jobDbId, Number(eid)]);
-        const placeholders = values.map(() => '(?, ?)').join(', ');
-        const flatValues = values.flat(); // Flatten the array of pairs
-
-        const query = `INSERT INTO job_employees (job_id, employee_id) VALUES ${placeholders}`;
-        return db.execute(query, flatValues);
-    }
-
     
-    /**This utility function gets all the jobs from the database assigned to the user that logged in */
+    async addJob() {
+        const [result] = await db.execute(
+            'INSERT INTO jobs (jobid, jobType, title, date, address, phoneNumber, notes, org_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+            [this.jobID, this.jobType, this.title, this.date, this.address, this.phoneNumber, this.notes, this.orgId]
+        )
+        return result;
+    }
+
     static getAllJobs(loginID, role) {
         if (role === "owner" ) {
             return db.execute(
@@ -51,64 +30,59 @@ module.exports = class jobs {
             WHERE org_id = ?
             ORDER BY \`date\` ASC`,
             [loginID]
+            );
+        }
+        
+        if (role === "crew"  || role === "manager" ) {
+                console.log("running");
+                return db.execute(
+                    `SELECT j.*
+                FROM job_employees je
+                JOIN jobs j ON j.id = je.job_id
+                WHERE je.employee_id = ?
+                ORDER BY j.\`date\` ASC`,
+                [loginID]
+            );
+        }
+        
+        throw new Error('Invalid column name');
+    }
+
+    static getJob(orgId, id) {
+        return db.execute('SELECT * FROM jobs WHERE org_id = ? AND id = ? ', [orgId, id])
+        .then(([rows]) => { // returns a promise which is a 2d array. getting the first index where the job details are stored
+            if (!rows || rows.length === 0) {
+                const err = new Error();
+                err.status = 404;
+                throw err;
+            }
+            return rows
+        });
+    }
+
+    static assignEmployeesToJob(jobDbId, employeeDbIds) {
+        const values = employeeDbIds.map(eid => [jobDbId, Number(eid)]);
+        const placeholders = values.map(() => '(?, ?)').join(', ');
+        const flatValues = values.flat();
+
+        const query = `INSERT INTO job_employees (job_id, employee_id) VALUES ${placeholders}`;
+        return db.execute(query, flatValues);
+    }
+
+    static deleteJobById(orgId, id) {
+        return db.execute('DELETE FROM jobs WHERE org_id = ? AND id = ?', [orgId, id]);
+    };
+    
+    static deleteEmployeeFromJob(jobDbId, employeeDbId) {
+        return db.execute('DELETE FROM job_employees WHERE job_id = ? AND employee_id = ?',[jobDbId, employeeDbId]);
+    };
+
+    updateJob(dbJobId) {
+        return db.execute(
+            `UPDATE jobs
+            SET jobid = ?, jobType = ?, title = ?, date = ?, address = ?, phoneNumber = ?, notes = ?
+            WHERE org_id = ? AND id = ?`,
+            [this.jobID, this.jobType, this.title, this.date, this.address, this.phoneNumber, this.notes, this.orgId, dbJobId]
         );
     }
-    
-    if (role === "crew"  || role === "manager" ) {
-            console.log("running");
-            return db.execute(
-                `SELECT j.*
-            FROM job_employees je
-            JOIN jobs j ON j.id = je.job_id
-            WHERE je.employee_id = ?
-            ORDER BY j.\`date\` ASC`,
-            [loginID]
-        );
-    }
-    
-    throw new Error('Invalid column name');
 }
-
-/**This utility function gets a job by its unique id used for job details */
-static findJobById(orgId, id) {
-    return db.execute('SELECT * FROM jobs WHERE org_id = ? AND jobid = ? ', [orgId, id])
-    .then(([rows]) => { // returns a promise which is a 2d array. getting the firat index where the job details are stored
-        if (!rows || rows.length === 0) {
-            const err = new Error();
-            err.status = 404;
-            throw err;
-        }
-        console.log(rows + "functions");
-        return rows
-    });
-}
-
-static findDbIdByJobid(orgId, jobId) {
-    return db.execute(
-        'SELECT id FROM jobs WHERE org_id = ? AND jobid = ? LIMIT 1',
-        [orgId, jobId]
-    ).then(([rows]) => {
-        if (!rows || rows.length === 0) {
-            const err = new Error();
-            err.status = 404;
-            throw err;
-        }
-        return rows;
-    });
-}
-
-static deleteJobById(orgid, jobid) {
-    return db.execute('DELETE FROM jobs WHERE org_id = ? AND jobid = ?', [orgid, jobid]);
-};
-
-static removeEmployeeFromJob(jobDbId, employeeDbId) {
-    return db.execute('DELETE FROM job_employees WHERE job_id = ? AND employee_id = ?',[jobDbId, employeeDbId]);
-};
-/** Remove a single employee from a job */
-static removeEmployeeFromJob(jobDbId, employeeDbId) {
-    return db.execute(
-        'DELETE FROM job_employees WHERE job_id = ? AND employee_id = ?',
-        [jobDbId, employeeDbId]
-    );
-}
-};

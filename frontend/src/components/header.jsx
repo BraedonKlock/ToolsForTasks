@@ -1,8 +1,9 @@
 import { useState, useContext, useEffect } from "react";
-import { NavLink, Link, useNavigate } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import "../styles/header.css";
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBars } from "@fortawesome/free-solid-svg-icons";
 
 export default function Header() {
   const { user, isLoggedIn, logout } = useContext(AuthContext);
@@ -28,7 +29,7 @@ export default function Header() {
   return (
     <header className="mobile">
       <nav>
-        <button className="hamburger" id="hamburger" onClick={() => setIsOpen(o=>!o)}>☰</button>
+        <button className="hamburger" id="hamburger" onClick={() => setIsOpen(o=>!o)}><FontAwesomeIcon icon={faBars} size="lg" className="menu-image" /></button>
 
         {showNotLoggedIn && (
           <div id="logoContainer">
@@ -60,7 +61,7 @@ export default function Header() {
             Log in / Sign up
             <hr className="hamburger-line" />
           </NavLink>
-          <NavLink to="/loggedIn" end className="nav-link" onClick={() => setIsOpen(false)}>
+          <NavLink to="/" end className="nav-link" onClick={() => setIsOpen(false)}>
             Home
             <hr className="hamburger-line" />
           </NavLink>
@@ -69,7 +70,7 @@ export default function Header() {
 
       {showCrew && (
         <div className={`mobile ${isOpen ? "open" : ""}`} id="hamburger-nav">
-          <NavLink to="/login" className="nav-link" onClick={logout}>
+          <NavLink to="/login" className="nav-link" onClick= {() => {setIsOpen(false); logout();}}>
             Logout
             <hr className="hamburger-line" />
           </NavLink>
@@ -82,7 +83,7 @@ export default function Header() {
 
       {showManager && (
         <div className={`mobile ${isOpen ? "open" : ""}`} id="hamburger-nav">
-          <NavLink to="/login" className="nav-link" onClick={logout}>
+          <NavLink to="/login" className="nav-link" onClick= {() => {setIsOpen(false); logout();}}>
             Logout
             <hr className="hamburger-line" />
           </NavLink>
@@ -107,7 +108,7 @@ export default function Header() {
 
       {showOwner && (
         <div className={`mobile ${isOpen ? "open" : ""}`} id="hamburger-nav">
-          <NavLink to="/login" className="nav-link" onClick={logout}>
+          <NavLink to="/login" className="nav-link"  onClick= {() => {setIsOpen(false); logout();}}>
             Logout
             <hr className="hamburger-line" />
           </NavLink>

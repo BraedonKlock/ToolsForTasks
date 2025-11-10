@@ -1,10 +1,18 @@
-import { useState, useRef, useEffect} from "react";
+import { useState, useRef, useEffect, useContext} from "react";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
+import { faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
 
-export default function JobCard({ job, isJobsPage }) {
+export default function JobCard({ job, isJobsPage, onDeleteSuccess }) {
 
     const [menuOpen, setMenuOpen] = useState(false);
+    const [error, setError] = useState("");
     const menuRef = useRef(null);
+    const { accessToken } = useContext(AuthContext);
+    
 
     useEffect(() => {
         function handleClickOutside(event) {
@@ -21,31 +29,32 @@ export default function JobCard({ job, isJobsPage }) {
         }
     }, []);
 
-return (
-    <>
-        <div className="job-card-wrapper">
-            {!isJobsPage && (
+    async function handleDelete() {
+        try {
+            const res = await fetch(`/api/loggedin/jobs/${job.id}`, {
+                method: "DELETE",
+                headers: { Authorization: `Bearer ${accessToken}` },
+            });
+            if (res.ok) {
+                if (onDeleteSuccess) onDeleteSuccess(job.id);
+            } else {
+                throw new Error("Could not delete Job")
+            }
+        } catch (err) {
+            setError(err.message);
+        }
+    }
 
-            <Link to={`/job-details/${job.jobid}`} className="job-card-link">
-                <div className="job-card" data-job-id={job.jobid}>
-                <img
-                    className="job-image"
-                    src={`/images/${String(job.jobType).toLowerCase()}.png`}
-                    alt={job.jobType}
-                />
-                <div className="job-text">
-                    <h6>ID: {job.jobid}</h6>
-                    <h6>{job.title}</h6>
-                    <h6>{job.date}</h6>
-                    <h6>{job.address}</h6>
-                </div>
-                </div>
-            </Link>
+    return (
+        <>
+            {error && (
+                <p className="error">{error}</p>
             )}
+            <div className="job-card-wrapper">
+                {!isJobsPage && (
 
-        {isJobsPage && (
-            <>
-                <div className="job-card" data-job-id={job.jobid}>
+                <Link to={`/loggedIn/job-details/${job.id}`} className="job-card-link">
+                    <div className="job-card" data-job-id={job.jobid}>
                     <img
                         className="job-image"
                         src={`/images/${String(job.jobType).toLowerCase()}.png`}
@@ -57,36 +66,54 @@ return (
                         <h6>{job.date}</h6>
                         <h6>{job.address}</h6>
                     </div>
-
-                    <div className="threeDotMenu-container" ref={menuRef}>
-                        {menuOpen && (
-                            <section className="threeDotMenu-options">
-                            <Link to={`/edit-job/${job.jobid}`} id="editJobHref">EDIT</Link>
-                            <button
-                                type="button"
-                                data-job-id={job.jobid}
-                                className="deleteJob-btn"
-                                onClick={() => console.log("Delete job:", job.jobid)}
-                            >
-                                DELETE
-                            </button>
-                            </section>
-                        )}
-                        <button
-                            className="three-dot-menu-icon"
-                            aria-label="More options"
-                            onClick={(e) => {
-                            e.stopPropagation(); // Stop click from triggering card link
-                            setMenuOpen((prev) => !prev);
-                            }}
-                        >
-                            ⋮
-                        </button>
                     </div>
-                </div>
-            </>
-        )}
-        </div>
-    </>
-  );
+                </Link>
+                )}
+
+            {isJobsPage && (
+                <>
+                    <div className="job-card" data-job-id={job.id}>
+                        <img
+                            className="job-image"
+                            src={`/images/${String(job.jobType).toLowerCase()}.png`}
+                            alt={job.jobType}
+                        />
+                        <div className="job-text">
+                            <h6>ID: {job.jobid}</h6>
+                            <h6>{job.title}</h6>
+                            <h6>{job.date}</h6>
+                            <h6>{job.address}</h6>
+                        </div>
+
+                        <div className="threeDotMenu-container" ref={menuRef}>
+                            {menuOpen && (
+                                <section className="threeDotMenu-options">
+                                <Link to={`/loggedIn/edit-job/${job.id}`} id="editJobHref"> <FontAwesomeIcon icon={faPenToSquare} className="icon" /></Link>
+                                <button
+                                    type="button"
+                                    data-job-id={job.id}
+                                    className="deleteJob-btn"
+                                    onClick={handleDelete}
+                                >
+                                    <FontAwesomeIcon icon={faTrash} className="delete-icon" />
+                                </button>
+                                </section>
+                            )}
+                            <button
+                                className="three-dot-menu-icon"
+                                aria-label="More options"
+                                onClick={(e) => {
+                                e.stopPropagation(); // Stop click from triggering card link
+                                setMenuOpen((prev) => !prev);
+                                }}
+                            >
+                                <FontAwesomeIcon icon={faEllipsisVertical} />
+                            </button>
+                        </div>
+                    </div>
+                </>
+            )}
+            </div>
+        </>
+    );
 }

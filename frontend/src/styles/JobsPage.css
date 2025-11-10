@@ -16,9 +16,9 @@
         align-items: center;
         width: 100%;
         gap: 3vw;
-        margin-top: 2vw;
+        margin-top: 2vh;
         box-sizing: border-box;
-        padding: 0 2vw 0 2vw;
+        padding: 2vh 2vw 10vh 2vw;
     }
     .job-card {
         display: flex;
@@ -27,9 +27,9 @@
         gap: 5vw;
         width: 100%;
         border-radius: .4rem;
-        box-shadow: 0 4px 8px -2px rgba(0, 0, 0, 0.5);
+        box-shadow: 0 4px 8px -2px #1B2A41;
         padding: 1vw 0 1vw 0;
-        background-color: rgb(51, 65, 85);
+        background-color: #1B2A41;
         -webkit-tap-highlight-color: transparent; /*removes blue tap highlight */
     }
     .job-image {
@@ -55,12 +55,24 @@
     .threeDotMenu-options {
         display: flex;
         flex-direction: column;
-        gap: 1vh;
+        gap: 2.5vh;
         padding: 1vh 1vw 1vh 1vw;
         margin: 0;
     }
     .threeDotMenu-options #editJobHref, .threeDotMenu-options button {
         color: rgb(254,149,23);
         text-decoration: none;
+    }
+    .delete-icon {
+        color: red;
+    }
+    .icon {
+        color: whitesmoke;
+    }
+    .error {
+        text-align: center;
+        color: red;
+        font-size: medium;
+        margin-top: 2vh;
     }
 }

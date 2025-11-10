@@ -9,14 +9,40 @@ module.exports = class employee {
         this.password = password;
         this.orgID = orgID;
     }
-    save() {
-        return db.execute('INSERT INTO employees (name,employeeid,role,email,password,org_id) VALUES (?,?,?,?,?,?)', [this.name,this.employeeID,this.role,this.email,this.password,this.orgID]);
+    
+    static getAllEmployeesByOrg(orgId) {
+        return db.execute('SELECT * FROM employees WHERE org_id = ?', [orgId]);
     };
 
-    static getAllByOrg(orgid) {
-        return db.execute('SELECT * FROM employees WHERE org_id = ?', [orgid]);
-    };
+    static findEmployeesforJob(jobId) {
+        const sql = `
+        SELECT
+        e.employeeid AS employeeid,
+        e.id AS id,
+        e.name       AS name,
+        e.role       AS role
+        FROM job_employees AS je
+        INNER JOIN employees AS e
+        ON e.id = je.employee_id
+        WHERE je.job_id = ?;
+        `;
+        return db.execute(sql, [jobId]);
+    }
 
+
+
+
+
+
+
+
+
+
+
+
+save() {
+    return db.execute('INSERT INTO employees (name,employeeid,role,email,password,org_id) VALUES (?,?,?,?,?,?)', [this.name,this.employeeID,this.role,this.email,this.password,this.orgID]);
+};
     static findEmployee(employeeEmail) {
         return db.execute('SELECT * FROM employees WHERE email = ?',[employeeEmail]);
     };
@@ -50,12 +76,7 @@ module.exports = class employee {
         return db.execute('UPDATE employees SET employeeid = ?, name = ?, role = ?, email = ? WHERE org_id = ? AND id = ?', [employeeid, name, role, email,orgid, dbid]);
     };
 
-    /**This method is used to find the employee ids associated to a job
-     * used in the DELETE DELETE JOB controller
-     */
-    static findEmployeesforJob(jobid) {
-        return db.execute('SELECT * FROM job_employees WHERE job_id = ?', [jobid]);
-    };
+
 
     static findDbIdByEmployeeid(orgId, employeeid) {
     return db.execute('SELECT id FROM employees WHERE org_id = ? AND employeeid = ? LIMIT 1',[orgId, employeeid])
