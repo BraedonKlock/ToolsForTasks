@@ -35,7 +35,7 @@ main h1 {
 }
 #login-form input:focus {
     outline: none;
-    border: solid rgb(254,149,23) .15rem ;    
+    border: solid rgb(254,149,23) .15rem ;
 }
 #login-form select:focus {
     outline: none;
