@@ -15,7 +15,7 @@ Clean HTTP verbs (GET/POST/PUT/PATCH/DELETE)
 
 🧱 Tech Stack
 
-Frontend: React (Vite), Fetch API, CSS/Tailwind or CSS Modules (your choice)
+Frontend: React (Vite), Fetch API, CSS/Tailwind or CSS Modules
 
 Backend: Node.js, Express, REST, JSON
 
