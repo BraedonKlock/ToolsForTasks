@@ -23,4 +23,4 @@ Database: SQL (MySQL/PostgreSQL—pick one in your env)
 
 ## 🎥 Watch Demo
 
-[▶️ Click here to watch the demo then download the RAW file](TFTdemo.mp4)
+[▶️ Click here, then download the RAW file to watch the demo](TFTdemo.mp4)
