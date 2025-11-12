@@ -22,17 +22,21 @@ a,p,h1,h2,h3,h4,h5,h6 {
     border: none;
     border-radius: .3rem;
     text-align: center;
-    font-family: sans-serif;
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
     color: white;
 }
 .job-search::placeholder {
   color: white;           /* placeholder text */
   opacity: 0.9;          /* optional: make it a bit lighter */
 }
-.input-boxes {
-    border: solid black .15rem;
+input, select, textarea  {
+    border: none;
+    border-radius: .2rem;
     text-align: center;
-    font-family: sans-serif;
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
+    background-color: white;
 }
 .forms {
     display: flex;
@@ -41,14 +45,17 @@ a,p,h1,h2,h3,h4,h5,h6 {
     width: 50%;
     gap: 1vw;
 }
-button, select, textarea {
-    border: solid black .1rem;
+button {
+    border: none;
     border-radius: .2rem;
-    font-family: sans-serif;
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
 }
 a,p,h1,h2,h3,h4,h5,h6 {
     color: white;
     margin: 0;
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
 }
 /*GLOBAL STYLING FOR BUTTONS*/
 .threeDotMenu-container {

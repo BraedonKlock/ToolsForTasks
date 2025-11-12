@@ -67,7 +67,8 @@
     }
 
     #hamburger-nav .nav-link {
-        font-family: serif;
+        font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+        "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
         font-size: large;
         background-color: #1B2A41;
         -webkit-tap-highlight-color: transparent; /*removes blue tap highlight */
@@ -82,7 +83,6 @@
     }
     .nav-link {
         text-decoration: none;
-        font-family: serif;
         font-size: large;
     }
     #company-h1 {
