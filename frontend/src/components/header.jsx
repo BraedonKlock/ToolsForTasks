@@ -20,30 +20,27 @@ export default function Header() {
       setRole(user.role ?? null);
       setEmployeeName(user.name ?? "");
     }
-
-    function handleClickOutside(e) {
-      if (!menuRef.current) return;
-      if (!menuRef.current.contains(e.target)) {
-        setIsOpen(false);
-      }
-    }
-    document.addEventListener("pointerdown", handleClickOutside, true);
-    return () =>
-          document.removeEventListener("pointerdown", handleClickOutside, true);
-
   }, [user]);
 
-    useEffect(() => {
+  useEffect(() => {
     function handleClickOutside(e) {
       if (!menuRef.current) return;
       if (!menuRef.current.contains(e.target)) {
         setIsOpen(false);
       }
-    }
-    document.addEventListener("pointerdown", handleClickOutside, true);
-    return () =>
-          document.removeEventListener("pointerdown", handleClickOutside, true);
+    };
 
+    const handleScroll = () => {
+      setIsOpen(false);
+    };
+
+    document.addEventListener("pointerdown", handleClickOutside, true);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    return () => {
+      document.removeEventListener("pointerdown", handleClickOutside, true);
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, []);
 
   const showNotLoggedIn = !isLoggedIn;
