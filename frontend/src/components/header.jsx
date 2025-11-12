@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext, useEffect, useRef } from "react";
 import { NavLink, Link } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import "../styles/header.css";
@@ -8,6 +8,7 @@ import { faBars } from "@fortawesome/free-solid-svg-icons";
 export default function Header() {
   const { user, isLoggedIn, logout } = useContext(AuthContext);
   const [isOpen, setIsOpen] = useState(false);
+  const menuRef = useRef(null);
 
   const [companyName, setCompanyName] = useState(user?.companyName ?? "");
   const [role, setRole] = useState(user?.role ?? null);
@@ -19,7 +20,31 @@ export default function Header() {
       setRole(user.role ?? null);
       setEmployeeName(user.name ?? "");
     }
+
+    function handleClickOutside(e) {
+      if (!menuRef.current) return;
+      if (!menuRef.current.contains(e.target)) {
+        setIsOpen(false);
+      }
+    }
+    document.addEventListener("pointerdown", handleClickOutside, true);
+    return () =>
+          document.removeEventListener("pointerdown", handleClickOutside, true);
+
   }, [user]);
+
+    useEffect(() => {
+    function handleClickOutside(e) {
+      if (!menuRef.current) return;
+      if (!menuRef.current.contains(e.target)) {
+        setIsOpen(false);
+      }
+    }
+    document.addEventListener("pointerdown", handleClickOutside, true);
+    return () =>
+          document.removeEventListener("pointerdown", handleClickOutside, true);
+
+  }, []);
 
   const showNotLoggedIn = !isLoggedIn;
   const showCrew = isLoggedIn && role === "crew";
@@ -27,7 +52,7 @@ export default function Header() {
   const showOwner = isLoggedIn && role === "owner";
 
   return (
-    <header className="mobile">
+    <header ref={menuRef} className="mobile">
       <nav>
         <button className="hamburger" id="hamburger" onClick={() => setIsOpen(o=>!o)}><FontAwesomeIcon icon={faBars} size="lg" className="menu-image" /></button>
 
@@ -42,7 +67,7 @@ export default function Header() {
         {(showCrew || showManager || showOwner) && (
           <>
             <div id="logoContainer">
-              <Link to="/" onClick={() => setIsOpen(false)}>
+              <Link to="/loggedIn" onClick={() => setIsOpen(false)}>
                 <img id="logo" src="/images/lg.png" alt="Tools for Tasks logo" />
               </Link>
             </div>
@@ -53,7 +78,7 @@ export default function Header() {
           </>
         )}
       </nav>
-
+      
       {/* Menus */}
       {showNotLoggedIn && (
         <div className={`mobile ${isOpen ? "open" : ""}`} id="hamburger-nav">
