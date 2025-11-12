@@ -1,11 +1,11 @@
-#create-main {
+.createAccount-page {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 30vw;
+    margin-top: 2vh;
     width: 100%;
-    padding-top: 3vw;
 }
+
 #create-main h1 {
     color: rgb(254,149,23);
 }

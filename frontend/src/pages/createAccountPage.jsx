@@ -33,7 +33,7 @@ export default function CreateAccountPage() {
     }
     return (
 
-        <main id="create-main">
+        <main className="createAccount-page">
             <div id="createForm-container">
             <h1>Create a new account</h1>
             <h6>It's quick and easy.</h6>
