@@ -177,7 +177,7 @@ export default function AddJob() {
                             key={employee.employeeid}
                             value={employee.employeeid}
                         >
-                            {employee.name} — #{employee.employeeid} • {employee.role}
+                            {employee.name} | #{employee.employeeid} | {employee.role} 
                         </option>
                         ))}
                     </select>
