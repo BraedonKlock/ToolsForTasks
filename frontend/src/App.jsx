@@ -1,6 +1,5 @@
 import { Routes, Route } from "react-router-dom";
 
-import "./styles/App.css";
 import Header from "./components/header.jsx";
 import NotLoggedInHomePage from "./pages/notLoggedInHomePage.jsx";
 import LoginPage from "./pages/loginPage.jsx";

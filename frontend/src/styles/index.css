@@ -25,6 +25,10 @@ a,p,h1,h2,h3,h4,h5,h6 {
     font-family: sans-serif;
     color: white;
 }
+.job-search::placeholder {
+  color: #fff;           /* placeholder text */
+  opacity: 0.9;          /* optional: make it a bit lighter */
+}
 .input-boxes {
     border: solid black .15rem;
     text-align: center;
@@ -47,11 +51,6 @@ a,p,h1,h2,h3,h4,h5,h6 {
     margin: 0;
 }
 /*GLOBAL STYLING FOR BUTTONS*/
-.jobDetails-backBtn {
-    width: max-content;
-    background-color: rgb(66, 83, 106);
-    -webkit-tap-highlight-color: transparent; /*removes blue tap highlight */
-}
 .threeDotMenu-container {
     display: flex;
     flex-direction: row;
