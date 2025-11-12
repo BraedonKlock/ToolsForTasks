@@ -1,7 +1,7 @@
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";;
 import { AuthContext } from "../context/AuthContext";
-import "../styles/addJobPage.css";
+import "../styles/editJobPage.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
@@ -183,7 +183,7 @@ export default function EditJobPage() {
     }
 
     return (
-        <main>
+        <main className="editJob-page">
         <section id="addJob-form">
             <Link id="addJob-form-closeBtn" className="jobDetails-backBtn" to="/loggedIn/jobs">
                 <FontAwesomeIcon icon={faArrowLeft} className="icon" />

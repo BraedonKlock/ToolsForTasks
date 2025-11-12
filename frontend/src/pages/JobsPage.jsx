@@ -43,7 +43,7 @@ export default function JobsPage() {
   }
 
   return (
-    <main>
+    <main className="jobs-page">
       <input
         className="job-search"
         type="search"

@@ -40,7 +40,7 @@ export default function JobDetailsPage() {
 
 
     return (
-        <main>
+        <main className="jobsDetails-page">
             <Link to="/loggedIn/" className="jobDetails-backBtn" ><FontAwesomeIcon icon={faArrowLeft} className="icon" /></Link>
             <section className="jobDetails-container">
                 {error && (<p className="error">{error}</p>)}

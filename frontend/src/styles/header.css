@@ -7,10 +7,11 @@
         background-color: #1B2A41;
         display: flex;
         margin-top: 0;
-        position: fixed;
+        position: sticky;
         z-index: 1000;  /* stays above everything */
         width: 100%;
         padding: 0;
+        top: 0;
     }
 
     #logoContainer {

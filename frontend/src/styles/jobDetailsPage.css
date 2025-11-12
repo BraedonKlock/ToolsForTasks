@@ -1,9 +1,8 @@
 @media (max-width: 800px) {
-    main {
+    .jobsDetails-page {
         background-color: #293d55;
-        margin-top: 25vh;
+        margin-top: 1vh;
         width: 100%;
-        height: 500px;
         display: flex;
         flex-direction: column;
         padding: 0 2vw 0 2vw;

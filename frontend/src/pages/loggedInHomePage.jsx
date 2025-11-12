@@ -36,7 +36,7 @@ useEffect(() => {
 
 
 return (
-  <main>
+  <main className="loggedinHomePage">
     <input
       className="job-search"
       type="search"
