@@ -1,4 +1,4 @@
-Tools for Tasks
+🛠️ TOOLS FOR TASKS
 
 Job, tool, and materials tracking for trade teams.
 Frontend: React (Vite) · Backend: Node/Express (REST, JSON) · DB: SQL
