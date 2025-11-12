@@ -20,3 +20,7 @@ Frontend: React (Vite), Fetch API, CSS/Tailwind or CSS Modules
 Backend: Node.js, Express, REST, JSON
 
 Database: SQL (MySQL/PostgreSQL—pick one in your env)
+
+## 🎥 Watch Demo
+
+[▶️ Click here to watch the demo](TFTdemo.mp4)
