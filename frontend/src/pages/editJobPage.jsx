@@ -156,7 +156,6 @@ export default function EditJobPage() {
         // remove junk keys the server doesn’t want
         delete payload["employeeIds[]"];
         delete payload.addEmployee;
-        console.log(payload);
 
         try {
             e.preventDefault();

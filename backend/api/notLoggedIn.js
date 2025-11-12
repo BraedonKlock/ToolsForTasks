@@ -12,7 +12,7 @@ const router = express.Router(); // creating a mini express router
 
 //REACT ROUTES
 router.post("/login", notLoggedInController.login);
-router.post("/account", notLoggedInController.createAccount)
+router.post("/account", notLoggedInController.createAccount);
 
 
 module.exports = router;

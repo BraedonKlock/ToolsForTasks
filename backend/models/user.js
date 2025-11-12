@@ -11,9 +11,7 @@ module.exports = class user {
     }
 
     /**This method saves a user to the database */
-    save() {
-        const email = this.email.trim().toLowerCase(); // triming email and setting to lowercase
-        const password = this.password.trim(); // triming password 
+    createAccount() {
         return db.execute('INSERT INTO organizations (businessType, companyName, email, password, role) VALUES (?, ?, ?, ?,?)', [this.type, this.name, this.email, this.password, this.role]); // returns a promise
     }
 

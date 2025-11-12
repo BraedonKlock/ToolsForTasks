@@ -1,18 +1,34 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import "../styles/createAccountPage.css";
 
 export default function CreateAccountPage() {
     const [error, setError] = useState("");
+    const navigate = useNavigate();
 
     async function onSubmit(e){
+        const form = new FormData(e.currentTarget);
+        const payload = Object.fromEntries(form.entries());
+
         try {
-            const res = await fetch("/api/notLoggedIn/account", {
+            e.preventDefault();
+
+            const res = await fetch("/api/account", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body
+                body: JSON.stringify(payload),
             });
-        } catch(err) {
 
+            if (!res.ok) {
+                const data = await res.json();
+                if(data.error) {
+                    throw new Error(data.error)
+                }
+            }
+            navigate("/login");
+        } catch(err) {
+            setError(err.message)
         }
     }
     return (

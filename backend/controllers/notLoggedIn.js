@@ -7,8 +7,6 @@ const db = require('../util/database');
 
 const bcrypt = require('bcryptjs'); // importing encryption for user passwords
 
-/**-------------------------------------------------POST LOG IN------------------------------------------------------ */
-/**Handling the post req when a user logs in */
 const ACCESS_TTL = "60m";
 const ACCESS_SECRET = process.env.JWT_ACCESS_SECRET; // set this in env
 
@@ -19,6 +17,7 @@ function signAccess({ id, role, orgId }) {
     { algorithm: "HS256", expiresIn: ACCESS_TTL }
   );
 }
+/**------------------------------------------------------------------------------------------------ */
 
 exports.login = async (req, res, next) => {
   try {
@@ -69,6 +68,38 @@ exports.login = async (req, res, next) => {
   }
 };
 
-exports.createAccount = (req, res) => {
+/**------------------------------------------------------------------------------------------------ */
+exports.createAccount = async (req, res) => {
+  try {
 
+    const { businessType, companyName, email, password, confirmPassword } = req.body;
+
+    email.trim().toLowerCase();
+    password.trim();
+    confirmPassword.trim();
+
+    if (password != confirmPassword) {
+      return res.status(500).json({error: "Passwords do not match."})
+    }
+    const passwordHash = await bcrypt.hash(password, 12);
+
+    const user = new User(businessType, companyName, email, passwordHash);
+
+    const result = await user.createAccount()
+
+    if (!result || result.affectedRows === 0) {
+      return res.status(404).json({error: "Could not create account, please try again later."})
+    }
+
+    res.status(200).json({
+      ok: true
+    })
+
+  }catch(err) {
+    if (err.code === "ER_DUP_ENTRY" || err.errno === 1062) {
+      return res.status(409).json({ error: "Email already in use." });
+    }
+
+    res.status(500).json({error: "Internal server error."})
+  }
 }
