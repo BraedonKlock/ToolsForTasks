@@ -26,7 +26,7 @@ a,p,h1,h2,h3,h4,h5,h6 {
     color: white;
 }
 .job-search::placeholder {
-  color: #fff;           /* placeholder text */
+  color: white;           /* placeholder text */
   opacity: 0.9;          /* optional: make it a bit lighter */
 }
 .input-boxes {

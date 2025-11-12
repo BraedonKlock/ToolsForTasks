@@ -19,6 +19,7 @@
         background-color: #1B2A41;
         width: 100%;
         justify-content: center;
+        -webkit-tap-highlight-color: transparent; /*removes blue tap highlight */
     }
     header nav #logoContainer img {
         width: 200px;
