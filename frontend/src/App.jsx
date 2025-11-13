@@ -1,6 +1,8 @@
 import { Routes, Route } from "react-router-dom";
 
 import Header from "./components/header.jsx";
+import Footer from "./components/footer.jsx";
+
 import NotLoggedInHomePage from "./pages/notLoggedInHomePage.jsx";
 import LoginPage from "./pages/loginPage.jsx";
 import CreateAccountPage from "./pages/createAccountPage.jsx";
@@ -26,6 +28,7 @@ export default function App() {
         <Route path="/loggedIn/edit-job/:id" element={<EditJobPage />} />
         <Route path="/loggedIn/manage-employees" element={<ManageEmployees/>} />
       </Routes>
+      <Footer />
     </>
   );
 }

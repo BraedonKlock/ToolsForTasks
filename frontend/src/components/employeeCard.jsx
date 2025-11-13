@@ -51,7 +51,7 @@ export default function employeeCard({employee, onDeleteSuccess}) {
             <div className="employee-card" data-employee-id={employee.id}>
                 <img
                     className="employee-image"
-                    src={`/images/user.png`}
+                    src={`/images/user${employee.avatar}.png`}
                 />
                 <div className="employee-text">
                     <h6>ID: {employee.employeeid}</h6>

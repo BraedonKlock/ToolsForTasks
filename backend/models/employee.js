@@ -1,12 +1,13 @@
 const db = require('../util/database');
 
 module.exports = class employee {
-    constructor(name, role, employeeID, email, password, orgID) {
+    constructor(name, role, employeeID, email, password, avatar, orgID) {
         this.name = name;
         this.role = role;
         this.employeeID = employeeID;
         this.email = email;
         this.password = password;
+        this.avatar = avatar;
         this.orgID = orgID;
     }
     
