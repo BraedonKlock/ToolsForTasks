@@ -53,7 +53,7 @@ exports.getAllEmployees = async (req,res) => {
     if (!req.user) return res.status(401).json({ error: "Unauthenticated" });
 
     const { orgId } = req.user;
-    const [rows] = await Employees.getAllEmployeesByOrg(orgId)
+    const [rows] = await Employees.getAllEmployeesByOrg(orgId);
     res.status(200).json({
       ok: true,
       employees: rows,
@@ -200,5 +200,26 @@ exports.deleteEmployeeFromJob = async (req, res) => {
         error: "Could not delete employee from job, please try again later"
         });
       }
+  }
+}
+
+/**------------------------------------------------------------------------------------------------ */
+exports.deleteEmployeeFromOrg = async (req, res) => {
+  try {
+    if (!req.user) return res.status(401).json({error: "unauthenticated"});
+
+    const { id } = req.params;
+    const orgId = req.user.orgId;
+
+    const [result] = await Employees.deleteEmployeeFromOrg(orgId, id);
+
+    if(!result || result.affectedRows === 0) {
+      return res.status().json({error: "Could not delete employee, please try again later."})
+    }
+
+    res.status(200).json({ok: true});
+
+  } catch(err) {
+    res.status(500).json({error: "Could not delete employee, please try again later."})
   }
 }

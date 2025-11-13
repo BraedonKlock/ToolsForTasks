@@ -17,5 +17,5 @@ router.get("/jobEmployees/:id", loggedinController.getEmployeesForJob)
 router.post("/jobs", loggedinController.addJob);
 router.delete("/employeesFromJobs/:jobId/employees/:employeeId", loggedinController.deleteEmployeeFromJob);
 router.patch("/jobs/:id", loggedinController.updateJob);
-
+router.delete("/employees/:id", loggedinController.deleteEmployeeFromOrg);
 module.exports = router;

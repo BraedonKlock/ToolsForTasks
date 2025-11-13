@@ -27,7 +27,11 @@ module.exports = class employee {
         WHERE je.job_id = ?;
         `;
         return db.execute(sql, [jobId]);
-    }
+    };
+
+    static deleteEmployeeFromOrg(orgId, employeeId) {
+        return db.execute('DELETE from employees WHERE org_id = ? AND id = ?', [orgId, employeeId]);
+    };
 
 
 
