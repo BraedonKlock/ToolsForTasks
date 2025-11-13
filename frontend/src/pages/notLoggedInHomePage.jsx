@@ -1,5 +1,6 @@
+import "../styles/notLoggedInHomePage.css"
 export default function notLoggedInHomePage() {
     return (
-        <main></main>
+        <main id="notLoggedInHomePage-main"></main>
     )
 }
