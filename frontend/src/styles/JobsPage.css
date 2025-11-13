@@ -6,6 +6,7 @@
         margin-top: 1vh;
         width: 100%;
         padding-top: 3vw;
+        min-height: 100vh;
     }
     main h1 {
         color: rgb(254,149,23);
