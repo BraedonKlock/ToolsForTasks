@@ -1,6 +1,9 @@
 # 🛠️ TOOLS FOR TASKS
 
-Job, tool, and materials tracking for trade teams.
+Job, tool, and materials tracking for trade teams. 
+
+This is not a complete product yet, i expect to ship in March 2026.
+
 Frontend: React (Vite) · Backend: Node/Express (REST, JSON) · DB: SQL
 
 Reduce wasted time on job sites by knowing exactly what tools and materials each job needs—before anyone leaves the shop.
