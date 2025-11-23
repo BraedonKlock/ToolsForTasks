@@ -48,7 +48,7 @@
         text-align: left;
         gap: 2vw;
     }
-    #jobDetals-notes {
+    #jobDetails-notes {
         white-space: pre-wrap;     /* preserve \n as line breaks */
         overflow-wrap: break-word; /* break long words if needed */
         word-break: break-word;    /* extra safety for long strings */
