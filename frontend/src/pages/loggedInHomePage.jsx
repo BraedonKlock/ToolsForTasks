@@ -1,15 +1,17 @@
 import "../styles/LoggedInHomePage.css";
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState, useContext, useCallback } from "react";
 import { AuthContext } from "../context/AuthContext";
 import JobCard from "../components/JobCard"
+import { io } from "socket.io-client"; // importing socket.io client
 
 export default function LoggedInHomePage() {
   const [jobs, setJobs] = useState([]);
   const { accessToken, logout } = useContext(AuthContext);
   const [error, setError] = useState("");
+  const [socket, setSocket] = useState(null); // holding socket instance
 
-useEffect(() => {
-  (async () => {
+  // fetching jobs from the backend so the page can be updated when the db changes
+  const loadJobs = useCallback(async () => {
     try {
       const res = await fetch("/api/loggedIn/jobs", {
         headers: { Authorization: `Bearer ${accessToken}` },
@@ -31,31 +33,72 @@ useEffect(() => {
     } catch (err) {
       setError(err.message);
     }
-  })();
-}, []);
+  }, [accessToken, logout]);
 
+  useEffect(() => {
+    if (!accessToken) return;
+    loadJobs();
+  }, [accessToken, loadJobs]);
 
-return (
-  <main className="loggedinHomePage">
-    <input
-      className="job-search"
-      type="search"
-      name="search"
-      placeholder="Search"
-    />
+  // creating socket connection so this page can listen for changes from the server
+  useEffect(() => {
+    if (!accessToken) return;
 
-    <section id="jobs-jobsContainer" className="jobs-container">
-                  {error && (
-                <p className="error">{error}</p>
-            )}
-      {jobs && jobs.length > 0 ? (
-        jobs.map((job) => (
-          <JobCard key={job.jobid} job={job} isJobsPage={false} />
-        ))
-      ) : (
-        <h1>No Jobs Created</h1>
-      )}
-    </section>
-  </main>
-);
+    const s = io("http://localhost:3000", {
+      auth: { token: accessToken },
+    });
+
+    s.on("connect", () => {
+      console.log("Home socket connected:", s.id);
+    });
+
+    s.on("connect_error", (err) => {
+      console.error("Home socket connect error:", err.message);
+    });
+
+    setSocket(s);
+
+    return () => {
+      s.disconnect();
+    };
+  }, [accessToken]);
+
+  // listening for jobs:changed so we can reload jobs from the database
+  useEffect(() => {
+    if (!socket) return;
+
+    const handleJobsChanged = () => {
+      loadJobs();
+    };
+
+    socket.on("jobs:changed", handleJobsChanged);
+
+    return () => {
+      socket.off("jobs:changed", handleJobsChanged);
+    };
+  }, [socket, loadJobs]);
+
+  return (
+    <main className="loggedinHomePage">
+      <input
+        className="job-search"
+        type="search"
+        name="search"
+        placeholder="Search"
+      />
+
+      <section id="jobs-jobsContainer" className="jobs-container">
+        {error && (
+          <p className="error">{error}</p>
+        )}
+        {jobs && jobs.length > 0 ? (
+          jobs.map((job) => (
+            <JobCard key={job.jobid} job={job} isJobsPage={false} />
+          ))
+        ) : (
+          <h1>No Jobs Created</h1>
+        )}
+      </section>
+    </main>
+  );
 }

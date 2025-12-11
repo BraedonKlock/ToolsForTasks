@@ -30,6 +30,9 @@ const io = new Server(server, {
   cors: { origin: ["http://localhost:5173"], credentials: false },
 });
 
+// storing io on the app object so controllers can emit socket events
+app.set("io", io);
+
 // ---- Parsers & CORS ----
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
@@ -84,11 +87,18 @@ io.on("connection", (socket) => {
     return;
   }
 
-  if (u.role === "owner") {
-    socket.join(`org:${u.orgId}`);
-    console.log(`Owner ${socket.id} joined room org:${u.orgId}`);
+  // everyone joins their org room so org-wide changes can be broadcast
+  const orgRoom = `org:${u.orgId}`;
+  socket.join(orgRoom);
+  console.log(`${u.role} ${socket.id} joined room ${orgRoom}`);
+
+  // owner personal room (if needed later)
+  if (u.role === "owner" && u.sub) {
+    socket.join(`owner:${u.sub}`);
+    console.log(`Owner ${socket.id} joined room owner:${u.sub}`);
   }
 
+  // employee personal room (if needed later)
   if ((u.role === "crew" || u.role === "manager") && u.sub) {
     socket.join(`emp:${u.sub}`);
     console.log(`Employee ${socket.id} joined room emp:${u.sub}`);

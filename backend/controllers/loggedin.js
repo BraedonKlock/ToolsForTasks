@@ -39,6 +39,12 @@ exports.deleteJob = async (req, res) => {
       return res.status(404).json();
     }
 
+    // emit jobs:changed so all sockets in the org room can reload jobs
+    const io = req.app.get("io");
+    if (io && orgId) {
+      io.to(`org:${orgId}`).emit("jobs:changed");
+    }
+
     res.status(200).json({
       ok: true,
     });
@@ -88,8 +94,6 @@ exports.getJob = async (req,res) => {
   }
 }
 
-
-
 /**------------------------------------------------------------------------------------------------ */
 exports.getEmployeesForJob = async (req,res) => {
   try {
@@ -123,6 +127,12 @@ exports.addJob = async (req,res) => {
       const assignEmployeesToJobResult =  await Jobs.assignEmployeesToJob(dbJobId, employeeIds);
       
       if (assignEmployeesToJobResult.affectedRows === 0) return res.status(500).json({error: "Failed to assign employees to the job, please try again later."});
+    }
+
+    // emit jobs:changed so all sockets in the org room can reload jobs
+    const io = req.app.get("io");
+    if (io && orgId) {
+      io.to(`org:${orgId}`).emit("jobs:changed");
     }
 
     res.status(200).json({
@@ -162,6 +172,12 @@ exports.updateJob = async (req,res) => {
       }
     }
 
+    // emit jobs:changed so all sockets in the org room can reload jobs
+    const io = req.app.get("io");
+    if (io && orgId) {
+      io.to(`org:${orgId}`).emit("jobs:changed");
+    }
+
     res.status(200).json({
       ok:true
     })
@@ -180,6 +196,7 @@ exports.deleteEmployeeFromJob = async (req, res) => {
     if (!req.user) return res.status(401).json({error: "unauthenticated"});
 
     const { jobId, employeeId } = req.params;
+    const orgId = req.user.orgId;
     
     const result = await Jobs.deleteEmployeeFromJob(jobId, employeeId);
     if (!result || result.affectedRows === 0) {
@@ -187,6 +204,13 @@ exports.deleteEmployeeFromJob = async (req, res) => {
       err.status = 404
       throw err;
     }
+
+    // emit jobs:changed so all sockets in the org room can reload jobs
+    const io = req.app.get("io");
+    if (io && orgId) {
+      io.to(`org:${orgId}`).emit("jobs:changed");
+    }
+
     res.status(200).json({
       ok: true
     });

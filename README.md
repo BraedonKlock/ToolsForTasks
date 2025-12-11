@@ -1,6 +1,6 @@
 # 🛠️ TOOLS FOR TASKS
 
-Job, tool, and materials tracking for trade teams. 
+Job, tool, and materials tracking for trade teams.
 
 This is not a complete product yet, i expect to ship in March 2026.
 
@@ -11,6 +11,8 @@ Reduce wasted time on job sites by knowing exactly what tools and materials each
 # ✨ Features
 
 CRUD (Create, Read, Update, Delte) operations on Jobs, Tools, Materials, and Employees
+
+Real-time job updates using Socket.IO (whenever a job is created, updated, or modified, owners and employees assigned to that job see the changes instantly)
 
 JWT-based authentication with a RESTful JSON API
 
@@ -26,4 +28,4 @@ Database: SQL (MySQL/PostgreSQL—pick one in your env)
 
 ## 🎥 Watch Demo
 
-[▶️ To view the video: Click here! then download the RAW file!  ](TFTdemo.mp4)
+[▶️ To view the video: Click here! then download the RAW file! ](TFTdemo.mp4)
