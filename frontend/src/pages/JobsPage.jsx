@@ -11,7 +11,12 @@ export default function JobsPage() {
   const [error, setError] = useState("");
   const [socket, setSocket] = useState(null); // holding socket instance
 
-  // fetching jobs from the backend so the page can be updated when the db changes
+  /** fetching jobs from the backend so the page can be updated when the db changes
+   * useCallback is implemented because useEffect has loadJobs in its dependency array,
+   * so without useCallback React would treat loadJobs as a new function on every render
+   * and re-run the effect each time. useCallback keeps the same function reference
+   * unless accessToken or logout change, so the effect only runs when it actually needs to.
+  */
   const loadJobs = useCallback(async () => {
     try {
       const res = await fetch("/api/loggedIn/jobs", {
