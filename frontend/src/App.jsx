@@ -11,7 +11,9 @@ import JobsPage from "./pages/JobsPage.jsx";
 import AddJobPage from "./pages/addJobPage"
 import JobDetailsPage from "./pages/jobDetailsPage";
 import EditJobPage from "./pages/editJobPage";
-import ManageEmployees from "./pages/manageEmployeesPage";
+import ManageEmployeesPage from "./pages/manageEmployeesPage";
+import AddEmployeesPage from "./pages/addEmployeesPage";
+
 
 export default function App() {
   return (
@@ -26,7 +28,8 @@ export default function App() {
         <Route path="/loggedIn/add-job" element={<AddJobPage />} />
         <Route path="/loggedIn/job-details/:id" element={<JobDetailsPage />} />
         <Route path="/loggedIn/edit-job/:id" element={<EditJobPage />} />
-        <Route path="/loggedIn/manage-employees" element={<ManageEmployees/>} />
+        <Route path="/loggedIn/manage-employees" element={<ManageEmployeesPage/>} />
+        <Route path="/loggedIn/add-Employees" element={<AddEmployeesPage/>} />
       </Routes>
       <Footer />
     </>
