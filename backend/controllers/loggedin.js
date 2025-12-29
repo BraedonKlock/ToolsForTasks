@@ -247,3 +247,31 @@ exports.deleteEmployeeFromOrg = async (req, res) => {
     res.status(500).json({error: "Could not delete employee, please try again later."})
   }
 }
+
+/**------------------------------------------------------------------------------------------------ */
+exports.addEmployee = async (req, res) => {
+  try {
+    if(!req.user) return res.status(401).json({error: "unauthenticated"});
+
+    const orgId = req.user.orgId;
+    const companyName = req.user.companyName;
+
+    const { email, employeeid, name, password, role, avatar } = req.body;
+
+    email.trim().toLowerCase();
+    password.trim();
+
+    const passwordHash = await bcrypt.hash(password, 12);
+
+    const employee = new Employees(name, role, employeeid, email, passwordHash, avatar, orgId, companyName);
+
+    const addEmployeeResult = await employee.addEmployee();
+
+    if(addEmployeeResult.affectedRows !== 1 || !addEmployeeResult.insertId) return res.status(500).json({error: "Failed to add employee, please try again later."});
+
+    res.status(200).json({ok: true});
+
+  } catch(err) {
+    res.status(500).json();
+  }
+}

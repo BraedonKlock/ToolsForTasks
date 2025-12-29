@@ -10,9 +10,9 @@ const bcrypt = require('bcryptjs'); // importing encryption for user passwords
 const ACCESS_TTL = "60m";
 const ACCESS_SECRET = process.env.JWT_ACCESS_SECRET; // set this in env
 
-function signAccess({ id, role, orgId }) {
+function signAccess({ id, role, orgId, companyName }) {
   return jwt.sign(
-    { sub: String(id), role, orgId: String(orgId) }, // minimal claims
+    { sub: String(id), role, orgId: String(orgId), companyName }, // minimal claims
     ACCESS_SECRET,
     { algorithm: "HS256", expiresIn: ACCESS_TTL }
   );
@@ -38,7 +38,7 @@ exports.login = async (req, res, next) => {
       const ok = await bcrypt.compare(password, org.password);
       if (!ok) return res.status(401).json({ error: "Invalid password" });
 
-      const accessToken = signAccess({ id: org.id, role: org.role, orgId: org.id });
+      const accessToken = signAccess({ id: org.id, role: org.role, orgId: org.id, companyName: org.companyName });
 
       return res.json({
         accessToken,

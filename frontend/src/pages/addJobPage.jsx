@@ -121,43 +121,43 @@ export default function AddJob() {
 
             <form className="forms" onSubmit={onSubmit}>
                 <div className="form-control">
-                <label htmlFor="jobType">Job Type:</label>
-                <select name="jobType" id="addJobForm-jobType" required defaultValue="">
-                    <option value="" disabled hidden>Select a job type</option>
-                    <option value="roofing">Roofing</option>
-                    <option value="carpentry">Carpentry</option>
-                    <option value="siding">Siding</option>
-                </select>
+                    <label htmlFor="jobType">Job Type:</label>
+                    <select name="jobType" id="addJobForm-jobType" required defaultValue="">
+                        <option value="" disabled hidden>Select a job type</option>
+                        <option value="roofing">Roofing</option>
+                        <option value="carpentry">Carpentry</option>
+                        <option value="siding">Siding</option>
+                    </select>
                 </div>
 
                 <div className="form-control">
-                <label htmlFor="jobid">Job ID:</label>
-                <input type="text" name="jobid" />
+                    <label htmlFor="jobid">Job ID:</label>
+                    <input type="text" name="jobid" />
                 </div>
 
                 <div className="form-control">
-                <label htmlFor="title">Title:</label>
-                <input type="text" name="title" />
+                    <label htmlFor="title">Title:</label>
+                    <input type="text" name="title" />
                 </div>
 
                 <div className="form-control">
-                <label htmlFor="date">Date:</label>
-                <input id="addJobForm-date" type="date" name="date" />
+                    <label htmlFor="date">Date:</label>
+                    <input id="addJobForm-date" type="date" name="date" />
                 </div>
 
                 <div className="form-control">
-                <label htmlFor="address">Address:</label>
-                <input type="text" name="address" />
+                    <label htmlFor="address">Address:</label>
+                    <input type="text" name="address" />
                 </div>
 
                 <div className="form-control">
-                <label htmlFor="phoneNumber">Phone #:</label>
-                <input type="text" name="phoneNumber" />
+                    <label htmlFor="phoneNumber">Phone #:</label>
+                    <input type="text" name="phoneNumber" />
                 </div>
 
                 <div className="form-control">
-                <label htmlFor="notes">Notes:</label>
-                <textarea id="addJob-notes" name="notes"></textarea>
+                    <label htmlFor="notes">Notes:</label>
+                    <textarea id="addJob-notes" name="notes"></textarea>
                 </div>
 
                 {error && <p id="login-error" className="error">{error}</p>}

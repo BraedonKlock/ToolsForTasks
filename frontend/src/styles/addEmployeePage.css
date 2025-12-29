@@ -49,6 +49,15 @@
 .form-control label {
     color: white;
 }
+.form-control #avatarPicker {
+    width: 62%;
+    box-sizing: border-box;
+    height: max-content;
+    align-self: center;
+}
+#avatarDiv {
+    margin-bottom: 2vh;
+}
 .form-control input {
     width: 62%;
     box-sizing: border-box;

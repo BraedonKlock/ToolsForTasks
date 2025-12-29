@@ -1,7 +1,7 @@
 const db = require('../util/database');
 
 module.exports = class employee {
-    constructor(name, role, employeeID, email, password, avatar, orgID) {
+    constructor(name, role, employeeID, email, password, avatar, orgID, companyName) {
         this.name = name;
         this.role = role;
         this.employeeID = employeeID;
@@ -9,6 +9,7 @@ module.exports = class employee {
         this.password = password;
         this.avatar = avatar;
         this.orgID = orgID;
+        this.companyName = companyName;
     }
     
     static getAllEmployeesByOrg(orgId) {
@@ -34,20 +35,20 @@ module.exports = class employee {
         return db.execute('DELETE from employees WHERE org_id = ? AND id = ?', [orgId, employeeId]);
     };
 
-
-
-
-
-
-
-
-
-
-
-
-save() {
-    return db.execute('INSERT INTO employees (name,employeeid,role,email,password,org_id) VALUES (?,?,?,?,?,?)', [this.name,this.employeeID,this.role,this.email,this.password,this.orgID]);
+async addEmployee() {
+    const [result] = await db.execute('INSERT INTO employees (name,employeeid,role,email,password,avatar,org_id,companyName) VALUES (?,?,?,?,?,?,?,?)', [this.name,this.employeeID,this.role,this.email,this.password,this.avatar,this.orgID, this.companyName]);
+    return result;
 };
+
+
+
+
+
+
+
+
+
+
     static findEmployee(employeeEmail) {
         return db.execute('SELECT * FROM employees WHERE email = ?',[employeeEmail]);
     };
