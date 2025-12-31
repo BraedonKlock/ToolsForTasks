@@ -10,7 +10,7 @@ Reduce wasted time on job sites by knowing exactly what tools and materials each
 
 # ✨ Features
 
-CRUD (Create, Read, Update, Delte) operations on Jobs, Tools, Materials, and Employees
+CRUD (Create, Read, Update, Delete) operations on Jobs, Tools, Materials, and Employees
 
 Real-time job updates using Socket.IO (whenever a job is created, updated, or modified, owners and employees assigned to that job see the changes instantly)
 
