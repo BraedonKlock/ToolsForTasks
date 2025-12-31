@@ -11,11 +11,12 @@ module.exports = class employee {
         this.orgID = orgID;
         this.companyName = companyName;
     }
-    
+    static findEmployee(employeeEmail) {
+        return db.execute('SELECT * FROM employees WHERE email = ?',[employeeEmail]);
+    };
     static getAllEmployeesByOrg(orgId) {
         return db.execute('SELECT * FROM employees WHERE org_id = ?', [orgId]);
     };
-
     static findEmployeesforJob(jobId) {
         const sql = `
         SELECT
@@ -35,57 +36,40 @@ module.exports = class employee {
         return db.execute('DELETE from employees WHERE org_id = ? AND id = ?', [orgId, employeeId]);
     };
 
-async addEmployee() {
-    const [result] = await db.execute('INSERT INTO employees (name,employeeid,role,email,password,avatar,org_id,companyName) VALUES (?,?,?,?,?,?,?,?)', [this.name,this.employeeID,this.role,this.email,this.password,this.avatar,this.orgID, this.companyName]);
-    return result;
-};
-
-
-
-
-
-
-
-
-
-
-    static findEmployee(employeeEmail) {
-        return db.execute('SELECT * FROM employees WHERE email = ?',[employeeEmail]);
+    async addEmployee() {
+        const [result] = await db.execute('INSERT INTO employees (name,employeeid,role,email,password,avatar,org_id,companyName) VALUES (?,?,?,?,?,?,?,?)', [this.name,this.employeeID,this.role,this.email,this.password,this.avatar,this.orgID, this.companyName]);
+        return result;
     };
-
-    static findDbIdsByEmails(orgid, emails) {
-        // re-mapping my emails array to sql query format because i dont know how many emails there are
-        const placeholders = emails.map(() => '?').join(', ');
-        // using re-mapped array and storing it in a variable
-        const query = `SELECT id FROM employees WHERE org_id = ? AND email IN (${placeholders})`;
-        return db.execute(query, [orgid, ...emails]) // executing the sql code and passing in the data
-            .then(function(result) {
-                const rows = result[0]; // Get the first item from the result array
-                const ids = [];
-
-                for (let i = 0; i < rows.length; i++) {
-                    ids.push(rows[i].id); // Add each row's id to the ids array
-                }
-                
-                return ids; // Return the array of ids
-            });
-    };
-
     /**This method finds an employee by their employee id.
      * I use this for the editEmployeePage when i pass in the employees id in the URL params
      */
     static findEmployeeById( orgid, employeeid) {
-        return db.execute('SELECT * FROM employees WHERE org_id = ? AND id = ?', [orgid, employeeid]);
+        return db.execute('SELECT id, employeeid, name, role, email, avatar, org_id, companyName FROM employees WHERE org_id = ? AND id = ?', [orgid, employeeid]).then(([rows]) => { // returns a promise which is a 2d array. getting the first index where the job details are stored
+                if (!rows || rows.length === 0) {
+                    const err = new Error();
+                    err.status = 404;
+                    throw err;
+                }
+                return rows
+        });
     };
-
-    static updateEmployee(dbid,employeeid,name,role,email,orgid) {
-        return db.execute('UPDATE employees SET employeeid = ?, name = ?, role = ?, email = ? WHERE org_id = ? AND id = ?', [employeeid, name, role, email,orgid, dbid]);
-    };
-
-
-
-    static findDbIdByEmployeeid(orgId, employeeid) {
-    return db.execute('SELECT id FROM employees WHERE org_id = ? AND employeeid = ? LIMIT 1',[orgId, employeeid])
-    .then(([rows]) => rows.length ? rows[0].id : null);
-    };
+    static async updateEmployee(orgid, id, name, role, employeeid, email, password, avatar) {
+        if (password) {
+            const [result] = await db.execute(
+            `UPDATE employees
+            SET employeeid = ?, name = ?, role = ?, email = ?, avatar = ?, password = ?
+            WHERE org_id = ? AND id = ?`,
+            [employeeid, name, role, email, avatar, password, orgid, id]
+            );
+            return result;
+        } else {
+            const [result] = await db.execute(
+            `UPDATE employees
+            SET employeeid = ?, name = ?, role = ?, email = ?, avatar = ?
+            WHERE org_id = ? AND id = ?`,
+            [employeeid, name, role, email, avatar, orgid, id]
+            );
+            return result;
+        }
+    }
 }

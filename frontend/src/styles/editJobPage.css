@@ -7,9 +7,11 @@
     align-items: center;
     min-height: 100vh;
 }
-#addJob-form-closeBtn {
-    margin-left: 2vw;
-    text-decoration: none;
+.editJob-page-backBtn {
+    position: absolute;
+    left: 3vw;
+    width: max-content;
+    -webkit-tap-highlight-color: transparent; /*removes blue tap highlight */
 }
 #addJob-form {
     display: flex;
@@ -33,7 +35,7 @@
     padding: 3vw;
     border-radius: .5rem;
     box-shadow: 0 4px 8px -2px rgba(0, 0, 0, 0.5);
-    margin: 5vw 0 3vh 0;
+    margin: 5vh 0 3vh 0;
     align-self: center;
     border-top: solid rgb(254,149,23) .5rem;
 }

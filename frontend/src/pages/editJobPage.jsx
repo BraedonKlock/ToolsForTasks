@@ -185,7 +185,7 @@ export default function EditJobPage() {
     return (
         <main className="editJob-page">
         <section id="addJob-form">
-            <Link id="addJob-form-closeBtn" className="jobDetails-backBtn" to="/loggedIn/jobs">
+            <Link id="addJob-form-closeBtn" className="editJob-page-backBtn" to="/loggedIn/jobs">
                 <FontAwesomeIcon icon={faArrowLeft} className="icon" />
             </Link>
 

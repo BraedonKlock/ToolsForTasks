@@ -51,7 +51,7 @@ export default function AddEmployees() {
         <main className="addEmployee-page">
         <Link
             id="addJob-form-closeBtn"
-            className="jobDetails-backBtn"
+            className="addEmployeePage-backBtn"
             to="/loggedIn/manage-employees"
         >
             <FontAwesomeIcon icon={faArrowLeft} className="icon" />
@@ -122,7 +122,7 @@ export default function AddEmployees() {
 
             <div className="form-control">
                 <label htmlFor="password">Password:</label>
-                <input id="password" type="text" name="password" required />
+                <input id="password" type="password" name="password" required />
             </div>
 
             <hr id="addEmployeePage-hr" />

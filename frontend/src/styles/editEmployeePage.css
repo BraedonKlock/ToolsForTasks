@@ -1,4 +1,4 @@
-.addEmployee-page {
+.editEmployee-page {
     background-color: #293d55;
     margin-top:3vh;
     width: 100%;
@@ -7,19 +7,19 @@
     align-items: center;
     min-height: 100vh;
 }
-.addEmployeePage-backBtn {
+.editEmployeePage-backBtn {
     position: absolute;
     left: 3vw;
     width: max-content;
     -webkit-tap-highlight-color: transparent; /*removes blue tap highlight */
 }
-.addEmployee-page #addEmployeePage-addEmployeeContainer h1{
+.editEmployee-page #editEmployeePage-editEmployeeContainer h1{
     text-align: center;
     font-family: 'story script';
     margin-bottom: 3vw;
 }
 
-#addEmployeePage-addEmployeeContainer {
+#editEmployeePage-editEmployeeContainer {
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -33,7 +33,7 @@
         border-top: solid rgb(254,149,23) .5rem;
 }
 
-#addEmployeePage-addEmployeeContainer .forms {
+#editEmployeePage-editEmployeeContainer .forms {
         width: 100%;
 }
 .form-control {
@@ -66,16 +66,16 @@
     outline: none;
     border: solid rgb(254,149,23) .15rem ;
 }
-#addEmployeePage-roleSelect {
+#editEmployeePage-roleSelect {
     width: 62%;
     text-align: center;
 }
-#addEmployeePage-hr {
+#editEmployeePage-hr {
     width: 75%;
     border: solid black .1rem;
     margin-top: 5vw;
 }
-#addEmployeePage-addBtn {
+#editEmployeePage-addBtn {
     margin-top: 2vh;
     width: 50%;
     box-sizing: border-box; /* ensures padding/border don't overflow */
@@ -87,6 +87,9 @@
     "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";    font-weight: bold;
     border: none;
     background-color: rgb(254,149,23);
+}
+#password::placeholder {
+    font-size: 0.6rem;
 }
 .error {
     text-align: center;

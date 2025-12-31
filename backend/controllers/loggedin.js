@@ -275,3 +275,52 @@ exports.addEmployee = async (req, res) => {
     res.status(500).json();
   }
 }
+/**------------------------------------------------------------------------------------------------ */
+exports.getEmployee = async (req,res) => {
+  try {
+    if (!req.user) return res.status(401).json({error: "Unauthenticated"});
+
+    const { orgId } = req.user;
+    const { id } = req.params;
+
+    const rows = await Employees.findEmployeeById( orgId, id);
+
+    if(rows.length === 0) {
+      res.status(404).json();
+    }
+    if(rows.length > 0) {
+      res.status(200).json({ ok: true, employee: rows[0]});
+    }
+  } catch(err) {
+    res.status(500).json();
+  }
+}
+/**------------------------------------------------------------------------------------------------ */
+exports.updateEmployee = async (req,res) => {
+  try {
+    if(!req.user) return res.status(401).json({ error: "Unauthenticated" });
+
+    const { orgId } = req.user;
+    const { id } = req.params;
+
+    let {employeeid, name, role, email, avatar, password } = req.body;
+
+    name = (name || "").trim();
+    email = (email || "").trim().toLowerCase();
+
+    // If password provided, hash it, else keep it undefined
+    let passwordHash;
+    if (typeof password === "string" && password.trim().length > 0) {
+      passwordHash = await bcrypt.hash(password.trim(), 12);
+    }
+    const result = await Employees.updateEmployee(orgId, id, name, role, employeeid, email, passwordHash, avatar);
+
+    if(result.affectedRows !== 1) {
+      return res.status(404).json({error: "Could not update employee, please try again later."});
+    }
+
+    res.status(200).json({ok: true})
+  } catch(err) {
+    res.status(500).json();
+  }
+}

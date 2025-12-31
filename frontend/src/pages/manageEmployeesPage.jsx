@@ -59,7 +59,7 @@ export default function manageEmployeesPage() {
                     <h1>No Employees Found</h1>
                     )}
                 </section>
-            <Link to="/loggedIn/add-employees" alt="Add Employee" ><img src="/images/addEmployee.png" id="addEmployee-image"/></Link>
+            <Link to="/loggedIn/add-employee" alt="Add Employee" ><img src="/images/addEmployee.png" id="addEmployee-image"/></Link>
         </main>
     )
 }

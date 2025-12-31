@@ -112,7 +112,7 @@ export default function AddJob() {
     return (
         <main className="addJob-page">
         <section id="addJob-form">
-            <Link id="addJob-form-closeBtn" className="jobDetails-backBtn" to="/loggedIn/jobs">
+            <Link id="addJob-form-closeBtn" className="addJob-page-backBtn" to="/loggedIn/jobs">
             <FontAwesomeIcon icon={faArrowLeft} className="icon" />
             </Link>
 
