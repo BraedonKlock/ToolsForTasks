@@ -1,0 +1,99 @@
+.editEmployee-page {
+    background-color: #293d55;
+    margin-top:3vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+}
+.editEmployeePage-backBtn {
+    position: absolute;
+    left: 3vw;
+    width: max-content;
+    -webkit-tap-highlight-color: transparent; /*removes blue tap highlight */
+}
+.editEmployee-page #editEmployeePage-editEmployeeContainer h1{
+    text-align: center;
+    font-family: 'story script';
+    margin-bottom: 3vw;
+}
+
+#editEmployeePage-editEmployeeContainer {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        background-color: #1B2A41;
+        width: 90%;
+        padding: 3vw;
+        border-radius: .5rem;
+        box-shadow: 0 4px 8px -2px rgba(0, 0, 0, 0.5);
+        margin-top: 5vh;
+        align-self: center;
+        border-top: solid rgb(254,149,23) .5rem;
+}
+
+#editEmployeePage-editEmployeeContainer .forms {
+        width: 100%;
+}
+.form-control {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    gap: 2vw;
+}
+.form-control select:focus {
+    outline: none;
+    border: solid rgb(254,149,23) .15rem ;
+}
+.form-control label {
+    color: white;
+}
+.form-control #avatarPicker {
+    width: 62%;
+    box-sizing: border-box;
+    height: max-content;
+    align-self: center;
+}
+#avatarDiv {
+    margin-bottom: 2vh;
+}
+.form-control input {
+    width: 62%;
+    box-sizing: border-box;
+}
+.form-control input:focus, .form-control textarea:focus {
+    outline: none;
+    border: solid rgb(254,149,23) .15rem ;
+}
+#editEmployeePage-roleSelect {
+    width: 62%;
+    text-align: center;
+}
+#editEmployeePage-hr {
+    width: 75%;
+    border: solid black .1rem;
+    margin-top: 5vw;
+}
+#editEmployeePage-addBtn {
+    margin-top: 2vh;
+    width: 50%;
+    box-sizing: border-box; /* ensures padding/border don't overflow */
+    align-self: center;
+    padding: 2vh 0 2vh 0;
+    border-radius: .4rem;
+    font-size: medium;
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";    font-weight: bold;
+    border: none;
+    background-color: rgb(254,149,23);
+}
+#password::placeholder {
+    font-size: 0.6rem;
+}
+.error {
+    text-align: center;
+    color: red;
+    font-size: medium;
+    margin: 0 0 2vh 0;
+}

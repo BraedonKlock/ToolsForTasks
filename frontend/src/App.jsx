@@ -8,12 +8,13 @@ import LoginPage from "./pages/loginPage.jsx";
 import CreateAccountPage from "./pages/createAccountPage.jsx";
 import LoggedInHomePage from "./pages/loggedInHomePage.jsx";
 import JobsPage from "./pages/JobsPage.jsx";
-import AddJobPage from "./pages/addJobPage"
+import AddJobPage from "./pages/addJobPage";
 import JobDetailsPage from "./pages/jobDetailsPage";
 import EditJobPage from "./pages/editJobPage";
 import ManageEmployeesPage from "./pages/manageEmployeesPage";
 import AddEmployeesPage from "./pages/addEmployeesPage";
 import EditEmployeePage from "./pages/editEmployeePage";
+import ManageAccount from "./pages/manageAccountPage";
 
 export default function App() {
   return (
@@ -31,6 +32,7 @@ export default function App() {
         <Route path="/loggedIn/manage-employees" element={<ManageEmployeesPage />} />
         <Route path="/loggedIn/add-employee" element={<AddEmployeesPage />} />
         <Route path="/loggedIn/edit-employee/:id" element={<EditEmployeePage />} />
+        <Route path="/loggedIn/manage-account" element={<ManageAccount/>} />
       </Routes>
       <Footer />
     </>
