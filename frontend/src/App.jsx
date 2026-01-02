@@ -2,7 +2,7 @@ import { Routes, Route } from "react-router-dom";
 
 import Header from "./components/header.jsx";
 import Footer from "./components/footer.jsx";
-
+import ScrollToTop from "./components/helpers/ScrollToTop.jsx";
 import NotLoggedInHomePage from "./pages/notLoggedInHomePage.jsx";
 import LoginPage from "./pages/loginPage.jsx";
 import CreateAccountPage from "./pages/createAccountPage.jsx";
@@ -19,6 +19,7 @@ import ManageAccount from "./pages/manageAccountPage";
 export default function App() {
   return (
     <>
+      <ScrollToTop />
       <Header />
       <Routes>
         <Route path="/" element={<NotLoggedInHomePage />} />
