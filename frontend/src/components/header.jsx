@@ -138,7 +138,7 @@ export default function Header() {
             Home
             <hr className="hamburger-line" />
           </NavLink>
-          <NavLink to="/loggedIn/Jobs" className="nav-link" onClick={() => setIsOpen(false)}>
+          <NavLink to="/loggedIn/jobs" className="nav-link" onClick={() => setIsOpen(false)}>
             Jobs
             <hr className="hamburger-line" />
           </NavLink>

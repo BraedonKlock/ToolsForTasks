@@ -15,6 +15,7 @@ import ManageEmployeesPage from "./pages/manageEmployeesPage";
 import AddEmployeesPage from "./pages/addEmployeesPage";
 import EditEmployeePage from "./pages/editEmployeePage";
 import ManageAccount from "./pages/manageAccountPage";
+import ToolsPage from "./pages/toolsPage";
 
 export default function App() {
   return (
@@ -26,7 +27,7 @@ export default function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/create-account" element={<CreateAccountPage />} />
         <Route path="/loggedIn" element={<LoggedInHomePage />} />
-        <Route path="/loggedIn/Jobs" element={<JobsPage />} />
+        <Route path="/loggedIn/jobs" element={<JobsPage />} />
         <Route path="/loggedIn/add-job" element={<AddJobPage />} />
         <Route path="/loggedIn/job-details/:id" element={<JobDetailsPage />} />
         <Route path="/loggedIn/edit-job/:id" element={<EditJobPage />} />
@@ -34,6 +35,7 @@ export default function App() {
         <Route path="/loggedIn/add-employee" element={<AddEmployeesPage />} />
         <Route path="/loggedIn/edit-employee/:id" element={<EditEmployeePage />} />
         <Route path="/loggedIn/manage-account" element={<ManageAccount/>} />
+        <Route path="/loggedIn/tools" element={<ToolsPage/>} />
       </Routes>
       <Footer />
     </>
