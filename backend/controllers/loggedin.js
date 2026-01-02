@@ -1,7 +1,7 @@
 /**
  * This file is responsible for handling post and get requests
  */
-
+const User = require('../models/user');
 const Jobs = require('../models/jobs'); // importing jobs object from models
 const Employees = require('../models/employee');
 const db = require('../util/database');
@@ -322,5 +322,48 @@ exports.updateEmployee = async (req,res) => {
     res.status(200).json({ok: true})
   } catch(err) {
     res.status(500).json();
+  }
+}
+/**------------------------------------------------------------------------------------------------ */
+exports.getAccountDetails = async (req,res) => {
+  try {
+    if(!req.user) return res.status(401).json({ error: "Unauthenticated" });
+
+    const { id } = req.params;
+
+    const [ rows ] = await User.findUserById(id);
+
+    if(!rows ||rows.length === 0) {
+      res.status(404).json({error: "Could not load account details, please try again later"});
+    }
+    const { password, ...account } = rows[0];
+    res.status(200).json({ok: true, account})
+  } catch(err) {
+    res.status(500);
+  }
+}
+/**------------------------------------------------------------------------------------------------ */
+exports.updateAccount = async (req,res) => {
+  try {
+    if(!req.user) return res.status(401).json({ error: "Unauthenticated" });
+    const { id } = req.params;
+    let { type, name, email, password } = req.body;
+
+    name = (name || "").trim();
+    email = (email || "").trim().toLowerCase();
+
+    let passwordHash;
+    if (typeof password === "string" && password.trim().length > 0) {
+      passwordHash = await bcrypt.hash(password.trim(), 12);
+    }
+    const result = await User.updateUser(id, type, name, email, passwordHash);
+
+    if(result.affectedRows !== 1) {
+      return res.status(404).json({error: "Could not update account, please try again later."});
+    }
+
+    res.status(200).json({ok: true});
+  } catch(err) {
+    res.status(500);
   }
 }

@@ -20,7 +20,19 @@ module.exports = class user {
         return db.execute('SELECT * FROM organizations WHERE email = ?', [userEmail]); // returns a promise
     }
 
-    static findUserbyId(org_id) {
-        return db.execute('SELECT * FROM organizations WHERE id = ?', [org_id]);
+    static findUserById(org_id) {
+        return db.execute(
+            "SELECT id, businessType, companyName, email FROM organizations WHERE id = ?", [org_id]
+        );
+    }
+
+    static async updateUser(org_id, type, name, email, password) {
+        if(password) {
+            const [result] = await db.execute('UPDATE organizations SET businessType = ?, companyName = ?, email = ?, password = ? WHERE id = ?', [type, name, email, password, org_id])
+            return result;
+        } else {
+            const [result] = await db.execute('UPDATE organizations SET businessType = ?, companyName = ?, email = ? WHERE id = ?', [type, name, email, org_id])
+            return result;
+        }
     }
 }
