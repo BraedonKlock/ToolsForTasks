@@ -184,18 +184,18 @@ export default function EditJobPage() {
 
     return (
         <main className="editJob-page">
-        <section id="addJob-form">
-            <Link id="addJob-form-closeBtn" className="editJob-page-backBtn" to="/loggedIn/jobs">
+        <section id="editJob-form">
+            <Link id="editJob-form-closeBtn" className="editJob-page-backBtn" to="/loggedIn/jobs">
                 <FontAwesomeIcon icon={faArrowLeft} className="icon" />
             </Link>
 
-            <div id="addJob-container">
+            <div id="editJob-container">
             <h1>Edit Job</h1>
 
             <form className="forms" onSubmit={onSubmit}>
                 <div className="form-control">
                 <label htmlFor="jobType">Job Type:</label>
-                <select name="jobType" id="addJobForm-jobType" required>
+                <select name="jobType" id="editJobForm-jobType" required>
                     <option value={job?.jobType?? ""} disabled hidden>{job?.jobType?? ""}</option>
                     <option value="roofing">Roofing</option>
                     <option value="carpentry">Carpentry</option>
@@ -215,7 +215,7 @@ export default function EditJobPage() {
 
                 <div className="form-control">
                 <label htmlFor="date">Date:</label>
-                <input id="addJobForm-date" type="date" name="date" defaultValue={job?.date?? ""} />
+                <input id="editJobForm-date" type="date" name="date" defaultValue={job?.date?? ""} />
                 </div>
 
                 <div className="form-control">
@@ -230,7 +230,7 @@ export default function EditJobPage() {
 
                 <div className="form-control">
                 <label htmlFor="notes">Notes:</label>
-                <textarea id="addJob-notes" name="notes" defaultValue={job?.notes?? ""}></textarea>
+                <textarea id="editJob-notes" name="notes" defaultValue={job?.notes?? ""}></textarea>
                 </div>
 
                 {error && <p id="login-error" className="error">{error}</p>}
@@ -241,7 +241,7 @@ export default function EditJobPage() {
                     <label htmlFor="addEmployee">Choose:</label>
                     <select
                         name="addEmployee"
-                        id="addJob-employeeSelect"
+                        id="editJob-employeeSelect"
                         value={selectedEmpId}
                         onChange={(e) => setSelectedEmpId(e.target.value)}
                     >
@@ -259,19 +259,19 @@ export default function EditJobPage() {
 
                     <button
                         type="button"
-                        id="addJob-addEmployeeBtn"
+                        id="editJob-addEmployeeBtn"
                         onClick={handleAddEmployee}
                     >
                         Add Employee
                     </button>
 
                     {/* VISIBLE EMPLOYEE DISPLAY FOR CURRENTEMPLOYEES*/}
-                    <div id="addJob-employeeDisplay">
+                    <div id="editJob-employeeDisplay">
                         {(currentEmployees ?? []).map((emp) => (
                             <div className="employee-pill" key={emp.id}>
                             <h3>{emp.name}</h3>
 
-                            <div className="addJobForm-employeeData" data-empid={emp.id}>
+                            <div className="editJobForm-employeeData" data-empid={emp.id}>
                                 <div className="emp-div">
                                 <p>ID:</p>
                                 <p>{emp.employeeid}</p>
@@ -286,7 +286,7 @@ export default function EditJobPage() {
                             {/* Remove button INSIDE the pill, after the data */}
                             <button
                                 type="button"
-                                className="addJob-removeBtn"
+                                className="editJob-removeBtn"
                                 aria-label="Remove from list"
                                 title="Remove"
                                 onClick={() => {handleRemoveEmployeeFromJob(emp.id)}
@@ -302,7 +302,7 @@ export default function EditJobPage() {
                             <div className="employee-pill" key={emp.id}>
                             <h3>{emp.name}</h3>
 
-                            <div className="addJobForm-employeeData" data-empid={emp.id}>
+                            <div className="editJobForm-employeeData" data-empid={emp.id}>
                                 <div className="emp-div">
                                 <p>ID:</p>
                                 <p>{emp.employeeid}</p>
@@ -317,7 +317,7 @@ export default function EditJobPage() {
                             {/* Remove button INSIDE the pill, after the data */}
                             <button
                                 type="button"
-                                className="addJob-removeBtn"
+                                className="editJob-removeBtn"
                                 aria-label="Remove from list"
                                 title="Remove"
                                 onClick={() =>
@@ -331,7 +331,7 @@ export default function EditJobPage() {
 
 
                     {/* HIDDEN INPUTS FOR FORM SUBMIT */}
-                    <div id="addJob-hiddenEmployees">
+                    <div id="editJob-hiddenEmployees">
                         {addedEmployees.map(emp => (
                             <input
                                 key={`hidden-${emp.employeeid}`}
@@ -344,8 +344,8 @@ export default function EditJobPage() {
                 </>
                 )}
 
-                <hr id="addJobForm-hr" />
-                <button id="addJob-addJobBtn" type="submit">Update Job</button>
+                <hr id="editJobForm-hr" />
+                <button id="editJob-addJobBtn" type="submit">Update Job</button>
             </form>
             </div>
         </section>

@@ -10,6 +10,7 @@
 .manageAccount-page #manageAccountPage-manageAccountContainer h1{
     text-align: center;
     font-family: 'story script';
+    font-size: 2.5rem;
     margin-bottom: 3vw;
 }
 
@@ -44,16 +45,13 @@
     color: white;
 }
 .manageAccount-page .form-control input, .manageAccount-page .form-control select {
-    width: 62%;
+    width: 60%;
+    height: 1.5rem;
     box-sizing: border-box;
 }
 .form-control input:focus, .form-control textarea:focus {
     outline: none;
     border: solid rgb(254,149,23) .15rem ;
-}
-.manageAccount-page #manageAccountPage-roleSelect {
-    width: 62%;
-    text-align: center;
 }
 #manageAccountPage-hr {
     width: 75%;

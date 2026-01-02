@@ -7,26 +7,27 @@
     align-items: center;
     min-height: 100vh;
 }
+
 .editJob-page-backBtn {
     position: absolute;
     left: 3vw;
     width: max-content;
     -webkit-tap-highlight-color: transparent; /*removes blue tap highlight */
 }
-#addJob-form {
+#editJob-form {
     display: flex;
     flex-direction: column;
     background-color: #293d55;
     width: 100%;
 }
 
-#addJob-form #addJob-container h1 {
+#editJob-form #editJob-container h1 {
     align-self: center;
     margin: 0 0 3vw 0;
     font-family: 'story script';
-    font-size: xx-large;
+    font-size: 2.5rem;
 }
-#addJob-container{
+#editJob-container{
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -39,7 +40,7 @@
     align-self: center;
     border-top: solid rgb(254,149,23) .5rem;
 }
-#addJob-container .forms {
+#editJob-container .forms {
     width: 100%;
 }
 .form-control {
@@ -57,30 +58,32 @@
 }
 .editJob-page .form-control input, .editJob-page .form-control select {
     width: 70%;
+    height: 1.5rem;
     box-sizing: border-box;
 }
 .form-control input:focus, .form-control textarea:focus {
     outline: none;
     border: solid rgb(254,149,23) .15rem ;
 }
-#addJobForm-date {
+#editJobForm-date {
     width: 70%;
     box-sizing: border-box;
     text-align: center;
 }
-#addJobForm-jobType {
+#editJobForm-jobType {
     width: 70%;
 }
-#addJob-employeeSelect {
+#editJob-employeeSelect {
     width: 70%;
     text-align: center;
 }
-#addJob-addEmployeeBtn {
+#editJob-addEmployeeBtn {
     width: 70%;
+    height: 1.5rem;
     align-self: flex-end;
     background-color: rgb(254,149,23);
 }
-#addJob-notes {
+#editJob-notes {
     width: 70%;
     height: 25vh;
     box-sizing: border-box;
@@ -92,11 +95,11 @@
     resize: vertical;            /* let user resize vertically */
     line-height: 1.4;
 }
-#addJobForm-hr {
+#editJobForm-hr {
     width: 75%;
     border: solid black .1rem;
 }
-#addJob-addJobBtn {
+#editJob-addJobBtn {
     margin-top: 2vh;
     width: 50%;
     box-sizing: border-box; /* ensures padding/border don't overflow */
@@ -111,7 +114,7 @@
 }
 
 
-#addJob-employeeDisplay {
+#editJob-employeeDisplay {
     display: flex;
     flex-direction: column;
     gap: 2vw;
@@ -132,7 +135,7 @@
     background-color: #293d55;
 }
 
-#addJobForm-employeeData {
+#editJobForm-employeeData {
     display: flex;
     flex-direction: column;
 }
@@ -146,7 +149,7 @@
     width: 12ch;
 }
 
-.addJob-removeBtn {
+.editJob-removeBtn {
     margin-left: auto; /* pushes button to the far right */
     background-color: #293d55;
     border: none;

@@ -16,6 +16,7 @@
 .addEmployee-page #addEmployeePage-addEmployeeContainer h1{
     text-align: center;
     font-family: 'story script';
+    font-size: 2.5rem;
     margin-bottom: 3vw;
 }
 
@@ -52,7 +53,7 @@
 .addEmployee-page .form-control #avatarPicker {
     width: 70%;
     box-sizing: border-box;
-    height: max-content;
+    height: 1.5rem;
     align-self: center;
 }
 #avatarDiv {
@@ -60,6 +61,7 @@
 }
 .addEmployee-page .form-control input, .addEmployee-page .form-control select {
     width: 70%;
+    height: 1.5rem;
     box-sizing: border-box;
 }
 .form-control input:focus, .form-control textarea:focus {
