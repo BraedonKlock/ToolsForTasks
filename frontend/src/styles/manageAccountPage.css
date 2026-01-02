@@ -1,4 +1,4 @@
-.editEmployee-page {
+.manageAccount-page {
     background-color: #293d55;
     margin-top:3vh;
     width: 100%;
@@ -7,19 +7,13 @@
     align-items: center;
     min-height: 100vh;
 }
-.editEmployeePage-backBtn {
-    position: absolute;
-    left: 3vw;
-    width: max-content;
-    -webkit-tap-highlight-color: transparent; /*removes blue tap highlight */
-}
-.editEmployee-page #editEmployeePage-editEmployeeContainer h1{
+.manageAccount-page #manageAccountPage-manageAccountContainer h1{
     text-align: center;
     font-family: 'story script';
     margin-bottom: 3vw;
 }
 
-#editEmployeePage-editEmployeeContainer {
+#manageAccountPage-manageAccountContainer {
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -33,7 +27,7 @@
         border-top: solid rgb(254,149,23) .5rem;
 }
 
-#editEmployeePage-editEmployeeContainer .forms {
+#manageAccountPage-manageAccountContainer .forms {
         width: 100%;
 }
 .form-control {
@@ -49,16 +43,7 @@
 .form-control label {
     color: white;
 }
-.form-control #avatarPicker {
-    width: 62%;
-    box-sizing: border-box;
-    height: max-content;
-    align-self: center;
-}
-#avatarDiv {
-    margin-bottom: 2vh;
-}
-.form-control input {
+.manageAccount-page .form-control input, .manageAccount-page .form-control select {
     width: 62%;
     box-sizing: border-box;
 }
@@ -66,16 +51,16 @@
     outline: none;
     border: solid rgb(254,149,23) .15rem ;
 }
-#editEmployeePage-roleSelect {
+.manageAccount-page #manageAccountPage-roleSelect {
     width: 62%;
     text-align: center;
 }
-#editEmployeePage-hr {
+#manageAccountPage-hr {
     width: 75%;
     border: solid black .1rem;
     margin-top: 5vw;
 }
-#editEmployeePage-addBtn {
+#manageAccountPage-updateBtn {
     margin-top: 2vh;
     width: 50%;
     box-sizing: border-box; /* ensures padding/border don't overflow */

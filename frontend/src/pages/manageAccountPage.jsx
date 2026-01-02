@@ -62,9 +62,9 @@ export default function ManageAccount() {
     };
 
     return (
-        <main className="editEmployee-page">
+        <main className="manageAccount-page">
 
-        <div id="editEmployeePage-editEmployeeContainer">
+        <div id="manageAccountPage-manageAccountContainer">
             <h1>Edit Account</h1>
 
             {error && <p id="login-error" className="error">{error}</p>}
@@ -72,7 +72,7 @@ export default function ManageAccount() {
             <form className="forms" onSubmit={onSubmit}>
             <div className="form-control">
                 <label htmlFor="type">Business Type:</label>
-                <select name="type" id="addEmployeePage-roleSelect" required defaultValue={accountDetails?.businessType ?? ""}>
+                <select name="type" id="manageAccountPage-roleSelect" required defaultValue={accountDetails?.businessType ?? ""}>
                 <option value={accountDetails?.businessType?? ""} hidden>{accountDetails?.businessType?? ""}</option>
                 <option value="roofing">Roofing</option>
                 <option value="carpentry">Carpentry</option>
@@ -96,8 +96,8 @@ export default function ManageAccount() {
                 <input id="password" type="password" name="password" placeholder="Leave blank to keep current password" autoComplete="new-password" />
             </div>
 
-            <hr id="editEmployeePage-hr" />
-            <button type="submit" id="editEmployeePage-addBtn">Update</button>
+            <hr id="manageAccountPage-hr" />
+            <button type="submit" id="manageAccountPage-updateBtn">Update</button>
             </form>
         </div>
         </main>
