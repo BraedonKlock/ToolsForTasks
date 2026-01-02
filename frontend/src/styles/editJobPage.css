@@ -31,7 +31,7 @@
     flex-direction: column;
     justify-content: center;
     background-color: #1B2A41;
-    width: 75%;
+    width: 90%;
     padding: 3vw;
     border-radius: .5rem;
     box-shadow: 0 4px 8px -2px rgba(0, 0, 0, 0.5);
@@ -55,8 +55,8 @@
 .form-control label {
     color: white;
 }
-.form-control input {
-    width: 62%;
+.editJob-page .form-control input, .editJob-page .form-control select {
+    width: 70%;
     box-sizing: border-box;
 }
 .form-control input:focus, .form-control textarea:focus {
@@ -64,24 +64,24 @@
     border: solid rgb(254,149,23) .15rem ;
 }
 #addJobForm-date {
-    width: 62%;
+    width: 70%;
     box-sizing: border-box;
     text-align: center;
 }
 #addJobForm-jobType {
-    width: 62%;
+    width: 70%;
 }
 #addJob-employeeSelect {
-    width: 62%;
+    width: 70%;
     text-align: center;
 }
 #addJob-addEmployeeBtn {
-    width: 62%;
+    width: 70%;
     align-self: flex-end;
     background-color: rgb(254,149,23);
 }
 #addJob-notes {
-    width: 62%;
+    width: 70%;
     height: 25vh;
     box-sizing: border-box;
 
