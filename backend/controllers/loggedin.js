@@ -117,6 +117,13 @@ exports.addJob = async (req,res) => {
     const orgId = req.user.orgId;
 
     const { jobType, jobid, title, date, address, phoneNumber, notes, employeeIds = [] } = req.body;
+
+    const jobIdInt = Number.parseInt(jobid, 10);
+
+    if (!Number.isInteger(jobIdInt)) {
+      return res.status(400).json({ error: "jobid must be an integer" });
+    };
+
     const job = new Jobs(jobType, jobid, title, date, address, phoneNumber, notes, orgId)
     const addJobResult = await job.addJob()
 

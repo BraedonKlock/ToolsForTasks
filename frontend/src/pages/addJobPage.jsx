@@ -100,7 +100,8 @@ export default function AddJob() {
             return;
             }
             if (!res.ok) {
-                throw new Error("failed");
+                const data = await res.json();
+                throw new Error(data.error || "failed");
             }
             navigate("/loggedIn/jobs");
         } catch(err) {
@@ -160,7 +161,7 @@ export default function AddJob() {
                     <textarea id="addJob-notes" name="notes"></textarea>
                 </div>
 
-                {error && <p id="login-error" className="error">{error}</p>}
+                {error && <p id="error" className="error">{error}</p>}
 
                 {employees.length > 0 && (
                 <>

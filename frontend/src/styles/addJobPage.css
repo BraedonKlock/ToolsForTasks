@@ -158,3 +158,9 @@
     color: red;
 
 }
+.error {
+    text-align: center;
+    color: red;
+    font-size: medium;
+    margin-top: 2vh;
+}
