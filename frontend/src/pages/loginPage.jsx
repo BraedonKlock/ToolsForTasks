@@ -33,7 +33,7 @@ export default function LoginPage() {
 
       // after successful login
       login(accessToken, user);
-      navigate("/loggedin", { replace: true });
+      navigate("/loggedIn", { replace: true });
     } catch (err) {
       setError(err.message);
     }

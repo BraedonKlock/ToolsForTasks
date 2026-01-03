@@ -26,6 +26,8 @@ Backend: Node.js, Express, REST, JSON
 
 Database: SQL (MySQL/PostgreSQL—pick one in your env)
 
+Testing: Cypress (E2E)
+
 ## 🎥 Watch Demo
 
 [▶️ To view the video: Click here! then download the RAW file! ](TFTdemo.mp4)

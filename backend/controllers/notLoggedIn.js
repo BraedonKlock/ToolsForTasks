@@ -32,7 +32,7 @@ exports.login = async (req, res, next) => {
     // ---- OWNER ----
     if (accountType === "owner") {
       const [rows] = await User.findUser(email);
-      if (!rows || rows.length === 0) return res.status(401).json({ error: "Invalid email" });
+      if (!rows || rows.length === 0) return res.status(401).json({ error: "Invalid Email or Account Type" });
 
       const org = rows[0];
       const ok = await bcrypt.compare(password, org.password);
@@ -49,7 +49,7 @@ exports.login = async (req, res, next) => {
     // ---- EMPLOYEE ----
     if (accountType === "employee") {
       const [rows] = await Employee.findEmployee(email);
-      if (!rows || rows.length === 0) return res.status(401).json({ error: "Invalid email" });
+      if (!rows || rows.length === 0) return res.status(401).json({ error: "Invalid Email or Account Type" });
 
       const emp = rows[0];
       const ok = await bcrypt.compare(password, emp.password);
