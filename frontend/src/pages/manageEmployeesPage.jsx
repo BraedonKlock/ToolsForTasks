@@ -34,7 +34,7 @@ export default function manageEmployeesPage() {
             setError(err.message)
             }
         })();
-    }, []);
+    }, [accessToken, logout]);
 
     function handleDeleteSuccess(deletedId) {
         const newEmployees = employees.filter((employee) => employee.id !== deletedId);

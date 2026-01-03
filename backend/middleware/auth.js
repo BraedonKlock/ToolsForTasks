@@ -18,7 +18,7 @@ function requireAuth(req, res, next) {
 /**Function to confirm user is logged in by checking the loggedin flag set in the home controller postLogin function */
 function requireLogin(req, res, next) {
   if (req.session?.isLoggedIn) return next();
-  return res.redirect('/login'); 
+  return res.redirect('/login');
 }
 
 function branchLogIn(req,res,next) {

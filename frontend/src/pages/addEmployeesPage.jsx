@@ -60,7 +60,7 @@ export default function AddEmployees() {
         <div id="addEmployeePage-addEmployeeContainer">
             <h1>Add Employee</h1>
 
-            {error && <p id="login-error" className="error">{error}</p>}
+            {error && <p id="error" className="error">{error}</p>}
 
             <form className="forms" onSubmit={onSubmit}>
             {/* AVATAR PICKER */}

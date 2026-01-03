@@ -27,8 +27,8 @@ export default function AddJob() {
                 }
 
                 if (!res.ok) {
-                    // Backend responded, but not 200 OK
-                    const data = await res.json().catch(() => ({})); // safe parse
+                    
+                    const data = await res.json().catch(() => ({}));
                     throw new Error("Failed to load employees, try again later.");
                 }
 
