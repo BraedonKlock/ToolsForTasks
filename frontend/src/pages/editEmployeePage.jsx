@@ -15,7 +15,7 @@ export default function EditEmployee() {
     const { id } = useParams();
     const [employee, setEmployee] = useState(null);
 
-    const avatarFile = avatarNum === 0 ? "user.png" : `user${avatarNum}.png`;
+    const avatarFile = `user${avatarNum}.png`;
     const avatarSrc = `/images/${avatarFile}`;
 
     useEffect(() => {
