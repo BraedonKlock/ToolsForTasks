@@ -233,7 +233,7 @@ export default function EditJobPage() {
                 <textarea id="editJob-notes" name="notes" defaultValue={job?.notes?? ""}></textarea>
                 </div>
 
-                {error && <p id="login-error" className="error">{error}</p>}
+                {error && <p id="error" className="error">{error}</p>}
 
                 {employees.length > 0 && (
                 <>
