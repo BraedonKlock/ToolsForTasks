@@ -12,7 +12,7 @@ export default function AddEmployees() {
     const navigate = useNavigate();
 
 
-    const avatarFile = avatarNum === 0 ? "user.png" : `user${avatarNum}.png`;
+    const avatarFile = `user${avatarNum}.png`;
     const avatarSrc = `/images/${avatarFile}`;
 
     async function onSubmit(e) {
