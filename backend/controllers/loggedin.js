@@ -146,6 +146,9 @@ exports.addJob = async (req,res) => {
       ok: true
     })
   } catch(err) {
+    if (err && (err.code === "ER_DUP_ENTRY" || err.errno === 1062)) {
+      return res.status(409).json({ error: "Job ID already exists for this company." });
+    }
     res.status(500).json();
   }
 }
@@ -158,7 +161,7 @@ exports.updateJob = async (req,res) => {
     const dbJobId = Number(req.params.id);
 
     const { jobType, jobid, title, date, address, phoneNumber, notes, employeeIds = [] } = req.body;
-    
+
     const jobIdInt = Number.parseInt(jobid, 10);
     if (!Number.isInteger(jobIdInt)) {
       return res.status(400).json({ error: "jobid must be an integer" });
@@ -194,6 +197,9 @@ exports.updateJob = async (req,res) => {
       ok:true
     })
   } catch(err) {
+    if (err && (err.code === "ER_DUP_ENTRY" || err.errno === 1062)) {
+      return res.status(409).json({ error: "Job ID already exists for this company." });
+    }
     if (err.status === 404) {
       res.status(err.status).json({error: err.message})
     } else {
