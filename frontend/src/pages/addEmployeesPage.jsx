@@ -37,8 +37,8 @@ export default function AddEmployees() {
         }
 
         if (!result.ok) {
-            const errBody = await result.json().catch(() => ({}));
-            throw new Error(errBody.error || "Failed to add employee, try again later.");
+            const data = await result.json().catch(() => ({}));
+            throw new Error(data.error || "Failed to add employee, try again later.");
         }
 
         navigate("/loggedIn/manage-employees");

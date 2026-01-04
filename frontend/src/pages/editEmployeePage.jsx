@@ -64,9 +64,14 @@ export default function EditEmployee() {
                 },
                 body: JSON.stringify(payload)
             });
-            
+
+            if (res.status === 401) {
+                logout();
+                return;
+            }
             if (!res.ok) {
-                throw new Error("Could not update employee, try again later.")
+                const data = await res.json().catch(() => ({}));
+                throw new Error(data.error || "Could not update employee, try again later.")
             }
             navigate("/loggedIn/manage-employees");
         } catch(err) {
@@ -87,7 +92,7 @@ export default function EditEmployee() {
         <div id="editEmployeePage-editEmployeeContainer">
             <h1>Edit Employee</h1>
 
-            {error && <p id="login-error" className="error">{error}</p>}
+            {error && <p id="error" className="error">{error}</p>}
 
             <form className="forms" onSubmit={onSubmit}>
             {/* AVATAR PICKER */}

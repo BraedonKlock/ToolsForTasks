@@ -291,7 +291,7 @@ exports.addEmployee = async (req, res) => {
 
   } catch(err) {
     if (err && (err.code === "ER_DUP_ENTRY" || err.errno === 1062)) {
-      return res.status(409).json({ error: "Email already exists for this company." });
+      return res.status(409).json({ error: "Email or id already exists for this company." });
     }
     res.status(500).json();
   }
@@ -342,6 +342,9 @@ exports.updateEmployee = async (req,res) => {
 
     res.status(200).json({ok: true})
   } catch(err) {
+    if (err && (err.code === "ER_DUP_ENTRY" || err.errno === 1062)) {
+      return res.status(409).json({ error: "Email or id already exists for this company." });
+    }
     res.status(500).json();
   }
 }
