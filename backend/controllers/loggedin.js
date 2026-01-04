@@ -276,10 +276,20 @@ exports.addEmployee = async (req, res) => {
 
     const { email, employeeid, name, password, role, avatar } = req.body;
 
-    email.trim().toLowerCase();
-    password.trim();
+    const employeeIdInt = Number.parseInt(employeeid, 10);
+    if (!Number.isInteger(employeeIdInt)) {
+      return res.status(400).json({ error: "Employee id must be an integer" });
+    };
 
-    const passwordHash = await bcrypt.hash(password, 12);
+    email.trim().toLowerCase();
+
+    // If password provided, hash it, else keep it undefined
+    let passwordHash;
+    if (typeof password === "string" && password.trim().length > 0) {
+      passwordHash = await bcrypt.hash(password.trim(), 12);
+    } else {
+      return res.status(400).json({ error: "Password must not contain spaces" });
+    }
 
     const employee = new Employees(name, role, employeeid, email, passwordHash, avatar, orgId, companyName);
 
@@ -326,14 +336,22 @@ exports.updateEmployee = async (req,res) => {
 
     let {employeeid, name, role, email, avatar, password } = req.body;
 
+    const employeeIdInt = Number.parseInt(employeeid, 10);
+    if (!Number.isInteger(employeeIdInt)) {
+      return res.status(400).json({ error: "Employee id must be an integer" });
+    };
+
     name = (name || "").trim();
     email = (email || "").trim().toLowerCase();
+
+
 
     // If password provided, hash it, else keep it undefined
     let passwordHash;
     if (typeof password === "string" && password.trim().length > 0) {
       passwordHash = await bcrypt.hash(password.trim(), 12);
     }
+    
     const result = await Employees.updateEmployee(orgId, id, name, role, employeeid, email, passwordHash, avatar);
 
     if(result.affectedRows !== 1) {
