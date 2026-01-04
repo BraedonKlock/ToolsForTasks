@@ -27,7 +27,6 @@ export default function AddJob() {
                 }
 
                 if (!res.ok) {
-                    
                     const data = await res.json().catch(() => ({}));
                     throw new Error("Failed to load employees, try again later.");
                 }

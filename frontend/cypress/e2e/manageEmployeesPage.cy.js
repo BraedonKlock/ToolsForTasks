@@ -47,7 +47,7 @@ describe("Jobs page (mobile)", () => {
     it("edits Test employee and changes the name to Test Edited", () => {
         cy.url().should("include", "/loggedIn/manage-employees");
 
-        cy.contains(".employee-card", "Test", { timeout: 10000 })
+        cy.contains(".employee-card", "Test")
             .should("exist")
             .as("testCard");
 
@@ -61,16 +61,16 @@ describe("Jobs page (mobile)", () => {
 
         cy.get("#name").clear().type("Test Edited");
 
-        cy.contains("button", /update|save/i).click();
+        cy.contains("button", /update/i).click();
 
-        cy.url({ timeout: 10000 }).should("include", "/loggedIn/manage-employees");
-        cy.contains(".employee-card", "Test Edited", { timeout: 10000 }).should("exist");
+        cy.url().should("include", "/loggedIn/manage-employees");
+        cy.contains(".employee-card", "Test Edited").should("exist");
     })
 
     it("deletes Test Edited employee", () => {
         cy.url().should("include", "/loggedIn/manage-employees");
 
-        cy.contains(".employee-card", "Test Edited", { timeout: 10000 })
+        cy.contains(".employee-card", "Test Edited")
             .should("exist")
             .as("editedCard");
 
@@ -79,7 +79,7 @@ describe("Jobs page (mobile)", () => {
             cy.get("button.deleteJob-btn").click(); // this is your delete button class
         });
 
-        cy.contains(".employee-card", "Test Edited", { timeout: 10000 })
+        cy.contains(".employee-card", "Test Edited")
             .should("not.exist");
     });
 })
