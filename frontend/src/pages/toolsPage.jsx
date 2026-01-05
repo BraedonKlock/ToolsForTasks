@@ -9,21 +9,18 @@ import { AuthContext } from "../context/AuthContext";
 import "../styles/toolsPage.css";
 
 export default function ToolsPage() {
-    const [openMenuFor, setOpenMenuFor] = useState(null); // stores the tool name whose menu is open
+    const [openMenuFor, setOpenMenuFor] = useState(null);
     const [error, setError] = useState("");
     const { accessToken, logout } = useContext(AuthContext);
     const [tools, setTools] = useState([]);
 
     useEffect(() => {
         function handleClickOutside(event) {
-            // If the click is inside ANY menu container, do nothing
             if (event.target.closest(".threeDotMenu-container")) return;
 
-            // Otherwise close any open menu
             setOpenMenuFor(null);
         }
 
-        // Use click (not mousedown) to avoid “close then reopen”
         document.addEventListener("click", handleClickOutside);
 
         return () => {
@@ -77,7 +74,7 @@ export default function ToolsPage() {
         }
 
         setTools((prev) => prev.filter((t) => t.name !== toolName));
-        setOpenMenuFor(null); // optional: close menu after delete
+        setOpenMenuFor(null);
         } catch (err) {
         setError(err.message);
         }

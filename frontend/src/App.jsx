@@ -16,6 +16,8 @@ import AddEmployeesPage from "./pages/addEmployeesPage";
 import EditEmployeePage from "./pages/editEmployeePage";
 import ManageAccount from "./pages/manageAccountPage";
 import ToolsPage from "./pages/toolsPage";
+import AddToolPage from "./pages/addToolPage.jsx";
+import EditToolPage from "./pages/editToolPage.jsx";
 
 export default function App() {
   return (
@@ -36,6 +38,8 @@ export default function App() {
         <Route path="/loggedIn/edit-employee/:id" element={<EditEmployeePage />} />
         <Route path="/loggedIn/manage-account" element={<ManageAccount/>} />
         <Route path="/loggedIn/tools" element={<ToolsPage/>} />
+        <Route path="/loggedIn/add-tool" element={<AddToolPage/>} />
+        <Route path="/loggedIn/edit-tool/:name" element={<EditToolPage/>} />
       </Routes>
       <Footer />
     </>
