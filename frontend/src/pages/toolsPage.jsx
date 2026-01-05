@@ -11,24 +11,26 @@ import "../styles/toolsPage.css";
 export default function ToolsPage() {
     const [openMenuFor, setOpenMenuFor] = useState(null); // stores the tool name whose menu is open
     const [error, setError] = useState("");
-    const menuRef = useRef(null);
     const { accessToken, logout } = useContext(AuthContext);
     const [tools, setTools] = useState([]);
 
     useEffect(() => {
         function handleClickOutside(event) {
-        if (menuRef.current && !menuRef.current.contains(event.target)) {
+            // If the click is inside ANY menu container, do nothing
+            if (event.target.closest(".threeDotMenu-container")) return;
+
+            // Otherwise close any open menu
             setOpenMenuFor(null);
         }
-        }
-        document.addEventListener("mousedown", handleClickOutside);
-        document.addEventListener("touchstart", handleClickOutside);
+
+        // Use click (not mousedown) to avoid “close then reopen”
+        document.addEventListener("click", handleClickOutside);
 
         return () => {
-        document.removeEventListener("mousedown", handleClickOutside);
-        document.removeEventListener("touchstart", handleClickOutside);
+            document.removeEventListener("click", handleClickOutside);
         };
     }, []);
+
 
     useEffect(() => {
         (async () => {
@@ -107,7 +109,7 @@ export default function ToolsPage() {
                     <h6>{tool.name}</h6>
                     </div>
 
-                    <div className="threeDotMenu-container" ref={menuRef}>
+                    <div className="threeDotMenu-container" >
                     {isOpen && (
                         <section className="threeDotMenu-options">
                         <Link
