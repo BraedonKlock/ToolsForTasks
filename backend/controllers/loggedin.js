@@ -4,6 +4,7 @@
 const User = require('../models/user');
 const Jobs = require('../models/jobs'); // importing jobs object from models
 const Employees = require('../models/employee');
+const Tools = require('../models/tools');
 const db = require('../util/database');
 const bcrypt = require('bcryptjs'); // importing encryption for user passwords
 
@@ -407,5 +408,40 @@ exports.updateAccount = async (req,res) => {
     res.status(200).json({ok: true});
   } catch(err) {
     res.status(500);
+  }
+}
+/**------------------------------------------------------------------------------------------------ */
+exports.getAllTools = async (req,res) => {
+  try {
+    if(!req.user) return res.status(401).json({ error: "Unauthenticated" });
+    const {orgId} = req.user;
+
+    const [tools] = await Tools.getAllTools(orgId);
+
+    res.status(200).json({ ok: true, tools})
+
+  }catch(err) {
+    res.status(500).json();
+  }
+}
+/**------------------------------------------------------------------------------------------------ */
+exports.deleteTool = async (req,res) => {
+  try {
+    if(!req.user) return res.status(401).json({ error: "Unauthenticated" });
+    const { orgId } = req.user;
+    const { name } = req.params;
+
+    const [result] = await Tools.deleteTool(orgId, name);
+
+    if(!result.affectedRows) {
+      return res.status(400).json({error: "Could not delete Tool, please try again later."})
+    }
+
+    return res.status(200).json({ok: true});
+  }catch(err) {
+    if(err.message) {
+      res.status(err.status).json({error: err.message});
+    }
+    res.status(500).json({error: "internal server error"});
   }
 }

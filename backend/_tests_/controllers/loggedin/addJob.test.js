@@ -1,6 +1,6 @@
 // tests/addJob.test.js
-const { addJob } = require("../../../controllers/loggedin");  // <-- change if needed
-const Jobs = require("../../../models/jobs");                 // <-- change if needed
+const { addJob } = require("../../../controllers/loggedin");
+const Jobs = require("../../../models/jobs");
 
 jest.mock("../../../models/jobs", () => {
     // When your controller does: new Jobs(...)

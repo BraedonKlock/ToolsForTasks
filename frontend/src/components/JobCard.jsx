@@ -88,15 +88,15 @@ export default function JobCard({ job, isJobsPage, onDeleteSuccess }) {
                         <div className="threeDotMenu-container" ref={menuRef}>
                             {menuOpen && (
                                 <section className="threeDotMenu-options">
-                                <Link to={`/loggedIn/edit-job/${job.id}`} id="editJobHref"> <FontAwesomeIcon icon={faPenToSquare} className="icon" /></Link>
-                                <button
-                                    type="button"
-                                    data-job-id={job.id}
-                                    className="deleteJob-btn"
-                                    onClick={handleDelete}
-                                >
-                                    <FontAwesomeIcon icon={faTrash} className="delete-icon" />
-                                </button>
+                                    <Link to={`/loggedIn/edit-job/${job.id}`} id="editJobHref"> <FontAwesomeIcon icon={faPenToSquare} className="icon" /></Link>
+                                    <button
+                                        type="button"
+                                        data-job-id={job.id}
+                                        className="delete-btn"
+                                        onClick={handleDelete}
+                                    >
+                                        <FontAwesomeIcon icon={faTrash} className="delete-icon" />
+                                    </button>
                                 </section>
                             )}
                             <button

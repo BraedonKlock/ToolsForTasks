@@ -66,7 +66,7 @@ export default function employeeCard({employee, onDeleteSuccess}) {
                         <button
                             type="button"
                             data-employee-id={employee.id}
-                            className="deleteJob-btn"
+                            className="delete-btn"
                             onClick={handleDelete}
                         >
                             <FontAwesomeIcon icon={faTrash} className="delete-icon" />
