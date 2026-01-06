@@ -180,7 +180,7 @@ button:active {
   border: 1px solid var(--color-border);
   border-radius: var(--radius-sm);
   padding: 12px;
-  box-shadow: var(--shadow-1);
+  box-shadow: none;
 }
 
 .threeDotMenu-options a,
@@ -206,6 +206,18 @@ button:active {
   border: none;
   color: var(--color-muted);
   font-size: x-large;
+  box-shadow: none;
+  transform: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.three-dot-menu-icon:hover,
+.three-dot-menu-icon:active,
+.three-dot-menu-icon:focus {
+  background-color: transparent;
+  color: var(--color-muted);
+  box-shadow: none;
+  transform: none;
 }
 
 @keyframes rise-in {

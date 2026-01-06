@@ -29,6 +29,7 @@ header nav {
   align-items: center;
   justify-content: center;
   flex: 1;
+  -webkit-tap-highlight-color: transparent;
 }
 
 #logo {
@@ -70,6 +71,7 @@ header nav {
   background-color: var(--color-surface);
   cursor: pointer;
   box-shadow: var(--shadow-1);
+  -webkit-tap-highlight-color: transparent;
 }
 
 .menu-image {
