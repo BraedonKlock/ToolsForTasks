@@ -74,6 +74,14 @@ header nav {
   -webkit-tap-highlight-color: transparent;
 }
 
+.hamburger:hover,
+.hamburger:active,
+.hamburger:focus {
+  background-color: var(--color-surface);
+  transform: none;
+  box-shadow: var(--shadow-1);
+}
+
 .menu-image {
   color: var(--color-ink);
 }
