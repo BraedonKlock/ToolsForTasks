@@ -85,3 +85,9 @@ main h1 {
     color: red;
     font-size: small;
 }
+
+.success {
+    text-align: center;
+    color: #49c872;
+    font-size: small;
+}

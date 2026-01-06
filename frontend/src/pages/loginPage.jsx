@@ -79,7 +79,7 @@ export default function LoginPage() {
           />
 
           <button type="submit">Log In</button>
-          <Link to="/forgot-password">Forgot Password?</Link>
+          <Link to="/forget-password">Forgot Password?</Link>
         </form>
 
         <hr />

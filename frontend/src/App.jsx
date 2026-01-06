@@ -18,6 +18,7 @@ import ManageAccount from "./pages/manageAccountPage";
 import ToolsPage from "./pages/toolsPage";
 import AddToolPage from "./pages/addToolPage.jsx";
 import EditToolPage from "./pages/editToolPage.jsx";
+import ForgetPasswordPage from "./pages/forgetPasswordPage.jsx";
 
 export default function App() {
   return (
@@ -27,6 +28,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<NotLoggedInHomePage />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/forget-password" element={<ForgetPasswordPage />} />
         <Route path="/create-account" element={<CreateAccountPage />} />
         <Route path="/loggedIn" element={<LoggedInHomePage />} />
         <Route path="/loggedIn/jobs" element={<JobsPage />} />
