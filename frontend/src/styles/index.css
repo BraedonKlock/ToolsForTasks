@@ -1,89 +1,236 @@
+﻿@import url("https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Work+Sans:wght@400;500;600&display=swap");
+
+:root {
+  --color-bg: #f3f0ea;
+  --color-bg-strong: #e8e1d7;
+  --color-surface: #ffffff;
+  --color-surface-alt: #fbf8f2;
+  --color-ink: #1f2933;
+  --color-muted: #5c6670;
+  --color-accent: #c4681e;
+  --color-accent-strong: #a85718;
+  --color-border: #d8d1c6;
+  --shadow-1: 0 10px 24px -16px rgba(20, 24, 30, 0.6);
+  --shadow-2: 0 18px 40px -28px rgba(20, 24, 30, 0.6);
+  --radius-lg: 18px;
+  --radius-md: 12px;
+  --radius-sm: 8px;
+  --font-body: "Work Sans", sans-serif;
+  --font-display: "Oswald", sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 body {
-    padding: 0;
-    margin:0;
-    background-color: #293d55;
-    width: auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  margin: 0;
+  min-height: 100vh;
+  background: linear-gradient(160deg, #f6f2ec 0%, #efe6dc 45%, #f7f2ea 100%);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  position: relative;
 }
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at 10% 10%, rgba(196, 104, 30, 0.08), transparent 40%),
+    radial-gradient(circle at 80% 0%, rgba(31, 41, 51, 0.08), transparent 45%),
+    radial-gradient(circle at 60% 90%, rgba(91, 100, 107, 0.08), transparent 40%);
+  opacity: 0.7;
+  pointer-events: none;
+  z-index: -1;
+}
+
 #root {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    display: flex;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 100vh;
 }
-a,p,h1,h2,h3,h4,h5,h6 {
-    color: white;
-    margin: 0;
+
+a,
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--color-ink);
+  margin: 0;
 }
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-display);
+  letter-spacing: 0.02em;
+}
+
+a {
+  color: var(--color-accent);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--color-accent-strong);
+}
+
+main h1 {
+  color: var(--color-accent-strong);
+}
+
 .job-search {
-    background-color: #1B2A41;
-    border: none;
-    border-radius: .3rem;
-    text-align: center;
-    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
-    "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
-    color: white;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  text-align: center;
+  font-family: var(--font-body);
+  color: var(--color-ink);
 }
+
 .job-search::placeholder {
-  color: white;           /* placeholder text */
-  opacity: 0.9;          /* optional: make it a bit lighter */
+  color: var(--color-muted);
+  opacity: 0.9;
 }
-input, select, textarea  {
-    border: none;
-    border-radius: .2rem;
-    text-align: center;
-    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
-    "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
-    background-color: white;
+
+input,
+select,
+textarea {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  text-align: center;
+  font-family: var(--font-body);
+  background-color: var(--color-surface);
+  color: var(--color-ink);
+  padding: 0.6rem 0.75rem;
+  box-shadow: inset 0 1px 2px rgba(16, 24, 40, 0.08);
 }
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--color-muted);
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px rgba(196, 104, 30, 0.2);
+}
+
 .forms {
-    display: flex;
-    flex-direction: column;
-    align-self: center;
-    width: 50%;
-    gap: 1vw;
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+  width: min(620px, 100%);
+  gap: 16px;
 }
+
 button {
-    border: none;
-    border-radius: .2rem;
-    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
-    "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  background-color: var(--color-accent);
+  color: #fffaf4;
+  padding: 0.6rem 1rem;
+  box-shadow: var(--shadow-1);
+  cursor: pointer;
+  transition: transform 0.2s ease, background-color 0.2s ease;
 }
-a,p,h1,h2,h3,h4,h5,h6 {
-    color: white;
-    margin: 0;
-    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
-    "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
+
+button:hover {
+  background-color: var(--color-accent-strong);
+  transform: translateY(-1px);
 }
-/*GLOBAL STYLING FOR BUTTONS*/
+
+button:active {
+  transform: translateY(0);
+}
+
 .threeDotMenu-container {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 1vw;
-    margin-left: auto;   /* pushes this whole container to the right */
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+  margin-left: auto;
 }
+
 .threeDotMenu-options {
-    display: none;
-    flex-direction: column;
-    text-align: center;
-    gap: 1vw;
+  display: none;
+  flex-direction: column;
+  text-align: center;
+  gap: 12px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 12px;
+  box-shadow: var(--shadow-1);
 }
-.threeDotMenu-options a, .threeDotMenu-options button {
-    color: rgb(254,149,23);
+
+.threeDotMenu-options a,
+.threeDotMenu-options button {
+  color: var(--color-accent);
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 0;
 }
+
 .delete-btn {
-    all: unset;
-    color: white;
+  all: unset;
+  color: #b42318;
 }
+
 .threeDotMenu-options.active {
-    display: flex;
+  display: flex;
 }
+
 .three-dot-menu-icon {
-    background-color: #1B2A41;
-    border: none;
-    color: white;
-    font-size: x-large;
+  background-color: transparent;
+  border: none;
+  color: var(--color-muted);
+  font-size: x-large;
+}
+
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
 }

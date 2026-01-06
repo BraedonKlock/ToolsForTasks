@@ -1,108 +1,149 @@
-@font-face {
-    font-family: 'story script';
-    src: url('../assets/font/Story_Script/StoryScript-Regular.ttf') format('truetype');
+﻿@font-face {
+  font-family: "story script";
+  src: url("../assets/font/Story_Script/StoryScript-Regular.ttf") format("truetype");
 }
+
+header {
+  width: 100%;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--color-border);
+}
+
+header nav {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 16px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+#logoContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+}
+
+#logo {
+  height: 48px;
+  width: auto;
+}
+
+#company-h1 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  text-align: center;
+}
+
+#company-h1 h1 {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-ink);
+}
+
+#company-h1 h6 {
+  font-family: var(--font-body);
+  font-weight: 500;
+  color: var(--color-muted);
+}
+
+.hamburger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 999px;
+  border: 1px solid var(--color-border);
+  background-color: var(--color-surface);
+  cursor: pointer;
+  box-shadow: var(--shadow-1);
+}
+
+.menu-image {
+  color: var(--color-ink);
+}
+
+#hamburger-nav {
+  display: none;
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  top: 100%;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-2);
+}
+
+#hamburger-nav.open {
+  display: flex;
+}
+
+.nav-link {
+  text-decoration: none;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-ink);
+}
+
+.hamburger-line {
+  width: 100%;
+  border: none;
+  height: 1px;
+  background: var(--color-border);
+  margin: 8px 0 0 0;
+}
+
+.error-message {
+  margin-top: 20vh;
+  color: #b42318;
+  text-align: center;
+}
+
 @media (max-width: 800px) {
-    header {
-        background-color: #1B2A41;
-        display: flex;
-        margin-top: 0;
-        position: sticky;
-        z-index: 1000;  /* stays above everything */
-        width: 100%;
-        padding: 0;
-        top: 0;
-    }
+  header {
+    padding: 0;
+  }
 
-    #logoContainer {
-        display: flex;
-        background-color: #1B2A41;
-        width: 100%;
-        justify-content: center;
-        -webkit-tap-highlight-color: transparent; /*removes blue tap highlight */
-    }
-    header nav #logoContainer img {
-        width: 200px;
-    }
-    #logo-container {
-        display: flex;
-        background-color: #1B2A41;
-        width: 100%;
-        justify-content: center;
-    }
-    nav {
-        display: flex;
-        flex-direction: column;
-        margin: 0vh 0 0vh 0;
-        width: 100%;
-        background-color: #1B2A41;
-        justify-content: center;
-    }
-    .hamburger {
-        display: block;
-        position: absolute;
-        bottom: 3vw;
-        left: 3vw;
-        font-size: 24px;
-        cursor: pointer;
-        -webkit-tap-highlight-color: transparent; /*removes blue tap highlight */
-        background-color: #1B2A41;
-        border: none;
-    }
-    .menu-image {
-        color: white;
-    }
-    #hamburger-nav {
-        display: none;
-        position: absolute;
-        left: 0;
-        flex-direction: column;
-        background: #1B2A41;
-        top: 100%;
-        width: 100%;
-        gap: 2vh;
-        padding: 5vw 5vh 2.4vw 5vh;
-        border-bottom: solid black;
-        border-width: .15rem;
-    }
+  header nav {
+    flex-direction: column;
+    gap: 8px;
+    padding: 10px 12px;
+  }
 
-    #hamburger-nav .nav-link {
-        font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
-        "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
-        font-size: large;
-        background-color: #1B2A41;
-        -webkit-tap-highlight-color: transparent; /*removes blue tap highlight */
-    }
-    .hamburger-line {
-        width: 75%;
-        border: solid black .1rem;
-        margin-left: 0;
-    }
-    #hamburger-nav.open {
-        display: flex;
-    }
-    .nav-link {
-        text-decoration: none;
-        font-size: large;
-    }
-    #company-h1 {
-        background-color: #1B2A41;
-        width: 100%;
-        text-align: center;
-        margin-top: auto;
-    }
-    #company-h1 h6 {
-        margin-bottom: 1vh;
-    }
-    header nav h1 {
-        font-family: 'story script';
-        margin: 0 0 1vw 0;
-        background-color: #1B2A41;
-        color: rgb(254,149,23);
-    }
-    .error-message {
-        margin-top: 20vh;
-        color: red;
-        text-align: center;
-    }
+  #logoContainer {
+    width: 100%;
+  }
+
+  header nav #logoContainer img {
+    width: 200px;
+  }
+
+  .hamburger {
+    position: absolute;
+    left: 12px;
+    top: 12px;
+  }
+
+  #hamburger-nav {
+    left: 12px;
+    right: 12px;
+  }
 }

@@ -1,93 +1,107 @@
-.login-page {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 2vh;
-    width: 100%;
-    min-height: 100vh;
+﻿.login-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 24px;
+  width: 100%;
+  min-height: 100vh;
+  padding: 16px;
+  gap: 12px;
+  animation: rise-in 0.6s ease both;
 }
-main h1 {
-    color: rgb(254,149,23);
-}
-#loginForm-container {
-    border-top: solid rgb(254,149,23) .5rem;
-    background-color: #1B2A41;
-    width: 75%;
-    padding: 3vw;
-    border-radius: .5rem;
-    box-shadow: 0 4px 8px -2px rgba(0, 0, 0, 0.5);
-    margin-top: 4vw;
-}
-#login-form {
-    display: flex;
-    flex-direction: column;
-    align-items: stretch; /*Forcing  everything to stretch to fill container*/
-    gap: 1.5vw;
-    width: 100%;
-}
-#loginForm-accountType {
-    text-align: center;
-}
-#login-form select {
-    height: 1.5rem;
 
+.login-page h6 {
+  color: var(--color-muted);
+  font-family: var(--font-body);
 }
+
+#loginForm-container {
+  border-top: 4px solid var(--color-accent);
+  background-color: var(--color-surface);
+  width: min(460px, 92%);
+  padding: 28px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-2);
+  margin-top: 20px;
+}
+
+#login-form {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 14px;
+  width: 100%;
+}
+
+#loginForm-accountType {
+  text-align: center;
+}
+
+#login-form select {
+  height: auto;
+}
+
 #login-form input {
-    text-align: center;
-    width: 100%;
-    height: 1.5rem;
-    box-sizing: border-box; /* ensures padding/border don't overflow */
+  text-align: center;
+  width: 100%;
+  height: auto;
+  box-sizing: border-box;
 }
-#login-form input:focus {
-    outline: none;
-    border: solid rgb(254,149,23) .15rem ;
-}
-#login-form select:focus {
-    outline: none;
-    border: solid rgb(254,149,23) .15rem ;  
-}
+
 #login-form button {
-    width: 100%;
-    height: 1.5rem;
-    background-color: rgb(254,149,23);
-    box-sizing: border-box; /* ensures padding/border don't overflow */
-    box-shadow: 0 4px 8px -2px rgba(0, 0, 0, 0.5);
+  width: 100%;
+  height: auto;
 }
+
 #loginForm-container a {
-    font-size: small;
-    align-self: center;
+  font-size: 0.85rem;
+  align-self: center;
 }
+
 #loginForm-container hr {
-    width: 75%;
-    border: solid black .1rem;
+  width: 100%;
+  border: none;
+  height: 1px;
+  background: var(--color-border);
+  margin: 12px 0;
 }
+
 #createAccount-container {
-    display: flex;
-    width: 100%;
-    justify-content: center;
+  display: flex;
+  width: 100%;
+  justify-content: center;
 }
+
 #createAccount-btn {
-    border: solid black .1rem;
-    border-radius: .2rem;
-    font-family: sans-serif;
-    width: 50%;
-    height: 1.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 1vw;
-    background-color: rgb(228, 224, 224);
-    text-decoration: none;
-    color: black;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
+  width: 100%;
+  height: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 16px;
+  background-color: var(--color-surface-alt);
+  text-decoration: none;
+  color: var(--color-ink);
+  box-shadow: var(--shadow-1);
 }
+
+#createAccount-btn:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent-strong);
+}
+
 .error {
-    text-align: center;
-    color: red;
-    font-size: small;
+  text-align: center;
+  color: #b42318;
+  font-size: 0.9rem;
 }
 
 .success {
-    text-align: center;
-    color: #49c872;
-    font-size: small;
+  text-align: center;
+  color: #15803d;
+  font-size: 0.9rem;
 }
