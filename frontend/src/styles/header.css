@@ -32,7 +32,8 @@ header nav {
 }
 
 #logo {
-  height: 48px;
+  height: auto;
+  max-height: 100px;
   width: auto;
 }
 
