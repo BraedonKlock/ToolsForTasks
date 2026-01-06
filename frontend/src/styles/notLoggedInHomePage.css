@@ -39,6 +39,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .nl-btn {
@@ -58,6 +59,7 @@
   background: var(--color-accent);
   color: #fffaf4;
   box-shadow: var(--shadow-1);
+  -webkit-tap-highlight-color: transparent;
 }
 
 .nl-btn.primary:hover {
