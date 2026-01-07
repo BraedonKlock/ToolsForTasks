@@ -11,13 +11,13 @@ export default function ToolsPage() {
                     <button className="pill" type="button">
                         Tool Kits
                     </button>
+                    <button className="pill pill--cta" type="button">
+                        <span className="pill__icon" aria-hidden="true">
+                            +
+                        </span>
+                        New Tool Kit
+                    </button>
                 </div>
-                <button className="pill pill--cta" type="button">
-                    <span className="pill__icon" aria-hidden="true">
-                        +
-                    </span>
-                    New Tool Kit
-                </button>
             </section>
 
             <section className="tools-section">
