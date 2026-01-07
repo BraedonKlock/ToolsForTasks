@@ -64,7 +64,6 @@ export default function ToolsPage() {
                         <div className="tool-card__avatar">H</div>
                         <div className="tool-card__body">
                             <h4 className="tool-card__title">Hammer</h4>
-                            <p className="tool-card__meta">Qty: 1</p>
                         </div>
                     </article>
 

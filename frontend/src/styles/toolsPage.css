@@ -157,8 +157,7 @@
   font-family: "Montserrat", "Helvetica", sans-serif;
 }
 
-.kit-card__meta,
-.tool-card__meta {
+.kit-card__meta {
   margin: 0;
   font-size: 0.85rem;
   color: var(--tools-muted);
