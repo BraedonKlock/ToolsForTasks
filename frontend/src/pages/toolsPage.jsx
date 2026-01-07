@@ -1,153 +1,107 @@
-import { useState, useRef, useEffect, useContext } from "react";
-import { Link } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash } from "@fortawesome/free-solid-svg-icons";
-import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
-import { faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
-import { AuthContext } from "../context/AuthContext";
-
 import "../styles/toolsPage.css";
 
 export default function ToolsPage() {
-    const [openMenuFor, setOpenMenuFor] = useState(null);
-    const [error, setError] = useState("");
-    const { accessToken, logout } = useContext(AuthContext);
-    const [tools, setTools] = useState([]);
-
-    useEffect(() => {
-        function handleClickOutside(event) {
-            if (event.target.closest(".threeDotMenu-container")) return;
-
-            setOpenMenuFor(null);
-        }
-
-        document.addEventListener("click", handleClickOutside);
-
-        return () => {
-            document.removeEventListener("click", handleClickOutside);
-        };
-    }, []);
-
-
-    useEffect(() => {
-        (async () => {
-        try {
-            const res = await fetch("/api/loggedIn/tools", {
-            headers: { Authorization: `Bearer ${accessToken}` },
-            });
-
-            if (res.status === 401) {
-            logout();
-            return;
-            }
-
-            if (!res.ok) {
-            throw new Error("Failed to fetch Tools, Try again later.");
-            }
-
-            const data = await res.json();
-            setTools(data.tools);
-        } catch (err) {
-            setError(err.message);
-        }
-        })();
-    }, [accessToken, logout]);
-
-    async function handleDelete(toolName) {
-        try {
-        const res = await fetch(
-            `/api/loggedIn/tools/${encodeURIComponent(toolName)}`,
-            {
-            method: "DELETE",
-            headers: { Authorization: `Bearer ${accessToken}` },
-            }
-        );
-
-        if (res.status === 401) {
-            logout();
-            return;
-        }
-
-        if (!res.ok) {
-            const data = await res.json().catch(() => ({}));
-            throw new Error(data.error || "Could not delete Tool");
-        }
-
-        setTools((prev) => prev.filter((t) => t.name !== toolName));
-        setOpenMenuFor(null);
-        } catch (err) {
-        setError(err.message);
-        }
-    }
-
     return (
-        <main id="toolsPage-main">
-        <input
-            className="tool-search"
-            type="search"
-            name="search"
-            placeholder="Search"
-        />
-
-        {error && (
-            <p id="error" className="error">
-            {error}
-            </p>
-        )}
-
-        <section id="tools-toolsContainer" className="tools-container">
-            {tools.length > 0 ? (
-            tools.map((tool) => {
-                const isOpen = openMenuFor === tool.name;
-
-                return (
-                <div className="tool-card" data-tool-name={tool.name} key={tool.name}>
-                    <div className="tool-text">
-                    <h6>{tool.name}</h6>
-                    </div>
-
-                    <div className="threeDotMenu-container" >
-                    {isOpen && (
-                        <section className="threeDotMenu-options">
-                        <Link
-                            to={`/loggedIn/edit-tool/${encodeURIComponent(tool.name)}`}
-                        >
-                            <FontAwesomeIcon icon={faPenToSquare} className="icon" />
-                        </Link>
-
-                        <button
-                            type="button"
-                            data-tool-name={tool.name}
-                            className="delete-btn"
-                            onClick={() => handleDelete(tool.name)}
-                        >
-                            <FontAwesomeIcon icon={faTrash} className="delete-icon" />
-                        </button>
-                        </section>
-                    )}
-
-                    <button
-                        className="three-dot-menu-icon"
-                        aria-label="More options"
-                        onClick={(e) => {
-                        e.stopPropagation();
-                        setOpenMenuFor(isOpen ? null : tool.name);
-                        }}
-                    >
-                        <FontAwesomeIcon icon={faEllipsisVertical} />
+        <main id="toolsPage-main" className="tools-page">
+            <section className="tools-tabs">
+                <div className="tools-tabs__group">
+                    <button className="pill pill--active" type="button">
+                        All Tools
                     </button>
-                    </div>
+                    <button className="pill" type="button">
+                        Tool Kits
+                    </button>
                 </div>
-                );
-            })
-            ) : (
-            <h1>No Tools Found</h1>
-            )}
-        </section>
+                <button className="pill pill--cta" type="button">
+                    <span className="pill__icon" aria-hidden="true">
+                        +
+                    </span>
+                    New Tool Kit
+                </button>
+            </section>
 
-        <Link to="/loggedIn/add-tool" alt="Add Tool">
-            <img src="/images/addToolImage.png" id="addTools-image" />
-        </Link>
+            <section className="tools-section">
+                <div className="tools-section__header">
+                    <h3>Tool Kits</h3>
+                </div>
+                <div className="tools-section__cards">
+                    <article className="kit-card">
+                        <div className="kit-card__avatar">R</div>
+                        <div className="kit-card__body">
+                            <h4 className="kit-card__title">Roof Repair</h4>
+                            <p className="kit-card__meta">
+                                Hammer. Pry Bar. Harness +4 more
+                            </p>
+                        </div>
+                        <div className="kit-card__actions">
+                            <button
+                                className="icon-button icon-button--dots"
+                                type="button"
+                                aria-label="More options"
+                            />
+                        </div>
+                    </article>
+
+                    <article className="kit-card">
+                        <div className="kit-card__avatar kit-card__avatar--muted">
+                            H
+                        </div>
+                        <div className="kit-card__body">
+                            <h4 className="kit-card__title">Home Inspection</h4>
+                            <p className="kit-card__meta">
+                                Flashlight. Gloves +3 more
+                            </p>
+                        </div>
+                        <div className="kit-card__actions">
+                            <button
+                                className="icon-button icon-button--dots"
+                                type="button"
+                                aria-label="More options"
+                            />
+                        </div>
+                    </article>
+                </div>
+            </section>
+
+            <section className="tools-section">
+                <div className="tools-section__header tools-section__header--split">
+                    <h3>Tools</h3>
+                    <button className="pill pill--ghost" type="button">
+                        <span className="pill__icon" aria-hidden="true">
+                            +
+                        </span>
+                        Add Tool
+                    </button>
+                </div>
+                <div className="tools-section__cards">
+                    <article className="tool-card tool-card--compact">
+                        <div className="tool-card__avatar">H</div>
+                        <div className="tool-card__body">
+                            <h4 className="tool-card__title">Hammer</h4>
+                            <p className="tool-card__meta">Qty: 1</p>
+                        </div>
+                        <button
+                            className="icon-button icon-button--dots"
+                            type="button"
+                            aria-label="More options"
+                        />
+                    </article>
+
+                    <article className="tool-card tool-card--compact">
+                        <div className="tool-card__avatar tool-card__avatar--muted">
+                            T
+                        </div>
+                        <div className="tool-card__body">
+                            <h4 className="tool-card__title">test</h4>
+                        </div>
+                        <button
+                            className="icon-button icon-button--dots"
+                            type="button"
+                            aria-label="More options"
+                        />
+                    </article>
+                </div>
+            </section>
         </main>
     );
 }
