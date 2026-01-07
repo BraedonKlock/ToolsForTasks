@@ -125,20 +125,19 @@ export default function ToolsPage() {
             >
                 Tool Kits
             </button>
-
-            <button className="pill pill--cta" type="button">
-                <span className="pill__icon" aria-hidden="true">
-                +
-                </span>
-                New Tool Kit
-            </button>
             </div>
         </section>
 
         {(isAll || isToolKits) && (
             <section className="tools-section">
-            <div className="tools-section__header">
+            <div className="tools-section__header tools-section__header--split">
                 <h3>Tool Kits</h3>
+                <button className="pill pill--ghost" type="button">
+                <span className="pill__icon" aria-hidden="true">
+                    +
+                </span>
+                New Tool Kit
+                </button>
             </div>
 
             {toolKitError && <p className="error">{toolKitError}</p>}

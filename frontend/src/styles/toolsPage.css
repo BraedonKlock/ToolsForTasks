@@ -35,6 +35,7 @@
 
 .tools-tabs__group {
   display: inline-flex;
+  justify-content: center;
   gap: 8px;
   padding: 4px;
   background: #efe5dc;
