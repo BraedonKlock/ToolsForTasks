@@ -155,7 +155,6 @@ button {
 }
 
 button:hover {
-  background-color: var(--color-accent-strong);
   transform: translateY(-1px);
 }
 
