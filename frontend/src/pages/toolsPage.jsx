@@ -1,3 +1,8 @@
+import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
+import { faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
 import "../styles/toolsPage.css";
 
 export default function ToolsPage() {
@@ -33,6 +38,23 @@ export default function ToolsPage() {
                                 Hammer. Pry Bar. Harness +4 more
                             </p>
                         </div>
+                        <div className="threeDotMenu-container">
+                            <section className="threeDotMenu-options">
+                                <Link to="/loggedIn/edit-tool-kit">
+                                    <FontAwesomeIcon icon={faPenToSquare} className="icon" />
+                                </Link>
+                                <button type="button" className="delete-btn">
+                                    <FontAwesomeIcon icon={faTrash} />
+                                </button>
+                            </section>
+                            <button
+                                className="three-dot-menu-icon"
+                                aria-label="More options"
+                                type="button"
+                            >
+                                <FontAwesomeIcon icon={faEllipsisVertical} />
+                            </button>
+                        </div>
                     </article>
 
                     <article className="kit-card">
@@ -44,6 +66,23 @@ export default function ToolsPage() {
                             <p className="kit-card__meta">
                                 Flashlight. Gloves +3 more
                             </p>
+                        </div>
+                        <div className="threeDotMenu-container">
+                            <section className="threeDotMenu-options">
+                                <Link to="/loggedIn/edit-tool-kit">
+                                    <FontAwesomeIcon icon={faPenToSquare} className="icon" />
+                                </Link>
+                                <button type="button" className="delete-btn">
+                                    <FontAwesomeIcon icon={faTrash} />
+                                </button>
+                            </section>
+                            <button
+                                className="three-dot-menu-icon"
+                                aria-label="More options"
+                                type="button"
+                            >
+                                <FontAwesomeIcon icon={faEllipsisVertical} />
+                            </button>
                         </div>
                     </article>
                 </div>
@@ -65,6 +104,23 @@ export default function ToolsPage() {
                         <div className="tool-card__body">
                             <h4 className="tool-card__title">Hammer</h4>
                         </div>
+                        <div className="threeDotMenu-container">
+                            <section className="threeDotMenu-options">
+                                <Link to="/loggedIn/edit-tool">
+                                    <FontAwesomeIcon icon={faPenToSquare} className="icon" />
+                                </Link>
+                                <button type="button" className="delete-btn">
+                                    <FontAwesomeIcon icon={faTrash} />
+                                </button>
+                            </section>
+                            <button
+                                className="three-dot-menu-icon"
+                                aria-label="More options"
+                                type="button"
+                            >
+                                <FontAwesomeIcon icon={faEllipsisVertical} />
+                            </button>
+                        </div>
                     </article>
 
                     <article className="tool-card tool-card--compact">
@@ -73,6 +129,23 @@ export default function ToolsPage() {
                         </div>
                         <div className="tool-card__body">
                             <h4 className="tool-card__title">test</h4>
+                        </div>
+                        <div className="threeDotMenu-container">
+                            <section className="threeDotMenu-options">
+                                <Link to="/loggedIn/edit-tool">
+                                    <FontAwesomeIcon icon={faPenToSquare} className="icon" />
+                                </Link>
+                                <button type="button" className="delete-btn">
+                                    <FontAwesomeIcon icon={faTrash} />
+                                </button>
+                            </section>
+                            <button
+                                className="three-dot-menu-icon"
+                                aria-label="More options"
+                                type="button"
+                            >
+                                <FontAwesomeIcon icon={faEllipsisVertical} />
+                            </button>
                         </div>
                     </article>
                 </div>
