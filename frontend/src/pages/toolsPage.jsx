@@ -33,13 +33,6 @@ export default function ToolsPage() {
                                 Hammer. Pry Bar. Harness +4 more
                             </p>
                         </div>
-                        <div className="kit-card__actions">
-                            <button
-                                className="icon-button icon-button--dots"
-                                type="button"
-                                aria-label="More options"
-                            />
-                        </div>
                     </article>
 
                     <article className="kit-card">
@@ -51,13 +44,6 @@ export default function ToolsPage() {
                             <p className="kit-card__meta">
                                 Flashlight. Gloves +3 more
                             </p>
-                        </div>
-                        <div className="kit-card__actions">
-                            <button
-                                className="icon-button icon-button--dots"
-                                type="button"
-                                aria-label="More options"
-                            />
                         </div>
                     </article>
                 </div>
@@ -80,11 +66,6 @@ export default function ToolsPage() {
                             <h4 className="tool-card__title">Hammer</h4>
                             <p className="tool-card__meta">Qty: 1</p>
                         </div>
-                        <button
-                            className="icon-button icon-button--dots"
-                            type="button"
-                            aria-label="More options"
-                        />
                     </article>
 
                     <article className="tool-card tool-card--compact">
@@ -94,11 +75,6 @@ export default function ToolsPage() {
                         <div className="tool-card__body">
                             <h4 className="tool-card__title">test</h4>
                         </div>
-                        <button
-                            className="icon-button icon-button--dots"
-                            type="button"
-                            aria-label="More options"
-                        />
                     </article>
                 </div>
             </section>

@@ -24,20 +24,6 @@
   font-family: "Cormorant Garamond", "Times New Roman", serif;
 }
 
-.icon-button {
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  border: 1px solid rgba(185, 167, 152, 0.65);
-  background: #f7f1ec;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  box-shadow: var(--tools-shadow-soft);
-  cursor: pointer;
-}
-
 .tools-tabs {
   display: flex;
   align-items: center;
@@ -127,7 +113,7 @@
 .kit-card,
 .tool-card {
   display: grid;
-  grid-template-columns: auto 1fr auto;
+  grid-template-columns: auto 1fr;
   align-items: center;
   gap: 14px;
   background: var(--tools-card);
@@ -179,35 +165,6 @@
   font-family: "Montserrat", "Helvetica", sans-serif;
 }
 
-.kit-card__actions {
-  display: flex;
-  align-items: center;
-}
-
-.icon-button--dots {
-  width: 32px;
-  height: 32px;
-  border-radius: 12px;
-  box-shadow: none;
-  border: none;
-  background: transparent;
-}
-
-.icon-button--dots::before {
-  content: "";
-  width: 4px;
-  height: 20px;
-  background:
-    radial-gradient(circle, #6e6157 55%, transparent 56%) 50% 0 / 4px 4px,
-    radial-gradient(circle, #6e6157 55%, transparent 56%) 50% 50% / 4px 4px,
-    radial-gradient(circle, #6e6157 55%, transparent 56%) 50% 100% / 4px 4px;
-  background-repeat: no-repeat;
-}
-
-.tool-card--compact {
-  grid-template-columns: auto 1fr auto;
-}
-
 @media (max-width: 640px) {
   .tools-page {
     padding: 20px 16px 48px;
@@ -226,10 +183,5 @@
   .kit-card,
   .tool-card {
     grid-template-columns: auto 1fr;
-  }
-
-  .kit-card__actions,
-  .icon-button--dots {
-    justify-self: end;
   }
 }
