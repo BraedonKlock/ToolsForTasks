@@ -1,4 +1,7 @@
 import { Link } from "react-router-dom";
+import { useState, useEffect, useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
@@ -6,6 +9,52 @@ import { faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
 import "../styles/toolsPage.css";
 
 export default function ToolsPage() {
+    const [tools, setTools] = useState([]);
+    const [toolKits, setToolKits] = useState([]);
+    const { accessToken, logout } = useContext(AuthContext);
+    const [toolKitError, setToolKitError] = useState("");
+    const [toolsError, setToolsError] = useState("");
+
+    useEffect(() => {
+        (async () => {
+            try { 
+                const res = await fetch("/api/loggedIn/toolKits", {
+                    headers: {Authorization: `Bearer ${accessToken}`},
+                });
+                if(res.status === 401) {
+                    logout();
+                    return
+                }
+                if(!res.ok) {
+                    const data = await res.json().catch(() => ({})); // safe parse
+                    throw new Error(data.error || "Failed to load Tool Kits, try again later");
+                }
+                const data = await res.json()
+                setToolKits(data.toolKits);
+            }catch(err) {
+                setToolKitError(err.message);
+            }
+        })();
+    }, [accessToken])
+
+    useEffect(() => {
+        (async () => {
+            try { 
+                const res = await fetch("/api/loggedIn/tools", {
+                    headers: {Authorization: `Bearer ${accessToken}`},
+                });
+                if(!res.ok) {
+                    const data = await res.json().catch(() => ({})); // safe parse
+                    throw new Error(data.error || "Failed to load Tools, try again later");
+                }
+                const data = await res.json()
+                setTools(data.tools);
+            }catch(err) {
+                setToolsError(err.message);
+            }
+        })();
+    }, [accessToken])
+
     return (
         <main id="toolsPage-main" className="tools-page">
             <section className="tools-tabs">
@@ -29,6 +78,7 @@ export default function ToolsPage() {
                 <div className="tools-section__header">
                     <h3>Tool Kits</h3>
                 </div>
+                {toolKitError && <p  className="error">{toolKitError}</p>}
                 <div className="tools-section__cards">
                     <article className="kit-card">
                         <div className="kit-card__avatar">R</div>
@@ -98,6 +148,8 @@ export default function ToolsPage() {
                         Add Tool
                     </button>
                 </div>
+                {toolsError && <p id="error" className="error">{toolsError}</p>}
+
                 <div className="tools-section__cards">
                     <article className="tool-card tool-card--compact">
                         <div className="tool-card__avatar">H</div>

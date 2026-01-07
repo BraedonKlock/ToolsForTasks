@@ -5,6 +5,7 @@ const User = require('../models/user');
 const Jobs = require('../models/jobs'); // importing jobs object from models
 const Employees = require('../models/employee');
 const Tools = require('../models/tools');
+const ToolKits = require('../models/toolKits');
 const db = require('../util/database');
 const bcrypt = require('bcryptjs'); // importing encryption for user passwords
 
@@ -421,7 +422,7 @@ exports.getAllTools = async (req,res) => {
     res.status(200).json({ ok: true, tools})
 
   }catch(err) {
-    res.status(500).json();
+    res.status(500).json({error: "Internal server error."});
   }
 }
 /**------------------------------------------------------------------------------------------------ */
@@ -443,5 +444,30 @@ exports.deleteTool = async (req,res) => {
       res.status(err.status).json({error: err.message});
     }
     res.status(500).json({error: "internal server error"});
+  }
+}
+/**------------------------------------------------------------------------------------------------ */
+exports.getAllToolKits = async (req,res) => {
+  try {
+    if(!req.user) return res.status(401).json({ error: "Unauthenticated" });
+    const { orgId } = req.user;
+
+    const [toolKits] = await ToolKits.getAllToolKits(orgId);
+    res.status(200).json({ok: true, toolKits})
+  }catch(err) {
+    res.status(500).json({error: "Internal server error"})
+  }
+}
+/**------------------------------------------------------------------------------------------------ */
+exports.getAllTools = async (req,res) => {
+  try {
+    if(!req.user) return res.status(401).json({ error: "Unauthenticated" });
+    const { orgId } = req.user;
+
+    const [tools] = await Tools.getAllTools(orgId);
+
+    res.status(200).json({ok: true, tools})
+  }catch(err) {
+    res.status(500).json({error: "Internal server error"})
   }
 }

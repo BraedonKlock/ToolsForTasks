@@ -12,7 +12,7 @@ export default function manageEmployeesPage() {
     useEffect(() => {
         (async () => {
             try {
-            const res = await fetch("/api/loggedIn/employees", {
+                const res = await fetch("/api/loggedIn/employees", {
                 headers:{ Authorization: `Bearer ${accessToken}` },
             });
 

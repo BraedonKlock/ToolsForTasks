@@ -29,7 +29,7 @@ export default function JobsPage() {
       }
 
       if(!res.ok) {
-          const data = await res.json().catch(() => ({})); // safe parse
+          const data = await res.json().catch(() => ({}));
           throw new Error("Failed to fetch Jobs, Try again later.");
       };
 

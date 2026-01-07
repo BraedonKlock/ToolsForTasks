@@ -25,5 +25,6 @@ router.get("/accountDetails/:id", loggedinController.getAccountDetails);
 router.patch("/account/:id", loggedinController.updateAccount);
 router.get("/tools", loggedinController.getAllTools);
 router.delete("/tools/:name", loggedinController.deleteTool);
-
+router.get("/toolKits", loggedinController.getAllToolKits);
+router.get("/tools", loggedinController.getAllTools);
 module.exports = router;
