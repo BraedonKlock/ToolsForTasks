@@ -11,17 +11,17 @@ export default function ToolKitCard({ toolKit, onToolKitDeleteSuccess }) {
 
     useEffect(() => {
         function handleClickOutside(event) {
-        if (menuRef.current && !menuRef.current.contains(event.target)) {
-            setMenuOpen(false);
-        }
+            if (menuRef.current && !menuRef.current.contains(event.target)) {
+                setMenuOpen(false);
+            }
         }
 
         document.addEventListener("mousedown", handleClickOutside);
         document.addEventListener("touchstart", handleClickOutside);
 
         return () => {
-        document.removeEventListener("mousedown", handleClickOutside);
-        document.removeEventListener("touchstart", handleClickOutside);
+            document.removeEventListener("mousedown", handleClickOutside);
+            document.removeEventListener("touchstart", handleClickOutside);
         };
     }, []);
 
@@ -30,18 +30,18 @@ export default function ToolKitCard({ toolKit, onToolKitDeleteSuccess }) {
         e.preventDefault();
 
         try {
-        setToolsKitError("");
+            setToolsKitError("");
 
-        const res = await fetch(`/api/loggedin/toolKits/${toolKit.id}`, {
-            method: "DELETE",
-            headers: { Authorization: `Bearer ${accessToken}` },
-        });
+            const res = await fetch(`/api/loggedin/toolKits/${toolKit.id}`, {
+                method: "DELETE",
+                headers: { Authorization: `Bearer ${accessToken}` },
+            });
 
-        if (!res.ok) throw new Error("Could not delete Tool kit");
+            if (!res.ok) throw new Error("Could not delete Tool kit");
 
-        if (onToolKitDeleteSuccess) onToolKitDeleteSuccess(toolKit.id);
+            if (onToolKitDeleteSuccess) onToolKitDeleteSuccess(toolKit.id);
         } catch (err) {
-        setToolKitsError(err.message);
+            setToolKitsError(err.message);
         }
     }
 

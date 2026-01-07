@@ -176,98 +176,98 @@ export default function ToolsPage() {
 
         {(isAll || isToolKits) && (
             <section className="tools-section">
-            <div className="tools-section__header tools-section__header--split">
-                <h3>Tool Kits</h3>
-                <Link className="pill pill--ghost" to="/loggedIn/add-toolKit">
-                <span className="pill__icon" aria-hidden="true">
-                    +
-                </span>
-                New Tool Kit
-                </Link>
-            </div>
+                <div className="tools-section__header tools-section__header--split">
+                    <h3>Tool Kits</h3>
+                    <Link className="pill pill--ghost" to="/loggedIn/add-toolKit">
+                    <span className="pill__icon" aria-hidden="true">
+                        +
+                    </span>
+                    New Tool Kit
+                    </Link>
+                </div>
 
-            {toolKitError && <p className="error">{toolKitError}</p>}
+                {toolKitError && <p className="error">{toolKitError}</p>}
 
-            <div className="tools-section__cards">
-                {toolKits.length > 0 ? (
-                toolKits.map((toolKit) => (
-                    <ToolKitCard key={toolKit.id ?? toolKit.name} toolKit={toolKit} onToolKitDeleteSuccess={handleToolKitDeleteSuccess}/>
-                ))
-                ) : (
-                <h6>No Tool Kits found</h6>
-                )}
-            </div>
+                <div className="tools-section__cards">
+                    {toolKits.length > 0 ? (
+                    toolKits.map((toolKit) => (
+                        <ToolKitCard key={toolKit.id ?? toolKit.name} toolKit={toolKit} onToolKitDeleteSuccess={handleToolKitDeleteSuccess}/>
+                    ))
+                    ) : (
+                    <h6>No Tool Kits found</h6>
+                    )}
+                </div>
             </section>
         )}
 
         {(isAll || isTools) && (
             <section className="tools-section">
-            <div className="tools-section__header tools-section__header--split">
-                <h3>Tools</h3>
-                <Link className="pill pill--ghost" to="/loggedIn/add-tool">
-                <span className="pill__icon" aria-hidden="true">
-                    +
-                </span>
-                Add Tool
-                </Link>
-            </div>
+                <div className="tools-section__header tools-section__header--split">
+                    <h3>Tools</h3>
+                    <Link className="pill pill--ghost" to="/loggedIn/add-tool">
+                    <span className="pill__icon" aria-hidden="true">
+                        +
+                    </span>
+                    Add Tool
+                    </Link>
+                </div>
 
-            {toolsError && <p className="error">{toolsError}</p>}
+                {toolsError && <p className="error">{toolsError}</p>}
 
-            <div className="tools-section__cards">
-                {tools.length === 0 ? (
-                <h6>No tools to display</h6>
-                ) : (
-                tools.map((tool) => {
-                    const name = tool?.name ?? "";
-                    const firstLetter = name ? name.charAt(0).toUpperCase() : "?";
-                    const isOpen = openToolMenuFor === (tool.id ?? name);
+                <div className="tools-section__cards">
+                    {tools.length === 0 ? (
+                    <h6>No tools to display</h6>
+                    ) : (
+                    tools.map((tool) => {
+                        const name = tool?.name ?? "";
+                        const firstLetter = name ? name.charAt(0).toUpperCase() : "?";
+                        const isOpen = openToolMenuFor === (tool.id ?? name);
 
-                    return (
-                    <article key={tool.id ?? name} className="tool-card tool-card--compact">
-                        <div className="tool-card__avatar">{firstLetter}</div>
+                        return (
+                        <article key={tool.id ?? name} className="tool-card tool-card--compact">
+                            <div className="tool-card__avatar">{firstLetter}</div>
 
-                        <div className="tool-card__body">
-                        <h4 className="tool-card__title">{name || "Unnamed tool"}</h4>
-                        </div>
+                            <div className="tool-card__body">
+                            <h4 className="tool-card__title">{name || "Unnamed tool"}</h4>
+                            </div>
 
-                        <div className="threeDotMenu-container">
-                        <section
-                            className={`threeDotMenu-options ${isOpen ? "active" : ""}`}
-                        >
-                            <Link to={`/loggedIn/edit-tool/${tool.id ?? ""}`}>
-                            <FontAwesomeIcon icon={faPenToSquare} className="icon" />
-                            </Link>
+                            <div className="threeDotMenu-container">
+                            <section
+                                className={`threeDotMenu-options ${isOpen ? "active" : ""}`}
+                            >
+                                <Link to={`/loggedIn/edit-tool/${tool.id ?? ""}`}>
+                                <FontAwesomeIcon icon={faPenToSquare} className="icon" />
+                                </Link>
+
+                                <button
+                                type="button"
+                                className="delete-btn"
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleDeleteTool(tool.id);
+                                }}
+                                >
+                                <FontAwesomeIcon icon={faTrash} />
+                                </button>
+                            </section>
 
                             <button
-                            type="button"
-                            className="delete-btn"
-                            onClick={(e) => {
-                                e.stopPropagation();
-                                handleDeleteTool(tool.id);
-                            }}
+                                className="three-dot-menu-icon"
+                                aria-label="More options"
+                                type="button"
+                                onClick={(event) => {
+                                event.stopPropagation();
+                                setOpenToolMenuFor(isOpen ? null : tool.id ?? name);
+                                }}
                             >
-                            <FontAwesomeIcon icon={faTrash} />
+                                <FontAwesomeIcon icon={faEllipsisVertical} />
                             </button>
-                        </section>
-
-                        <button
-                            className="three-dot-menu-icon"
-                            aria-label="More options"
-                            type="button"
-                            onClick={(event) => {
-                            event.stopPropagation();
-                            setOpenToolMenuFor(isOpen ? null : tool.id ?? name);
-                            }}
-                        >
-                            <FontAwesomeIcon icon={faEllipsisVertical} />
-                        </button>
-                        </div>
-                    </article>
-                    );
-                })
-                )}
-            </div>
+                            </div>
+                        </article>
+                        );
+                    })
+                    )}
+                </div>
             </section>
         )}
         </main>

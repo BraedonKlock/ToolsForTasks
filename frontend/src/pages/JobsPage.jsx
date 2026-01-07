@@ -99,7 +99,16 @@ export default function JobsPage() {
         name="search"
         placeholder="Search"
       />
-        {error && <p id="login-error" className="error">{error}</p>}
+      <div className="jobs-section__header jobs-section__header--split">
+          <h3>Tools</h3>
+          <Link className="pill pill--ghost" to="/loggedIn/add-job">
+          <span className="pill__icon" aria-hidden="true">
+              +
+          </span>
+          Add Tool
+          </Link>
+      </div>
+      {error && <p id="login-error" className="error">{error}</p>}
 
       <section id="jobs-jobsContainer" className="jobs-container">
         {jobs.length > 0 ? (
