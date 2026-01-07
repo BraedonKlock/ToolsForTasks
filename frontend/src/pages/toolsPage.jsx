@@ -106,101 +106,60 @@ export default function ToolsPage() {
                             </button>
                         </div>
                     </article>
-
-                    <article className="kit-card">
-                        <div className="kit-card__avatar kit-card__avatar--muted">
-                            H
-                        </div>
-                        <div className="kit-card__body">
-                            <h4 className="kit-card__title">Home Inspection</h4>
-                            <p className="kit-card__meta">
-                                Flashlight. Gloves +3 more
-                            </p>
-                        </div>
-                        <div className="threeDotMenu-container">
-                            <section className="threeDotMenu-options">
-                                <Link to="/loggedIn/edit-tool-kit">
-                                    <FontAwesomeIcon icon={faPenToSquare} className="icon" />
-                                </Link>
-                                <button type="button" className="delete-btn">
-                                    <FontAwesomeIcon icon={faTrash} />
-                                </button>
-                            </section>
-                            <button
-                                className="three-dot-menu-icon"
-                                aria-label="More options"
-                                type="button"
-                            >
-                                <FontAwesomeIcon icon={faEllipsisVertical} />
-                            </button>
-                        </div>
-                    </article>
                 </div>
             </section>
 
             <section className="tools-section">
-                <div className="tools-section__header tools-section__header--split">
-                    <h3>Tools</h3>
-                    <button className="pill pill--ghost" type="button">
-                        <span className="pill__icon" aria-hidden="true">
-                            +
-                        </span>
-                        Add Tool
-                    </button>
-                </div>
-                {toolsError && <p id="error" className="error">{toolsError}</p>}
+            <div className="tools-section__header tools-section__header--split">
+                <h3>Tools</h3>
+                <button className="pill pill--ghost" type="button">
+                <span className="pill__icon" aria-hidden="true">+</span>
+                Add Tool
+                </button>
+            </div>
 
-                <div className="tools-section__cards">
-                    <article className="tool-card tool-card--compact">
-                        <div className="tool-card__avatar">H</div>
+            {toolsError && <p className="error">{toolsError}</p>}
+
+            <div className="tools-section__cards">
+                {tools.length === 0 ? (
+                <h6>No tools to display</h6>
+                ) : (
+                tools.map((tool) => {
+                    const name = tool?.name ?? "";
+                    const firstLetter = name ? name.charAt(0).toUpperCase() : "?";
+
+                    return (
+                    <article key={tool.id ?? name} className="tool-card tool-card--compact">
+                        <div className="tool-card__avatar">{firstLetter}</div>
+
                         <div className="tool-card__body">
-                            <h4 className="tool-card__title">Hammer</h4>
+                        <h4 className="tool-card__title">{name || "Unnamed tool"}</h4>
                         </div>
+
                         <div className="threeDotMenu-container">
-                            <section className="threeDotMenu-options">
-                                <Link to="/loggedIn/edit-tool">
-                                    <FontAwesomeIcon icon={faPenToSquare} className="icon" />
-                                </Link>
-                                <button type="button" className="delete-btn">
-                                    <FontAwesomeIcon icon={faTrash} />
-                                </button>
-                            </section>
-                            <button
-                                className="three-dot-menu-icon"
-                                aria-label="More options"
-                                type="button"
-                            >
-                                <FontAwesomeIcon icon={faEllipsisVertical} />
+                        <section className="threeDotMenu-options">
+                            <Link to={`/loggedIn/edit-tool/${tool.id ?? ""}`}>
+                            <FontAwesomeIcon icon={faPenToSquare} className="icon" />
+                            </Link>
+
+                            <button type="button" className="delete-btn">
+                            <FontAwesomeIcon icon={faTrash} />
                             </button>
+                        </section>
+
+                        <button
+                            className="three-dot-menu-icon"
+                            aria-label="More options"
+                            type="button"
+                        >
+                            <FontAwesomeIcon icon={faEllipsisVertical} />
+                        </button>
                         </div>
                     </article>
-
-                    <article className="tool-card tool-card--compact">
-                        <div className="tool-card__avatar tool-card__avatar--muted">
-                            T
-                        </div>
-                        <div className="tool-card__body">
-                            <h4 className="tool-card__title">test</h4>
-                        </div>
-                        <div className="threeDotMenu-container">
-                            <section className="threeDotMenu-options">
-                                <Link to="/loggedIn/edit-tool">
-                                    <FontAwesomeIcon icon={faPenToSquare} className="icon" />
-                                </Link>
-                                <button type="button" className="delete-btn">
-                                    <FontAwesomeIcon icon={faTrash} />
-                                </button>
-                            </section>
-                            <button
-                                className="three-dot-menu-icon"
-                                aria-label="More options"
-                                type="button"
-                            >
-                                <FontAwesomeIcon icon={faEllipsisVertical} />
-                            </button>
-                        </div>
-                    </article>
-                </div>
+                    );
+                })
+                )}
+            </div>
             </section>
         </main>
     );
