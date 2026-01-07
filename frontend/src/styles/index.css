@@ -183,7 +183,6 @@ button:active {
 
 .threeDotMenu-options a,
 .threeDotMenu-options button {
-  color: var(--color-accent);
   background: transparent;
   border: none;
   box-shadow: none;

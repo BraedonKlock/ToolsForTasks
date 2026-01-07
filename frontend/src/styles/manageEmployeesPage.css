@@ -70,7 +70,6 @@
 
 .threeDotMenu-options #editJobHref,
 .threeDotMenu-options button {
-  color: var(--color-accent);
   text-decoration: none;
 }
 
