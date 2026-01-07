@@ -6,6 +6,9 @@ module.exports = class toolKits {
     };
 
     static getAllToolKits(org_id) {
-        return db.execute('SELECT * FROM toolkits WHERE org_id = ?', [org_id]);
+        return db.execute('SELECT * FROM toolKits WHERE org_id = ?', [org_id]);
+    }
+    static deleteToolKit(org_id, id) {
+        return db.execute('DELETE FROM toolKits WHERE org_id = ? AND id = ?', [org_id, id]);
     }
 }

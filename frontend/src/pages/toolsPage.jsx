@@ -112,6 +112,38 @@ export default function ToolsPage() {
         return () => controller.abort();
     }, [accessToken, logout]);
 
+    function handleToolKitDeleteSuccess(deletedId) {
+        const newToolKits = toolKits.filter((toolKit) => toolKit.id !== deletedId);
+        setToolKits(newToolKits);
+    }
+    async function handleDeleteTool(toolId) {
+    try {
+        setToolsError("");
+
+        const res = await fetch(`/api/loggedIn/tools/${toolId}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${accessToken}` },
+        });
+
+        if (res.status === 401) {
+        setToolsError("Session expired. Please log in again.");
+        logout();
+        return;
+        }
+
+        const data = await res.json().catch(() => ({}));
+
+        if (!res.ok) {
+        throw new Error(data.error || "Could not delete tool");
+        }
+
+        setTools((prev) => prev.filter((t) => t.id !== toolId));
+        setOpenToolMenuFor(null);
+    } catch (err) {
+        setToolsError(err.message);
+    }
+    }
+
     return (
         <main id="toolsPage-main" className="tools-page">
         <section className="tools-tabs">
@@ -159,7 +191,7 @@ export default function ToolsPage() {
             <div className="tools-section__cards">
                 {toolKits.length > 0 ? (
                 toolKits.map((toolKit) => (
-                    <ToolKitCard key={toolKit.id ?? toolKit.name} toolKit={toolKit} />
+                    <ToolKitCard key={toolKit.id ?? toolKit.name} toolKit={toolKit} onToolKitDeleteSuccess={handleToolKitDeleteSuccess}/>
                 ))
                 ) : (
                 <h6>No Tool Kits found</h6>
@@ -207,7 +239,14 @@ export default function ToolsPage() {
                             <FontAwesomeIcon icon={faPenToSquare} className="icon" />
                             </Link>
 
-                            <button type="button" className="delete-btn">
+                            <button
+                            type="button"
+                            className="delete-btn"
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                handleDeleteTool(tool.id);
+                            }}
+                            >
                             <FontAwesomeIcon icon={faTrash} />
                             </button>
                         </section>

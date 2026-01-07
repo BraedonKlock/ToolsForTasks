@@ -430,9 +430,9 @@ exports.deleteTool = async (req,res) => {
   try {
     if(!req.user) return res.status(401).json({ error: "Unauthenticated" });
     const { orgId } = req.user;
-    const { name } = req.params;
+    const { id } = req.params;
 
-    const [result] = await Tools.deleteTool(orgId, name);
+    const [result] = await Tools.deleteTool(orgId, id);
 
     if(!result.affectedRows) {
       return res.status(400).json({error: "Could not delete Tool, please try again later."})
@@ -469,5 +469,21 @@ exports.getAllTools = async (req,res) => {
     res.status(200).json({ok: true, tools})
   }catch(err) {
     res.status(500).json({error: "Internal server error"})
+  }
+}
+/**------------------------------------------------------------------------------------------------ */
+exports.deleteToolKit = async(req,res) => {
+  try {
+    if(!req.user) return res.status(401).json({ error: "Unauthenticated" });
+    const { orgId } = req.user;
+    const { id } = req.params;
+    const [result] = await ToolKits.deleteToolKit(orgId, id);
+
+    if (result.affectedRows === 0) {
+      res.status(400).json({error: "Could not delete Tool kit, please try again later."})
+    }
+    res.status(200).json({ok: true})
+  }catch(err) {
+    res.status(500).json({error: "Internal server error."})
   }
 }
