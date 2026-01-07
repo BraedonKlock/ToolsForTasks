@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import "../styles/notLoggedInHomePage.css";
 
 export default function notLoggedInHomePage() {
@@ -13,12 +14,12 @@ export default function notLoggedInHomePage() {
                 before they start.
             </p>
             <div className="nl-hero-cta">
-                <a className="nl-btn primary" href="/create-account">
+                <Link className="nl-btn primary" to="/create-account">
                 Start free
-                </a>
-                <a className="nl-btn ghost" href="/login">
+                </Link>
+                <Link className="nl-btn ghost" to="/login">
                 Log in
-                </a>
+                </Link>
             </div>
             <div className="nl-hero-meta">
                 <span>Instant setup</span>
@@ -145,9 +146,9 @@ export default function notLoggedInHomePage() {
                 on schedule.
             </p>
             </div>
-            <a className="nl-btn primary" href="/create-account">
+            <Link className="nl-btn primary" to="/create-account">
             Start free today
-            </a>
+            </Link>
         </section>
         </main>
     );
