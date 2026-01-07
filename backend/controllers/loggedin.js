@@ -459,19 +459,6 @@ exports.getAllToolKits = async (req,res) => {
   }
 }
 /**------------------------------------------------------------------------------------------------ */
-exports.getAllTools = async (req,res) => {
-  try {
-    if(!req.user) return res.status(401).json({ error: "Unauthenticated" });
-    const { orgId } = req.user;
-
-    const [tools] = await Tools.getAllTools(orgId);
-
-    res.status(200).json({ok: true, tools})
-  }catch(err) {
-    res.status(500).json({error: "Internal server error"})
-  }
-}
-/**------------------------------------------------------------------------------------------------ */
 exports.deleteToolKit = async(req,res) => {
   try {
     if(!req.user) return res.status(401).json({ error: "Unauthenticated" });
