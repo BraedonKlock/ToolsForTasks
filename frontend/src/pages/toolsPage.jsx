@@ -132,12 +132,12 @@ export default function ToolsPage() {
             <section className="tools-section">
             <div className="tools-section__header tools-section__header--split">
                 <h3>Tool Kits</h3>
-                <button className="pill pill--ghost" type="button">
+                <Link className="pill pill--ghost" to="/loggedIn/add-tool-kit">
                 <span className="pill__icon" aria-hidden="true">
                     +
                 </span>
                 New Tool Kit
-                </button>
+                </Link>
             </div>
 
             {toolKitError && <p className="error">{toolKitError}</p>}
@@ -158,12 +158,12 @@ export default function ToolsPage() {
             <section className="tools-section">
             <div className="tools-section__header tools-section__header--split">
                 <h3>Tools</h3>
-                <button className="pill pill--ghost" type="button">
+                <Link className="pill pill--ghost" to="/loggedIn/add-tool">
                 <span className="pill__icon" aria-hidden="true">
                     +
                 </span>
                 Add Tool
-                </button>
+                </Link>
             </div>
 
             {toolsError && <p className="error">{toolsError}</p>}
