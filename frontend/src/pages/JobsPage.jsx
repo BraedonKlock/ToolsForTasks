@@ -99,15 +99,17 @@ export default function JobsPage() {
         name="search"
         placeholder="Search"
       />
-      <div className="jobs-section__header jobs-section__header--split">
-          <h3>Tools</h3>
+      {user?.role === "owner" && (
+        <div className="jobs-section__header jobs-section__header--split">
+          <h3>Jobs</h3>
           <Link className="pill pill--ghost" to="/loggedIn/add-job">
-          <span className="pill__icon" aria-hidden="true">
+            <span className="pill__icon" aria-hidden="true">
               +
-          </span>
-          Add Tool
+            </span>
+            Add Job
           </Link>
-      </div>
+        </div>
+      )}
       {error && <p id="login-error" className="error">{error}</p>}
 
       <section id="jobs-jobsContainer" className="jobs-container">
@@ -119,11 +121,6 @@ export default function JobsPage() {
           <h1>No Jobs Found</h1>
         )}
       </section>
-      {user?.role === "owner" && (
-        <Link to="/loggedIn/add-job">
-          <img id="addJob-image" src="/images/add.png" alt="Add Job" />
-        </Link>
-      )}
     </main>
   );
 }

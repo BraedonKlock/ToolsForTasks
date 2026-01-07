@@ -49,6 +49,15 @@ export default function manageEmployeesPage() {
                 name="search"
                 placeholder="Search"
             />
+            <div className="jobs-section__header jobs-section__header--split">
+                <h3>Employees</h3>
+                <Link className="pill pill--ghost" to="/loggedIn/add-employee">
+                    <span className="pill__icon" aria-hidden="true">
+                        +
+                    </span>
+                    Add Employee
+                </Link>
+            </div>
             {error && <p id="login-error" className="error">{error}</p>}
             <section id="employees-employeesContainer" className="employees-container">
                     {employees.length > 0 ? (
@@ -59,7 +68,6 @@ export default function manageEmployeesPage() {
                     <h1>No Employees Found</h1>
                     )}
                 </section>
-            <Link to="/loggedIn/add-employee" alt="Add Employee" ><img src="/images/addEmployee.png" id="addEmployee-image"/></Link>
         </main>
     )
 }
