@@ -176,7 +176,6 @@ button:active {
   text-align: center;
   gap: 12px;
   background: var(--color-surface);
-  border: 1px solid var(--color-border);
   border-radius: var(--radius-sm);
   padding: 12px;
   box-shadow: none;

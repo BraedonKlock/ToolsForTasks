@@ -87,7 +87,7 @@ export default function JobCard({ job, isJobsPage, onDeleteSuccess }) {
 
                         <div className="threeDotMenu-container" ref={menuRef}>
                             {menuOpen && (
-                                <section className="threeDotMenu-options">
+                                <section className="threeDotMenu-options active">
                                     <Link to={`/loggedIn/edit-job/${job.id}`} id="editJobHref"> <FontAwesomeIcon icon={faPenToSquare} className="icon" /></Link>
                                     <button
                                         type="button"

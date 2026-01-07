@@ -14,6 +14,7 @@ export default function ToolsPage() {
     const [tools, setTools] = useState([]);
     const [toolKits, setToolKits] = useState([]);
     const { accessToken, logout } = useContext(AuthContext);
+    const [openToolMenuFor, setOpenToolMenuFor] = useState(null);
 
     const [toolKitError, setToolKitError] = useState("");
     const [toolsError, setToolsError] = useState("");
@@ -61,6 +62,19 @@ export default function ToolsPage() {
 
         return () => controller.abort();
     }, [accessToken, logout]);
+
+    useEffect(() => {
+        function handleClickOutside(event) {
+        if (event.target.closest(".threeDotMenu-container")) return;
+        setOpenToolMenuFor(null);
+        }
+
+        document.addEventListener("click", handleClickOutside);
+
+        return () => {
+        document.removeEventListener("click", handleClickOutside);
+        };
+    }, []);
 
     // Load Tools
     useEffect(() => {
@@ -132,7 +146,7 @@ export default function ToolsPage() {
             <section className="tools-section">
             <div className="tools-section__header tools-section__header--split">
                 <h3>Tool Kits</h3>
-                <Link className="pill pill--ghost" to="/loggedIn/add-tool-kit">
+                <Link className="pill pill--ghost" to="/loggedIn/add-toolKit">
                 <span className="pill__icon" aria-hidden="true">
                     +
                 </span>
@@ -175,6 +189,7 @@ export default function ToolsPage() {
                 tools.map((tool) => {
                     const name = tool?.name ?? "";
                     const firstLetter = name ? name.charAt(0).toUpperCase() : "?";
+                    const isOpen = openToolMenuFor === (tool.id ?? name);
 
                     return (
                     <article key={tool.id ?? name} className="tool-card tool-card--compact">
@@ -185,7 +200,9 @@ export default function ToolsPage() {
                         </div>
 
                         <div className="threeDotMenu-container">
-                        <section className="threeDotMenu-options">
+                        <section
+                            className={`threeDotMenu-options ${isOpen ? "active" : ""}`}
+                        >
                             <Link to={`/loggedIn/edit-tool/${tool.id ?? ""}`}>
                             <FontAwesomeIcon icon={faPenToSquare} className="icon" />
                             </Link>
@@ -199,6 +216,10 @@ export default function ToolsPage() {
                             className="three-dot-menu-icon"
                             aria-label="More options"
                             type="button"
+                            onClick={(event) => {
+                            event.stopPropagation();
+                            setOpenToolMenuFor(isOpen ? null : tool.id ?? name);
+                            }}
                         >
                             <FontAwesomeIcon icon={faEllipsisVertical} />
                         </button>

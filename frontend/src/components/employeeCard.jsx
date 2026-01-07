@@ -61,7 +61,7 @@ export default function employeeCard({employee, onDeleteSuccess}) {
 
                 <div className="threeDotMenu-container" ref={menuRef}>
                     {menuOpen && (
-                        <section className="threeDotMenu-options">
+                        <section className="threeDotMenu-options active">
                         <Link to={`/loggedIn/edit-employee/${employee.id}`}> <FontAwesomeIcon icon={faPenToSquare} className="icon" /></Link>
                         <button
                             type="button"
