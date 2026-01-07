@@ -113,14 +113,7 @@
   box-shadow: none;
 }
 
-.threeDotMenu-options a,
-.threeDotMenu-options button {
-  color: var(--color-accent);
-  background: transparent;
-  border: none;
-  box-shadow: none;
-  padding: 0;
-}
+
 
 .delete-btn {
   all: unset;
@@ -134,7 +127,6 @@
 .three-dot-menu-icon {
   background-color: transparent;
   border: none;
-  color: var(--color-muted);
   font-size: x-large;
   box-shadow: none;
   transform: none;
