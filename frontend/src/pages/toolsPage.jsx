@@ -115,7 +115,7 @@ export default function ToolsPage() {
                 type="button"
                 onClick={() => setTabState("tools")}
             >
-                All Tools
+                Tools
             </button>
 
             <button
