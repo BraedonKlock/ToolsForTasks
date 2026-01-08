@@ -33,6 +33,11 @@ exports.deleteJob = async (req, res) => {
   try {
     if (!req.user) return res.status(401).json({ error: "Unauthenticated" });
 
+    const role = (req.user.role || "").trim().toLowerCase();
+    if (role !== "owner" && role !== "manager") {
+      return res.status(403).json({ error: "Do not have permission." });
+    }
+
     const { id } = req.params;
     const { orgId } = req.user;
 
@@ -60,6 +65,10 @@ exports.getAllEmployees = async (req,res) => {
   try {
     if (!req.user) return res.status(401).json({ error: "Unauthenticated" });
 
+    const role = (req.user.role || "").trim().toLowerCase();
+    if (role !== "owner") {
+      return res.status(403).json({ error: "Do not have permission." });
+    }
     const { orgId } = req.user;
     const [rows] = await Employees.getAllEmployeesByOrg(orgId);
     res.status(200).json({
@@ -100,6 +109,12 @@ exports.getJob = async (req,res) => {
 exports.getEmployeesForJob = async (req,res) => {
   try {
     if (!req.user) return res.status(401).json({error: "unauthenticated"});
+
+    const role = (req.user.role || "").trim().toLowerCase();
+    if (role !== "owner" && role !== "manager") {
+      return res.status(403).json({ error: "Do not have permission." });
+    }
+
     const {id} = req.params;
     const [rows] = await Employees.findEmployeesforJob(id)
     res.status(200).json({
@@ -115,7 +130,12 @@ exports.getEmployeesForJob = async (req,res) => {
 exports.addJob = async (req,res) => {
   try {
     if (!req.user) return res.status(401).json({error: "unauthenticated"});
-    
+
+    const role = (req.user.role || "").trim().toLowerCase();
+    if (role !== "owner" && role !== "manager") {
+      return res.status(403).json({ error: "Do not have permission." });
+    }
+
     const orgId = req.user.orgId;
 
     const { jobType, jobid, title, date, address, phoneNumber, notes, employeeIds = [] } = req.body;
@@ -159,6 +179,12 @@ exports.addJob = async (req,res) => {
 exports.updateJob = async (req,res) => {
   try {
     if (!req.user) return res.status(401).json({error: "unauthenticated"});
+
+    const role = (req.user.role || "").trim().toLowerCase();
+    if (role !== "owner" && role !== "manager") {
+      return res.status(403).json({ error: "Do not have permission." });
+    }
+
     const orgId = req.user.orgId;
     const dbJobId = Number(req.params.id);
 
@@ -215,6 +241,11 @@ exports.deleteEmployeeFromJob = async (req, res) => {
   try {
     if (!req.user) return res.status(401).json({error: "unauthenticated"});
 
+    const role = (req.user.role || "").trim().toLowerCase();
+    if (role !== "owner" && role !== "manager") {
+      return res.status(403).json({ error: "Do not have permission." });
+    }
+
     const { jobId, employeeId } = req.params;
     const orgId = req.user.orgId;
     
@@ -252,6 +283,11 @@ exports.deleteEmployeeFromOrg = async (req, res) => {
   try {
     if (!req.user) return res.status(401).json({error: "unauthenticated"});
 
+    const role = (req.user.role || "").trim().toLowerCase();
+    if (role !== "owner") {
+      return res.status(403).json({ error: "Do not have permission." });
+    }
+
     const { id } = req.params;
     const orgId = req.user.orgId;
 
@@ -272,6 +308,11 @@ exports.deleteEmployeeFromOrg = async (req, res) => {
 exports.addEmployee = async (req, res) => {
   try {
     if(!req.user) return res.status(401).json({error: "unauthenticated"});
+
+    const userRole = (req.user.role || "").trim().toLowerCase();
+    if (userRole !== "owner") {
+      return res.status(403).json({ error: "Do not have permission." });
+    }
 
     const orgId = req.user.orgId;
     const companyName = req.user.companyName;
@@ -313,6 +354,11 @@ exports.getEmployee = async (req,res) => {
   try {
     if (!req.user) return res.status(401).json({error: "Unauthenticated"});
 
+    const role = (req.user.role || "").trim().toLowerCase();
+    if (role !== "owner") {
+      return res.status(403).json({ error: "Do not have permission." });
+    }
+
     const { orgId } = req.user;
     const { id } = req.params;
 
@@ -332,6 +378,11 @@ exports.getEmployee = async (req,res) => {
 exports.updateEmployee = async (req,res) => {
   try {
     if(!req.user) return res.status(401).json({ error: "Unauthenticated" });
+
+    const userRole = (req.user.role || "").trim().toLowerCase();
+    if (userRole !== "owner") {
+      return res.status(403).json({ error: "Do not have permission." });
+    }
 
     const { orgId } = req.user;
     const { id } = req.params;
@@ -373,6 +424,11 @@ exports.getAccountDetails = async (req,res) => {
   try {
     if(!req.user) return res.status(401).json({ error: "Unauthenticated" });
 
+    const role = (req.user.role || "").trim().toLowerCase();
+    if (role !== "owner") {
+      return res.status(403).json({ error: "Do not have permission." });
+    }
+
     const { id } = req.params;
 
     const [ rows ] = await User.findUserById(id);
@@ -390,6 +446,12 @@ exports.getAccountDetails = async (req,res) => {
 exports.updateAccount = async (req,res) => {
   try {
     if(!req.user) return res.status(401).json({ error: "Unauthenticated" });
+
+    const role = (req.user.role || "").trim().toLowerCase();
+    if (role !== "owner") {
+      return res.status(403).json({ error: "Do not have permission." });
+    }
+
     const { id } = req.params;
     let { name, email, password } = req.body;
 
@@ -415,6 +477,12 @@ exports.updateAccount = async (req,res) => {
 exports.getAllTools = async (req,res) => {
   try {
     if(!req.user) return res.status(401).json({ error: "Unauthenticated" });
+
+    const role = (req.user.role || "").trim().toLowerCase();
+    if (role !== "owner" && role !== "manager") {
+      return res.status(403).json({ error: "Do not have permission." });
+    }
+
     const {orgId} = req.user;
 
     const [tools] = await Tools.getAllTools(orgId);
@@ -429,6 +497,12 @@ exports.getAllTools = async (req,res) => {
 exports.deleteTool = async (req,res) => {
   try {
     if(!req.user) return res.status(401).json({ error: "Unauthenticated" });
+
+    const role = (req.user.role || "").trim().toLowerCase();
+    if (role !== "owner" && role !== "manager") {
+      return res.status(403).json({ error: "Do not have permission." });
+    }
+
     const { orgId } = req.user;
     const { id } = req.params;
 
@@ -450,6 +524,12 @@ exports.deleteTool = async (req,res) => {
 exports.getAllToolKits = async (req,res) => {
   try {
     if(!req.user) return res.status(401).json({ error: "Unauthenticated" });
+
+    const role = (req.user.role || "").trim().toLowerCase();
+    if (role !== "owner" && role !== "manager") {
+      return res.status(403).json({ error: "Do not have permission." });
+    }
+
     const { orgId } = req.user;
 
     const [toolKits] = await ToolKits.getAllToolKits(orgId);
@@ -462,6 +542,12 @@ exports.getAllToolKits = async (req,res) => {
 exports.deleteToolKit = async(req,res) => {
   try {
     if(!req.user) return res.status(401).json({ error: "Unauthenticated" });
+
+    const role = (req.user.role || "").trim().toLowerCase();
+    if (role !== "owner" && role !== "manager") {
+      return res.status(403).json({ error: "Do not have permission." });
+    }
+    
     const { orgId } = req.user;
     const { id } = req.params;
     const [result] = await ToolKits.deleteToolKit(orgId, id);

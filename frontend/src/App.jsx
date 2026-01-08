@@ -26,7 +26,7 @@ import EditToolPage from "./pages/editToolPage.jsx";
 
 import RequireRole from "./routes/RequireRole.jsx";
 
-import ForbiddenPage from "./pages/forbiddenPage.jsx"; // create this
+import ForbiddenPage from "./pages/forbiddenPage.jsx";
 
 export default function App() {
   return (
