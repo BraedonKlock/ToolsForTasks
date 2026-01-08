@@ -280,7 +280,7 @@ exports.getAllEmployees = async (req,res) => {
     res.status(500).json();
   }
 }
-
+/**------------------------------------------------------------------------------------------------ */
 exports.deleteEmployeeFromOrg = async (req, res) => {
   try {
     if (!req.user) return res.status(401).json({error: "unauthenticated"});
@@ -305,7 +305,7 @@ exports.deleteEmployeeFromOrg = async (req, res) => {
     res.status(500).json({error: "Could not delete employee, please try again later."})
   }
 }
-
+/**------------------------------------------------------------------------------------------------ */
 exports.addEmployee = async (req, res) => {
   try {
     if(!req.user) return res.status(401).json({error: "unauthenticated"});
@@ -349,7 +349,7 @@ exports.addEmployee = async (req, res) => {
     res.status(500).json();
   }
 }
-
+/**------------------------------------------------------------------------------------------------ */
 exports.getEmployee = async (req,res) => {
   try {
     if (!req.user) return res.status(401).json({error: "Unauthenticated"});
@@ -374,7 +374,7 @@ exports.getEmployee = async (req,res) => {
     res.status(500).json();
   }
 }
-
+/**------------------------------------------------------------------------------------------------ */
 exports.updateEmployee = async (req,res) => {
   try {
     if(!req.user) return res.status(401).json({ error: "Unauthenticated" });
