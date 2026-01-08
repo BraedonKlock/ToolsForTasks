@@ -100,7 +100,6 @@ export default function JobsPage() {
         name="search"
         placeholder="Search"
       />
-      {user?.role === "owner" && (
         <div className="jobs-section__header jobs-section__header--split">
           <h3>Jobs</h3>
           <Link className="pill pill--ghost" to="/loggedIn/add-job">
@@ -110,7 +109,6 @@ export default function JobsPage() {
             Add Job
           </Link>
         </div>
-      )}
       {error && <p id="error" className="error">{error}</p>}
 
       <section id="jobs-jobsContainer" className="jobs-container">
