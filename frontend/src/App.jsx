@@ -26,7 +26,7 @@ import EditToolPage from "./pages/editToolPage.jsx";
 
 import RequireRole from "./routes/RequireRole.jsx";
 
-// import ForbiddenPage from "./pages/forbiddenPage.jsx"; // create this
+import ForbiddenPage from "./pages/forbiddenPage.jsx"; // create this
 
 export default function App() {
   return (
@@ -40,7 +40,7 @@ export default function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/forget-password" element={<ForgetPasswordPage />} />
         <Route path="/create-account" element={<CreateAccountPage />} />
-        {/* <Route path="/forbidden" element={<ForbiddenPage />} /> */}
+        <Route path="/forbidden" element={<ForbiddenPage />} />
 
         {/* Logged-in routes (ALL ROLES) */}
         <Route element={<RequireRole allowed={["owner", "manager", "crew"]} />}>
