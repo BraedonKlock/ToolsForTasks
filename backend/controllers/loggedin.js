@@ -267,7 +267,7 @@ exports.getAllEmployees = async (req,res) => {
     if (!req.user) return res.status(401).json({ error: "Unauthenticated" });
 
     const role = (req.user.role || "").trim().toLowerCase();
-    if (role !== "owner") {
+    if (role !== "owner" && role !== "manager") {
       return res.status(403).json({ error: "Do not have permission." });
     }
     const { orgId } = req.user;
