@@ -27,7 +27,10 @@ const loggedInRoutes = require("./api/loggedIn");
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
-  cors: { origin: ["http://localhost:5173"], credentials: false },
+  cors: {
+    origin: true,
+    credentials: false,
+  },
 });
 
 // storing io on the app object so controllers can emit socket events
@@ -39,7 +42,7 @@ app.use(express.json());
 
 app.use(
   cors({
-    origin: ["http://localhost:5173"],
+    origin: true,
     credentials: false,
   })
 );

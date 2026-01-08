@@ -35,25 +35,25 @@ exports.deleteJob = async (req, res) => {
 
     const { id } = req.params;
     const { orgId } = req.user;
+
     const [result] = await Jobs.deleteJobById(orgId, id);
 
-    if (result.affectedRows === 0) {
-      return res.status(404).json();
+    if (!result || result.affectedRows === 0) {
+      return res.status(404).json({ error: "Job not found" });
     }
 
-    // emit jobs:changed so all sockets in the org room can reload jobs
+    res.status(200).json({ ok: true });
+
     const io = req.app.get("io");
     if (io && orgId) {
       io.to(`org:${orgId}`).emit("jobs:changed");
     }
-
-    res.status(200).json({
-      ok: true,
-    });
   } catch (err) {
-    res.status(500).json();
+    console.error("deleteJob error:", err);
+    res.status(500).json({ error: "Internal server error" });
   }
 };
+
 
 /**-------------------------------------------------------------------------------------------------*/
 exports.getAllEmployees = async (req,res) => {

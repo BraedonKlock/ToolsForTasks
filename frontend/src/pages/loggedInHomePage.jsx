@@ -49,7 +49,8 @@ export default function LoggedInHomePage() {
   useEffect(() => {
     if (!accessToken) return;
 
-    const s = io("http://localhost:3000", {
+    const socketUrl = `http://${window.location.hostname}:3000`;
+    const s = io(socketUrl, {
       auth: { token: accessToken },
     });
 

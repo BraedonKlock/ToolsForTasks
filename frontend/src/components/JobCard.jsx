@@ -31,7 +31,7 @@ export default function JobCard({ job, isJobsPage, onDeleteSuccess }) {
 
     async function handleDelete() {
         try {
-            const res = await fetch(`/api/loggedin/jobs/${job.id}`, {
+            const res = await fetch(`/api/loggedIn/jobs/${job.id}`, {
                 method: "DELETE",
                 headers: { Authorization: `Bearer ${accessToken}` },
             });
