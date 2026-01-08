@@ -3,7 +3,6 @@ describe("Jobs page (mobile)", () => {
         cy.viewport("iphone-x");
         cy.visit("/login");
 
-        cy.get("#loginForm-accountType").select("owner");
         cy.get('input[name="email"]').type("rick@ricksroofing.com");
         cy.get('input[name="password"]').type("123");
         cy.get('button[type="submit"]').click();

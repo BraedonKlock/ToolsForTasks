@@ -14,11 +14,15 @@ exports.getAllJobs = async (req, res) => {
   try {
     if (!req.user) return res.status(401).json({ error: "Unauthenticated" });
 
-    const { sub: userId, role } = req.user; // from JWT claims
+    const role = (req.user.role || "").trim().toLowerCase();
+    const orgId = req.user.orgId;
+    const employeeId = req.user.employeeId;
 
-    const [rows] = await Jobs.getAllJobs(userId, role);
+    const loginID = role === "owner" ? orgId : employeeId;
+    if (!loginID) return res.status(400).json({ error: "Missing login id" });
 
-    // Return JSON;
+    const [rows] = await Jobs.getAllJobs(loginID, role);
+
     res.status(200).json({
       ok: true,
       jobs: rows,
@@ -58,27 +62,6 @@ exports.deleteJob = async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
-
-
-/**-------------------------------------------------------------------------------------------------*/
-exports.getAllEmployees = async (req,res) => {
-  try {
-    if (!req.user) return res.status(401).json({ error: "Unauthenticated" });
-
-    const role = (req.user.role || "").trim().toLowerCase();
-    if (role !== "owner") {
-      return res.status(403).json({ error: "Do not have permission." });
-    }
-    const { orgId } = req.user;
-    const [rows] = await Employees.getAllEmployeesByOrg(orgId);
-    res.status(200).json({
-      ok: true,
-      employees: rows,
-    });
-  } catch (err) {
-    res.status(500).json();
-  }
-}
 
 /**------------------------------------------------------------------------------------------------ */
 exports.getJob = async (req,res) => {
@@ -279,6 +262,25 @@ exports.deleteEmployeeFromJob = async (req, res) => {
 }
 
 /**------------------------------------------------------------------------------------------------ */
+exports.getAllEmployees = async (req,res) => {
+  try {
+    if (!req.user) return res.status(401).json({ error: "Unauthenticated" });
+
+    const role = (req.user.role || "").trim().toLowerCase();
+    if (role !== "owner") {
+      return res.status(403).json({ error: "Do not have permission." });
+    }
+    const { orgId } = req.user;
+    const [rows] = await Employees.getAllEmployeesByOrg(orgId);
+    res.status(200).json({
+      ok: true,
+      employees: rows,
+    });
+  } catch (err) {
+    res.status(500).json();
+  }
+}
+
 exports.deleteEmployeeFromOrg = async (req, res) => {
   try {
     if (!req.user) return res.status(401).json({error: "unauthenticated"});
@@ -294,7 +296,7 @@ exports.deleteEmployeeFromOrg = async (req, res) => {
     const [result] = await Employees.deleteEmployeeFromOrg(orgId, id);
 
     if(!result || result.affectedRows === 0) {
-      return res.status().json({error: "Could not delete employee, please try again later."})
+      return res.status(404).json({error: "Could not delete employee, please try again later."})
     }
 
     res.status(200).json({ok: true});
@@ -304,7 +306,6 @@ exports.deleteEmployeeFromOrg = async (req, res) => {
   }
 }
 
-/**------------------------------------------------------------------------------------------------ */
 exports.addEmployee = async (req, res) => {
   try {
     if(!req.user) return res.status(401).json({error: "unauthenticated"});
@@ -317,16 +318,15 @@ exports.addEmployee = async (req, res) => {
     const orgId = req.user.orgId;
     const companyName = req.user.companyName;
 
-    const { email, employeeid, name, password, role, avatar } = req.body;
+    let { email, employeeid, name, password, role, avatar } = req.body;
 
     const employeeIdInt = Number.parseInt(employeeid, 10);
     if (!Number.isInteger(employeeIdInt)) {
       return res.status(400).json({ error: "Employee id must be an integer" });
     };
 
-    email.trim().toLowerCase();
+    email = (email || "").trim().toLowerCase();
 
-    // If password provided, hash it, else keep it undefined
     let passwordHash;
     if (typeof password === "string" && password.trim().length > 0) {
       passwordHash = await bcrypt.hash(password.trim(), 12);
@@ -349,7 +349,7 @@ exports.addEmployee = async (req, res) => {
     res.status(500).json();
   }
 }
-/**------------------------------------------------------------------------------------------------ */
+
 exports.getEmployee = async (req,res) => {
   try {
     if (!req.user) return res.status(401).json({error: "Unauthenticated"});
@@ -362,7 +362,7 @@ exports.getEmployee = async (req,res) => {
     const { orgId } = req.user;
     const { id } = req.params;
 
-    const rows = await Employees.findEmployeeById( orgId, id);
+    const rows = await Employees.findEmployeeById(orgId, id);
 
     if(rows.length === 0) {
       res.status(404).json();
@@ -374,7 +374,7 @@ exports.getEmployee = async (req,res) => {
     res.status(500).json();
   }
 }
-/**------------------------------------------------------------------------------------------------ */
+
 exports.updateEmployee = async (req,res) => {
   try {
     if(!req.user) return res.status(401).json({ error: "Unauthenticated" });
@@ -397,9 +397,6 @@ exports.updateEmployee = async (req,res) => {
     name = (name || "").trim();
     email = (email || "").trim().toLowerCase();
 
-
-
-    // If password provided, hash it, else keep it undefined
     let passwordHash;
     if (typeof password === "string" && password.trim().length > 0) {
       passwordHash = await bcrypt.hash(password.trim(), 12);
@@ -419,6 +416,7 @@ exports.updateEmployee = async (req,res) => {
     res.status(500).json();
   }
 }
+
 /**------------------------------------------------------------------------------------------------ */
 exports.getAccountDetails = async (req,res) => {
   try {

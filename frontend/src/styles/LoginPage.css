@@ -34,14 +34,6 @@
   width: 100%;
 }
 
-#loginForm-accountType {
-  text-align: center;
-}
-
-#login-form select {
-  height: auto;
-}
-
 #login-form input {
   text-align: center;
   width: 100%;

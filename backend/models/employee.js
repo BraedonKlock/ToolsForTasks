@@ -11,12 +11,44 @@ module.exports = class employee {
         this.orgID = orgID;
         this.companyName = companyName;
     }
+
     static findEmployee(employeeEmail) {
-        return db.execute('SELECT * FROM employees WHERE email = ?',[employeeEmail]);
+        const sql = `
+        SELECT
+          e.*,
+          a.email AS email,
+          a.password AS password,
+          a.role AS role,
+          a.org_id AS org_id,
+          a.companyName AS companyName
+        FROM accounts a
+        INNER JOIN employees e
+          ON e.id = a.employee_id
+        WHERE a.email = ? AND a.account_type = 'employee'
+        LIMIT 1
+        `;
+        return db.execute(sql, [employeeEmail]);
     };
+
     static getAllEmployeesByOrg(orgId) {
-        return db.execute('SELECT * FROM employees WHERE org_id = ?', [orgId]);
+        const sql = `
+        SELECT
+          e.id,
+          e.employeeid,
+          e.name,
+          e.role,
+          a.email,
+          e.avatar,
+          e.org_id,
+          e.companyName
+        FROM employees e
+        LEFT JOIN accounts a
+          ON a.employee_id = e.id AND a.account_type = 'employee'
+        WHERE e.org_id = ?
+        `;
+        return db.execute(sql, [orgId]);
     };
+
     static findEmployeesforJob(jobId) {
         const sql = `
         SELECT
@@ -37,14 +69,50 @@ module.exports = class employee {
     };
 
     async addEmployee() {
-        const [result] = await db.execute('INSERT INTO employees (name,employeeid,role,email,password,avatar,org_id,companyName) VALUES (?,?,?,?,?,?,?,?)', [this.name,this.employeeID,this.role,this.email,this.password,this.avatar,this.orgID, this.companyName]);
-        return result;
+        const conn = await db.getConnection();
+        try {
+            await conn.beginTransaction();
+
+            const [empResult] = await conn.execute(
+                'INSERT INTO employees (name,employeeid,role,avatar,org_id,companyName) VALUES (?,?,?,?,?,?)',
+                [this.name, this.employeeID, this.role, this.avatar, this.orgID, this.companyName]
+            );
+
+            const employeeDbId = empResult.insertId;
+
+            await conn.execute(
+                `INSERT INTO accounts (email, password, role, companyName, account_type, employee_id, org_id)
+                 VALUES (?, ?, ?, ?, 'employee', ?, ?)`,
+                [this.email, this.password, this.role, this.companyName, employeeDbId, this.orgID]
+            );
+
+            await conn.commit();
+            return empResult;
+        } catch (err) {
+            await conn.rollback();
+            throw err;
+        } finally {
+            conn.release();
+        }
     };
-    /**This method finds an employee by their employee id.
-     * I use this for the editEmployeePage when i pass in the employees id in the URL params
-     */
-    static findEmployeeById( orgid, employeeid) {
-        return db.execute('SELECT id, employeeid, name, role, email, avatar, org_id, companyName FROM employees WHERE org_id = ? AND id = ?', [orgid, employeeid]).then(([rows]) => { // returns a promise which is a 2d array. getting the first index where the job details are stored
+
+    static findEmployeeById(orgid, employeeid) {
+        const sql = `
+        SELECT
+          e.id,
+          e.employeeid,
+          e.name,
+          e.role,
+          a.email,
+          e.avatar,
+          e.org_id,
+          e.companyName
+        FROM employees e
+        LEFT JOIN accounts a
+          ON a.employee_id = e.id AND a.account_type = 'employee'
+        WHERE e.org_id = ? AND e.id = ?
+        `;
+        return db.execute(sql, [orgid, employeeid]).then(([rows]) => {
                 if (!rows || rows.length === 0) {
                     const err = new Error();
                     err.status = 404;
@@ -53,23 +121,42 @@ module.exports = class employee {
                 return rows
         });
     };
+
     static async updateEmployee(orgid, id, name, role, employeeid, email, password, avatar) {
-        if (password) {
-            const [result] = await db.execute(
-            `UPDATE employees
-            SET employeeid = ?, name = ?, role = ?, email = ?, avatar = ?, password = ?
-            WHERE org_id = ? AND id = ?`,
-            [employeeid, name, role, email, avatar, password, orgid, id]
+        const conn = await db.getConnection();
+        try {
+            await conn.beginTransaction();
+
+            const [empResult] = await conn.execute(
+                `UPDATE employees
+                 SET employeeid = ?, name = ?, role = ?, avatar = ?
+                 WHERE org_id = ? AND id = ?`,
+                [employeeid, name, role, avatar, orgid, id]
             );
-            return result;
-        } else {
-            const [result] = await db.execute(
-            `UPDATE employees
-            SET employeeid = ?, name = ?, role = ?, email = ?, avatar = ?
-            WHERE org_id = ? AND id = ?`,
-            [employeeid, name, role, email, avatar, orgid, id]
-            );
-            return result;
+
+            if (password) {
+                await conn.execute(
+                    `UPDATE accounts
+                     SET email = ?, role = ?, password = ?
+                     WHERE org_id = ? AND employee_id = ? AND account_type = 'employee'`,
+                    [email, role, password, orgid, id]
+                );
+            } else {
+                await conn.execute(
+                    `UPDATE accounts
+                     SET email = ?, role = ?
+                     WHERE org_id = ? AND employee_id = ? AND account_type = 'employee'`,
+                    [email, role, orgid, id]
+                );
+            }
+
+            await conn.commit();
+            return empResult;
+        } catch (err) {
+            await conn.rollback();
+            throw err;
+        } finally {
+            conn.release();
         }
     }
 }

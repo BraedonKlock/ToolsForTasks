@@ -5,7 +5,6 @@ import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 
 export default function LoginPage() {
-  const [accountType, setAccountType] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -20,7 +19,7 @@ export default function LoginPage() {
       const res = await fetch("/api/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ accountType, email, password }),
+        body: JSON.stringify({ email, password }),
       });
 
       if (!res.ok) {
@@ -48,18 +47,6 @@ export default function LoginPage() {
         {error && <p id="login-error" className="error">{error}</p>}
 
         <form id="login-form" onSubmit={handleSubmit}>
-          <select
-            id="loginForm-accountType"
-            name="accountType"
-            value={accountType}
-            onChange={(e) => setAccountType(e.target.value)}
-            required
-          >
-            <option value="" disabled hidden>Account Type</option>
-            <option value="owner">Owner</option>
-            <option value="employee">Employee</option>
-          </select>
-
           <input
             type="email"
             name="email"
