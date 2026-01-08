@@ -36,10 +36,6 @@
   width: 100%;
 }
 
-#createForm-busType {
-  text-align: center;
-}
-
 #create-form input,
 #create-form select {
   text-align: center;

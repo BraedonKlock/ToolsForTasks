@@ -391,7 +391,7 @@ exports.updateAccount = async (req,res) => {
   try {
     if(!req.user) return res.status(401).json({ error: "Unauthenticated" });
     const { id } = req.params;
-    let { type, name, email, password } = req.body;
+    let { name, email, password } = req.body;
 
     name = (name || "").trim();
     email = (email || "").trim().toLowerCase();
@@ -400,7 +400,7 @@ exports.updateAccount = async (req,res) => {
     if (typeof password === "string" && password.trim().length > 0) {
       passwordHash = await bcrypt.hash(password.trim(), 12);
     }
-    const result = await User.updateUser(id, type, name, email, passwordHash);
+    const result = await User.updateUser(id, name, email, passwordHash);
 
     if(result.affectedRows !== 1) {
       return res.status(404).json({error: "Could not update account, please try again later."});

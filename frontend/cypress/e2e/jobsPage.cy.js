@@ -14,7 +14,7 @@ describe("Jobs page (mobile)", () => {
     });
 
     it("adds a job and assigns Braedon Klock", () => {
-        cy.get("#addJob-image").should("be.visible").click();
+        cy.get('a[href="/loggedIn/add-job"]').should("be.visible").click();
         cy.url().should("include", "/loggedIn/add-job");
 
         cy.get("#addJobForm-jobType").select("roofing");
@@ -44,7 +44,7 @@ describe("Jobs page (mobile)", () => {
     });
 
     it("fails to add a job when id is not an int and displays proper error message", () => {
-        cy.get("#addJob-image").should("be.visible").click();
+        cy.get('a[href="/loggedIn/add-job"]').should("be.visible").click();
         cy.url().should("include", "/loggedIn/add-job");
 
         cy.get("#addJobForm-jobType").select("roofing");
@@ -73,7 +73,7 @@ describe("Jobs page (mobile)", () => {
     });
 
     it("fails to add a job when id already exists and displays proper error message", () => {
-        cy.get("#addJob-image").should("be.visible").click();
+        cy.get('a[href="/loggedIn/add-job"]').should("be.visible").click();
         cy.url().should("include", "/loggedIn/add-job");
 
         cy.get("#addJobForm-jobType").select("roofing");
@@ -181,7 +181,7 @@ describe("Jobs page (mobile)", () => {
 
         cy.get(`.job-card[data-job-id="${jobDbId}"]`).within(() => {
             cy.get(".three-dot-menu-icon").click();
-            cy.get(`.deleteJob-btn[data-job-id="${jobDbId}"]`).click();
+            cy.get(`.delete-btn[data-job-id="${jobDbId}"]`).click();
         });
 
         // Confirm that specific card is removed from the DOM

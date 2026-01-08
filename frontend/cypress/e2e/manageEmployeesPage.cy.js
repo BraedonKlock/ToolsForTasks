@@ -14,7 +14,7 @@ describe("Jobs page (mobile)", () => {
     });
 
     it("adds an employee", () => {
-        cy.get("#addEmployee-image").should("be.visible").click();
+        cy.get('a[href="/loggedIn/add-employee"]').should("be.visible").click();
         cy.url().should("include", "/loggedIn/add-employee");
         cy.get("#avatarPicker").select("1");
         cy.get("#employeeid").type("1515");
@@ -30,7 +30,7 @@ describe("Jobs page (mobile)", () => {
     })
 
     it("fails to add employee when duplicate email exists and displays the correct error message ", () => {
-        cy.get("#addEmployee-image").should("be.visible").click();
+        cy.get('a[href="/loggedIn/add-employee"]').should("be.visible").click();
         cy.url().should("include", "/loggedIn/add-employee");
         cy.get("#avatarPicker").select("1");
         cy.get("#employeeid").type("1515");
@@ -100,7 +100,7 @@ describe("Jobs page (mobile)", () => {
 
         cy.get("@editedCard").within(() => {
             cy.get(".three-dot-menu-icon").click();
-            cy.get("button.deleteJob-btn").click(); // this is your delete button class
+            cy.get("button.delete-btn").click(); // this is your delete button class
         });
 
         cy.contains(".employee-card", "Test Edited")

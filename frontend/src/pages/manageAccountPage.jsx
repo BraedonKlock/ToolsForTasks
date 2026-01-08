@@ -67,19 +67,9 @@ export default function ManageAccount() {
         <div id="manageAccountPage-manageAccountContainer">
             <h1>Edit Account</h1>
 
-            {error && <p id="login-error" className="error">{error}</p>}
+            {error && <p id="error" className="error">{error}</p>}
 
             <form className="forms" onSubmit={onSubmit}>
-            <div className="form-control">
-                <label htmlFor="type">Business Type:</label>
-                <select name="type" id="manageAccountPage-roleSelect" required defaultValue={accountDetails?.businessType ?? ""}>
-                <option value={accountDetails?.businessType?? ""} hidden>{accountDetails?.businessType?? ""}</option>
-                <option value="roofing">Roofing</option>
-                <option value="carpentry">Carpentry</option>
-                <option value="siding">Siding</option>
-                </select>
-            </div>
-
             <div className="form-control">
                 <label htmlFor="name">Company Name:</label>
                 <input id="name" type="text" name="name" defaultValue={accountDetails?.companyName?? ""} required />

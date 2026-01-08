@@ -72,7 +72,7 @@ exports.login = async (req, res, next) => {
 exports.createAccount = async (req, res) => {
   try {
 
-    const { businessType, companyName, email, password, confirmPassword } = req.body;
+    const { companyName, email, password, confirmPassword } = req.body;
 
     email.trim().toLowerCase();
     password.trim();
@@ -83,7 +83,7 @@ exports.createAccount = async (req, res) => {
     }
     const passwordHash = await bcrypt.hash(password, 12);
 
-    const user = new User(businessType, companyName, email, passwordHash);
+    const user = new User(companyName, email, passwordHash);
 
     const result = await user.createAccount()
 

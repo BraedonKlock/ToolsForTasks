@@ -110,7 +110,7 @@ export default function JobsPage() {
           </Link>
         </div>
       )}
-      {error && <p id="login-error" className="error">{error}</p>}
+      {error && <p id="error" className="error">{error}</p>}
 
       <section id="jobs-jobsContainer" className="jobs-container">
         {jobs.length > 0 ? (

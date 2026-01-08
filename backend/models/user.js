@@ -2,8 +2,7 @@
 const db = require('../util/database');
 
 module.exports = class user {
-    constructor (type,name,email,password, role = "owner") {
-        this.type = type;
+    constructor (name,email,password, role = "owner") {
         this.name = name;
         this.email = email;
         this.password = password;
@@ -12,7 +11,7 @@ module.exports = class user {
 
     /**This method saves a user to the database */
     createAccount() {
-        return db.execute('INSERT INTO organizations (businessType, companyName, email, password, role) VALUES (?, ?, ?, ?,?)', [this.type, this.name, this.email, this.password, this.role]); // returns a promise
+        return db.execute('INSERT INTO organizations (companyName, email, password, role) VALUES (?, ?, ?, ?)', [this.name, this.email, this.password, this.role]); // returns a promise
     }
 
     /**This utility function finds a user by their unique email */
@@ -22,16 +21,16 @@ module.exports = class user {
 
     static findUserById(org_id) {
         return db.execute(
-            "SELECT id, businessType, companyName, email FROM organizations WHERE id = ?", [org_id]
+            "SELECT id, companyName, email FROM organizations WHERE id = ?", [org_id]
         );
     }
 
-    static async updateUser(org_id, type, name, email, password) {
+    static async updateUser(org_id, name, email, password) {
         if(password) {
-            const [result] = await db.execute('UPDATE organizations SET businessType = ?, companyName = ?, email = ?, password = ? WHERE id = ?', [type, name, email, password, org_id])
+            const [result] = await db.execute('UPDATE organizations SET companyName = ?, email = ?, password = ? WHERE id = ?', [name, email, password, org_id])
             return result;
         } else {
-            const [result] = await db.execute('UPDATE organizations SET businessType = ?, companyName = ?, email = ? WHERE id = ?', [type, name, email, org_id])
+            const [result] = await db.execute('UPDATE organizations SET companyName = ?, email = ? WHERE id = ?', [name, email, org_id])
             return result;
         }
     }

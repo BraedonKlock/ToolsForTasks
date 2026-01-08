@@ -40,17 +40,6 @@ export default function CreateAccountPage() {
             <hr />
             {error ? <p className="error">{error}</p> : null}
             <form id="create-form" onSubmit={onSubmit}>
-                <select
-                    id="createForm-busType"
-                    name="businessType"
-                    required
-                    defaultValue=""
-                >
-                    <option value="" disabled hidden>Business Type</option>
-                    <option value="roofing">Roofing</option>
-                    <option value="carpentry">Carpentry</option>
-                    <option value="siding">Siding</option>
-                </select>
                 <div className="form-control">
                     <label htmlFor="CompanyName">Company Name:</label>
                     <input type="text" name="companyName" required />
