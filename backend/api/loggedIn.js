@@ -28,4 +28,6 @@ router.delete("/tools/:id", loggedinController.deleteTool);
 router.get("/toolKits", loggedinController.getAllToolKits);
 router.delete("/toolKits/:id", loggedinController.deleteToolKit);
 router.post("/tools", loggedinController.addTool);
+router.get("/tools/:id", loggedinController.getTool);
+router.patch("/tools/:id", loggedinController.updateTool);
 module.exports = router;

@@ -8,7 +8,6 @@ import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 export default function AddTool() {
     const [error, setError] = useState("");
     const { accessToken, logout } = useContext(AuthContext);
-    const [avatarNum, setAvatarNum] = useState(0);
     const navigate = useNavigate();
 
     async function onSubmit(e) {

@@ -566,8 +566,49 @@ exports.addTool = async(req,res) => {
     if (role !== "owner" && role !== "manager") return res.status(403).json({error: "Do not have permission."});
 
     const { name } = req.body;
+
+    if(name.trim() === "") return res.status(400).json({error: "Name field can not be empty"})
+
     const quantity = 1;
     const [result] = await Tools.addTool(name, quantity, orgId);
+
+    if (result.affectedRows === 0) res.status(404).json({error: "Could not add Tool, please try again later."});
+
+    res.status(200).json({ok: true});
+  } catch(err) {
+    res.status(500).json({error: "Internal server error."})
+  }
+}
+/**------------------------------------------------------------------------------------------------ */
+exports.getTool = async(req,res) => {
+  try {
+    if(!req.user) res.status(401).json({ error: "Unauthenticated" });
+    const { orgId, role } = req.user;
+    if (role !== "owner" && role !== "manager") return res.status(403).json({error: "Do not have permission."});
+
+    const { id } = req.params;
+    const [rows] = await Tools.getTool(orgId, id);
+
+    if (rows.length === 0) return res.status(404).json({error: "Could not get Tool details, please try again later."});
+
+    res.status(200).json({ok: true, tool: rows[0] })
+  } catch(err) {
+    res.status(500).json({error: "Internal server error."})
+  }
+}
+/**------------------------------------------------------------------------------------------------ */
+exports.updateTool = async(req,res) => {
+  try {
+    if(!req.user) res.status(401).json({ error: "Unauthenticated" });
+    const { orgId, role } = req.user;
+    if (role !== "owner" && role !== "manager") return res.status(403).json({error: "Do not have permission."});
+
+    const { name } = req.body;
+    const { id } = req.params;
+
+    if(name.trim() === "") return res.status(400).json({error: "Name field can not be empty"})
+
+    const [result] = await Tools.updateTool(name, orgId, id);
 
     if (result.affectedRows === 0) res.status(404).json({error: "Could not add Tool, please try again later."});
 

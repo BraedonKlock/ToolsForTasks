@@ -103,23 +103,23 @@
 }
 
 @media (min-width: 900px) {
-  .addTool-page {
-    padding: 0 48px 60px;
-  }
+    .addTool-page {
+        padding: 0 48px 60px;
+    }
 
-  #addToolPage-addToolContainer {
-    width: min(860px, 100%);
-    padding: 36px 40px;
-  }
+    #addToolPage-addToolContainer {
+        width: min(460px, 100%);
+        padding: 36px 40px;
+    }
 
-  .addTool-page .form-control {
-    display: grid;
-    grid-template-columns: 1fr minmax(320px, 1.2fr);
-    align-items: center;
-    gap: 20px;
-  }
+    .addTool-page .form-control {
+        display: grid;
+        grid-template-columns: 1fr minmax(320px, 1.2fr);
+        align-items: center;
+        gap: 20px;
+    }
 
-  .addTool-page .form-control input {
-    width: 100%;
-  }
+    .addTool-page .form-control input {
+        width: 100%;
+    }
 }

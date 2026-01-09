@@ -15,4 +15,10 @@ module.exports = class tools {
     static addTool(name, quantity, org_id) {
         return db.execute('INSERT INTO tools (name, quantity, org_id) VALUES (?,?,?)', [name, quantity, org_id]);
     }
+    static getTool(org_id, toolId) {
+        return db.execute('SELECT * FROM tools WHERE org_id = ? and id = ?', [org_id, toolId])
+    }
+    static updateTool(name, org_id, toolId) {
+        return db.execute('UPDATE tools SET name = ? WHERE org_id = ? AND id = ?', [name, org_id, toolId])
+    }
 }
