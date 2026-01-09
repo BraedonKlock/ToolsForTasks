@@ -88,3 +88,26 @@
   font-size: 0.95rem;
   margin: 0 0 16px 0;
 }
+
+@media (min-width: 900px) {
+  .manageAccount-page {
+    padding: 0 48px 60px;
+  }
+
+  #manageAccountPage-manageAccountContainer {
+    width: min(860px, 100%);
+    padding: 36px 40px;
+  }
+
+  .manageAccount-page .form-control {
+    display: grid;
+    grid-template-columns: 1fr minmax(320px, 1.2fr);
+    align-items: center;
+    gap: 20px;
+  }
+
+  .manageAccount-page .form-control input,
+  .manageAccount-page .form-control select {
+    width: 100%;
+  }
+}

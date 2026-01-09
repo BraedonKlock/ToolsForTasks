@@ -176,3 +176,36 @@
   color: #b42318;
   box-shadow: none;
 }
+
+@media (min-width: 900px) {
+  .editJob-page {
+    padding: 0 48px 64px;
+  }
+
+  #editJob-container {
+    width: min(860px, 100%);
+    padding: 36px 40px;
+  }
+
+  .editJob-page .form-control {
+    display: grid;
+    grid-template-columns: 1fr minmax(320px, 1.2fr);
+    align-items: center;
+    gap: 20px;
+  }
+
+  .editJob-page .form-control input,
+  .editJob-page .form-control select,
+  #editJobForm-date,
+  #editJobForm-jobType,
+  #editJob-employeeSelect,
+  #editJob-addEmployeeBtn,
+  #editJob-notes {
+    width: 100%;
+  }
+
+  #editJob-employeeDisplay {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

@@ -118,3 +118,28 @@
   font-size: 0.95rem;
   margin: 0 0 16px 0;
 }
+
+@media (min-width: 900px) {
+  .editEmployee-page {
+    padding: 0 48px 60px;
+  }
+
+  #editEmployeePage-editEmployeeContainer {
+    width: min(860px, 100%);
+    padding: 36px 40px;
+  }
+
+  .editEmployee-page .form-control {
+    display: grid;
+    grid-template-columns: 1fr minmax(320px, 1.2fr);
+    align-items: center;
+    gap: 20px;
+  }
+
+  .editEmployee-page .form-control input,
+  .editEmployee-page .form-control select,
+  .editEmployee-page .form-control #avatarPicker,
+  #editEmployeePage-roleSelect {
+    width: 100%;
+  }
+}

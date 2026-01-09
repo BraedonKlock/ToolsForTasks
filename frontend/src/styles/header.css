@@ -158,3 +158,53 @@ header nav {
     right: 12px;
   }
 }
+
+@media (min-width: 900px) {
+  header {
+    display: flex;
+    flex-direction: column;
+  }
+
+  header nav {
+    padding: 16px 32px 8px;
+  }
+
+  #company-h1 h1 {
+    font-size: 1.25rem;
+  }
+
+  #company-h1 h6 {
+    font-size: 0.95rem;
+  }
+
+  .hamburger {
+    display: none;
+  }
+
+  #hamburger-nav {
+    position: static;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    padding: 8px 32px 16px;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+  }
+
+  #hamburger-nav.open {
+    display: flex;
+  }
+
+  .nav-link {
+    font-size: 0.85rem;
+    letter-spacing: 0.12em;
+    padding: 6px 0;
+  }
+
+  .hamburger-line {
+    display: none;
+  }
+}

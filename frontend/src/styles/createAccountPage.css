@@ -75,3 +75,25 @@
   font-size: 0.95rem;
   margin: 8px 0 16px 0;
 }
+
+@media (min-width: 900px) {
+  .createAccount-page {
+    padding: 32px 16px 80px;
+  }
+
+  #createForm-container {
+    width: min(640px, 100%);
+    padding: 36px 40px;
+  }
+
+  .createAccount-page .form-control {
+    display: grid;
+    grid-template-columns: 1fr minmax(280px, 1.2fr);
+    align-items: center;
+    gap: 16px;
+  }
+
+  .createAccount-page .form-control label {
+    justify-self: end;
+  }
+}

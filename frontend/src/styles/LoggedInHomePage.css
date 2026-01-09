@@ -67,3 +67,41 @@
   text-decoration: none;
   width: 100%;
 }
+
+@media (min-width: 900px) {
+  .loggedinHomePage {
+    padding: 32px 48px 72px;
+    align-items: stretch;
+    width: min(1200px, 100%);
+    margin: 24px auto 0;
+  }
+
+  .loggedinHomePage .job-search {
+    align-self: flex-start;
+    width: min(420px, 100%);
+  }
+
+  .jobs-container {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+  }
+
+  .job-card {
+    align-items: flex-start;
+    padding: 18px 20px;
+  }
+
+  #addJob-image {
+    bottom: 32px;
+    right: 32px;
+    width: clamp(64px, 6vw, 96px);
+  }
+}
+
+@media (min-width: 1200px) {
+  .jobs-container {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}

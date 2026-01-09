@@ -97,3 +97,14 @@
   color: #15803d;
   font-size: 0.9rem;
 }
+
+@media (min-width: 900px) {
+  .login-page {
+    padding: 32px 16px 80px;
+  }
+
+  #loginForm-container {
+    width: min(520px, 100%);
+    padding: 36px 40px;
+  }
+}

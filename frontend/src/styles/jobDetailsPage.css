@@ -72,3 +72,23 @@
   color: #b42318;
   font-size: 0.95rem;
 }
+
+@media (min-width: 900px) {
+  .jobsDetails-page {
+    padding: 0 48px 60px;
+  }
+
+  .jobDetails-container {
+    padding: 28px 32px;
+    gap: 20px;
+  }
+
+  .jobDetails-subContainer {
+    padding: 16px 0;
+  }
+
+  #jobDetails-notes {
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+}

@@ -114,3 +114,28 @@
   font-size: 0.95rem;
   margin: 0 0 16px 0;
 }
+
+@media (min-width: 900px) {
+  .addEmployee-page {
+    padding: 0 48px 60px;
+  }
+
+  #addEmployeePage-addEmployeeContainer {
+    width: min(860px, 100%);
+    padding: 36px 40px;
+  }
+
+  .addEmployee-page .form-control {
+    display: grid;
+    grid-template-columns: 1fr minmax(320px, 1.2fr);
+    align-items: center;
+    gap: 20px;
+  }
+
+  .addEmployee-page .form-control input,
+  .addEmployee-page .form-control select,
+  .addEmployee-page .form-control #avatarPicker,
+  #addEmployeePage-roleSelect {
+    width: 100%;
+  }
+}

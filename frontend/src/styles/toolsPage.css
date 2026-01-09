@@ -255,3 +255,42 @@
 
   }
 }
+
+@media (min-width: 900px) {
+  .tools-page {
+    padding: 32px 48px 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .tools-tabs {
+    width: min(1100px, 100%);
+    margin: 32px 0 16px;
+  }
+
+  .tools-section {
+    width: min(1100px, 100%);
+  }
+
+  .tools-section__header {
+    margin: 0 0 16px;
+  }
+
+  .tools-section__cards {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+  }
+
+  .kit-card,
+  .tool-card {
+    padding: 18px 20px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .tools-section__cards {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}

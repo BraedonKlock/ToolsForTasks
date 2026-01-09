@@ -188,3 +188,36 @@
   font-size: 0.95rem;
   margin-top: 16px;
 }
+
+@media (min-width: 900px) {
+  .addJob-page {
+    padding: 0 48px 64px;
+  }
+
+  #addJob-container {
+    width: min(860px, 100%);
+    padding: 36px 40px;
+  }
+
+  .addJob-page .form-control {
+    display: grid;
+    grid-template-columns: 1fr minmax(320px, 1.2fr);
+    align-items: center;
+    gap: 20px;
+  }
+
+  .addJob-page .form-control input,
+  .addJob-page .form-control select,
+  #addJobForm-date,
+  #addJobForm-jobType,
+  #addJob-employeeSelect,
+  #addJob-addEmployeeBtn,
+  #addJob-notes {
+    width: 100%;
+  }
+
+  #addJob-employeeDisplay {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
