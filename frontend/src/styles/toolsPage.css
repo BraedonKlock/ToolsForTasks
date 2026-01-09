@@ -32,6 +32,7 @@
   gap: 16px;
   margin: 22px 6px 10px;
   flex-wrap: wrap;
+  animation: fade-in 0.5s ease both;
 }
 
 .tools-tabs__group {
@@ -149,6 +150,7 @@
   margin: 0 4px 12px;
   font-family: "Montserrat", "Helvetica", sans-serif;
   color: #443a33;
+  animation: fade-in 0.5s ease both;
 }
 
 .tools-section__header h3 {
@@ -173,6 +175,7 @@
   padding: 14px 16px;
   border: 1px solid rgba(209, 194, 181, 0.7);
   box-shadow: var(--tools-shadow);
+  animation: pop-in 0.5s ease both;
 }
 
 .kit-card__avatar,

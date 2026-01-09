@@ -22,6 +22,7 @@
   align-items: center;
   justify-content: center;
   box-shadow: var(--shadow-1);
+  -webkit-tap-highlight-color: transparent;
 }
 
 .addEmployee-page #addEmployeePage-addEmployeeContainer h1 {
@@ -46,6 +47,7 @@
   align-self: center;
   border: 1px solid var(--color-border);
   border-top: 4px solid var(--color-accent);
+  animation: pop-in 0.6s ease both;
 }
 
 #addEmployeePage-addEmployeeContainer .forms {

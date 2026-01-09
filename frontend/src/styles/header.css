@@ -11,6 +11,7 @@ header {
   background: rgba(255, 255, 255, 0.92);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--color-border);
+  animation: slide-down 0.45s ease both;
 }
 
 header nav {
@@ -99,6 +100,7 @@ header nav {
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-2);
+  animation: pop-in 0.2s ease both;
 }
 
 #hamburger-nav.open {

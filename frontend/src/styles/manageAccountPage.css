@@ -32,6 +32,7 @@
   margin-top: 32px;
   align-self: center;
   border-top: 4px solid var(--color-accent);
+  animation: pop-in 0.6s ease both;
 }
 
 #manageAccountPage-manageAccountContainer .forms {

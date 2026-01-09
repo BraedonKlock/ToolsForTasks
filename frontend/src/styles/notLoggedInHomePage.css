@@ -12,6 +12,7 @@
 .nl-hero {
   display: grid;
   gap: 24px;
+  animation: fade-in 0.6s ease both;
 }
 
 .nl-hero-content {
@@ -104,6 +105,7 @@
   gap: 16px;
   position: relative;
   overflow: hidden;
+  animation: pop-in 0.6s ease both;
 }
 
 .nl-hero-card::after {
@@ -155,6 +157,7 @@
   padding: 20px;
   text-align: center;
   box-shadow: var(--shadow-1);
+  animation: pop-in 0.6s ease both;
 }
 
 .nl-metric-card h2 {
@@ -194,6 +197,7 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
+  animation: pop-in 0.6s ease both;
 }
 
 .nl-feature-card p {
@@ -214,6 +218,7 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
+  animation: pop-in 0.6s ease both;
 }
 
 .nl-step span {
@@ -244,6 +249,7 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
+  animation: pop-in 0.6s ease both;
 }
 
 .nl-proof-card p {
@@ -266,6 +272,23 @@
   gap: 16px;
   align-items: flex-start;
   box-shadow: var(--shadow-2);
+  animation: pop-in 0.6s ease both;
+}
+
+.nl-metric-card:nth-child(2) {
+  animation-delay: 0.08s;
+}
+
+.nl-metric-card:nth-child(3) {
+  animation-delay: 0.16s;
+}
+
+.nl-feature-card:nth-child(2n) {
+  animation-delay: 0.08s;
+}
+
+.nl-step:nth-child(2n) {
+  animation-delay: 0.1s;
 }
 
 .nl-cta p {
