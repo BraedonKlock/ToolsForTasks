@@ -138,7 +138,7 @@ exports.addJob = async (req,res) => {
       const dbJobId = addJobResult.insertId;
       const assignEmployeesToJobResult =  await Jobs.assignEmployeesToJob(dbJobId, employeeIds);
       
-      if (assignEmployeesToJobResult.affectedRows === 0) return res.status(500).json({error: "Failed to assign employees to the job, please try again later."});
+      if (assignEmployeesToJobResult.affectedRows === 0) return res.status(404).json({error: "Failed to assign employees to the job, please try again later."});
     }
 
     // emit jobs:changed so all sockets in the org room can reload jobs
@@ -555,6 +555,24 @@ exports.deleteToolKit = async(req,res) => {
     }
     res.status(200).json({ok: true})
   }catch(err) {
+    res.status(500).json({error: "Internal server error."})
+  }
+}
+/**------------------------------------------------------------------------------------------------ */
+exports.addTool = async(req,res) => {
+  try {
+    if(!req.user) res.status(401).json({ error: "Unauthenticated" });
+    const { orgId, role } = req.user;
+    if (role !== "owner" && role !== "manager") return res.status(403).json({error: "Do not have permission."});
+
+    const { name } = req.body;
+    const quantity = 1;
+    const [result] = await Tools.addTool(name, quantity, orgId);
+
+    if (result.affectedRows === 0) res.status(404).json({error: "Could not add Tool, please try again later."});
+
+    res.status(200).json({ok: true});
+  } catch(err) {
     res.status(500).json({error: "Internal server error."})
   }
 }

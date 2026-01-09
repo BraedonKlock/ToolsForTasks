@@ -12,4 +12,7 @@ module.exports = class tools {
     static deleteTool(org_id, id) {
         return db.execute('DELETE FROM tools WHERE org_id = ? AND id = ?', [org_id, id]);
     }
+    static addTool(name, quantity, org_id) {
+        return db.execute('INSERT INTO tools (name, quantity, org_id) VALUES (?,?,?)', [name, quantity, org_id]);
+    }
 }
