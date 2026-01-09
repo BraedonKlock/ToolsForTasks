@@ -178,7 +178,7 @@ export default function ToolsPage() {
             <section className="tools-section">
                 <div className="tools-section__header tools-section__header--split">
                     <h3>Tool Kits</h3>
-                    <Link className="pill pill--ghost" to="/loggedIn/add-toolKit">
+                    <Link className="pill pill--ghost" to="/loggedIn/add-tool-Kit">
                     <span className="pill__icon" aria-hidden="true">
                         +
                     </span>
