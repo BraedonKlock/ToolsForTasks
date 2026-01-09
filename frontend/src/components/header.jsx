@@ -92,7 +92,7 @@ export default function Header() {
 
       {showCrew && (
         <div className={`mobile ${isOpen ? "open" : ""}`} id="hamburger-nav">
-          <NavLink to="/login" className="nav-link" onClick= {() => {setIsOpen(false); logout();}}>
+          <NavLink to="/login" className="nav-link" id="logoutBtn" onClick= {() => {setIsOpen(false); logout();}}>
             Logout
             <hr className="hamburger-line" />
           </NavLink>
@@ -105,7 +105,7 @@ export default function Header() {
 
       {showManager && (
         <div className={`mobile ${isOpen ? "open" : ""}`} id="hamburger-nav">
-          <NavLink to="/login" className="nav-link" onClick= {() => {setIsOpen(false); logout();}}>
+          <NavLink to="/login" className="nav-link" id="logoutBtn" onClick= {() => {setIsOpen(false); logout();}}>
             Logout
             <hr className="hamburger-line" />
           </NavLink>
@@ -130,7 +130,7 @@ export default function Header() {
 
       {showOwner && (
         <div className={`mobile ${isOpen ? "open" : ""}`} id="hamburger-nav">
-          <NavLink to="/login" className="nav-link"  onClick= {() => {setIsOpen(false); logout();}}>
+          <NavLink to="/login" className="nav-link" id="logoutBtn"  onClick= {() => {setIsOpen(false); logout();}}>
             Logout
             <hr className="hamburger-line" />
           </NavLink>
