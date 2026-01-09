@@ -12,7 +12,7 @@ export default function ManageAccount() {
     useEffect(() => {
         (async() => {
             try {
-                const res = await fetch(`/api/loggedIn/accountDetails/${encodeURIComponent(user.orgId)}`, {
+                const res = await fetch(`/api/loggedIn/accounts/${encodeURIComponent(user.orgId)}`, {
                     headers: {Authorization: `Bearer ${accessToken}`}
                 });
 
@@ -44,7 +44,7 @@ export default function ManageAccount() {
         }
 
         try {
-            const res = await fetch(`/api/loggedIn/account/${encodeURIComponent(user.orgId)}`, {
+            const res = await fetch(`/api/loggedIn/accounts/${encodeURIComponent(user.orgId)}`, {
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json",

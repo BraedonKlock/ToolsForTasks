@@ -15,7 +15,7 @@ export default function JobDetailsPage() {
     useEffect(() => {
     (async () => {
         try {
-            const res = await fetch(`/api/loggedIn/jobDetails/${encodeURIComponent(id)}`, {
+            const res = await fetch(`/api/loggedIn/jobs/${encodeURIComponent(id)}`, {
             headers: { Authorization: `Bearer ${accessToken}` },
         });
 

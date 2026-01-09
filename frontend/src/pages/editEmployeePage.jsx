@@ -21,7 +21,7 @@ export default function EditEmployee() {
     useEffect(() => {
         (async () => {
             try {
-                const res = await fetch(`/api/loggedIn/employeeDetails/${encodeURIComponent(id)}`, {
+                const res = await fetch(`/api/loggedIn/employees/${encodeURIComponent(id)}`, {
                     headers: {Authorization: `Bearer ${accessToken}`}
                 });
 

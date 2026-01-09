@@ -36,7 +36,7 @@ export default function ToolsPage() {
         try {
             setToolKitError("");
 
-            const res = await fetch("/api/loggedIn/toolKits", {
+            const res = await fetch("/api/loggedIn/tool-kits", {
             headers: { Authorization: `Bearer ${accessToken}` },
             signal: controller.signal,
             });

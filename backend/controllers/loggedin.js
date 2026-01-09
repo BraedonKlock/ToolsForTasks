@@ -147,7 +147,7 @@ exports.addJob = async (req,res) => {
       io.to(`org:${orgId}`).emit("jobs:changed");
     }
 
-    res.status(200).json({
+    res.status(201).json({
       ok: true
     })
   } catch(err) {
@@ -340,7 +340,7 @@ exports.addEmployee = async (req, res) => {
 
     if(addEmployeeResult.affectedRows !== 1 || !addEmployeeResult.insertId) return res.status(500).json({error: "Failed to add employee, please try again later."});
 
-    res.status(200).json({ok: true});
+    res.status(201).json({ok: true});
 
   } catch(err) {
     if (err && (err.code === "ER_DUP_ENTRY" || err.errno === 1062)) {
@@ -574,7 +574,7 @@ exports.addTool = async(req,res) => {
 
     if (result.affectedRows === 0) res.status(404).json({error: "Could not add Tool, please try again later."});
 
-    res.status(200).json({ok: true});
+    res.status(201).json({ok: true});
   } catch(err) {
     res.status(500).json({error: "Internal server error."})
   }

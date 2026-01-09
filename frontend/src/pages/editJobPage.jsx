@@ -20,7 +20,7 @@ export default function EditJobPage() {
     useEffect(() => {
         (async () => {
             try {
-                const res = await fetch(`/api/loggedIn/jobEmployees/${encodeURIComponent(id)}`, {
+                const res = await fetch(`/api/loggedIn/jobs/${encodeURIComponent(id)}/employees`, {
                     headers: {Authorization: `Bearer ${accessToken}`}
                 });
 
@@ -65,7 +65,7 @@ export default function EditJobPage() {
 
         (async () => {
             try {
-            const res = await fetch(`/api/loggedIn/jobDetails/${encodeURIComponent(id)}`, {
+            const res = await fetch(`/api/loggedIn/jobs/${encodeURIComponent(id)}`, {
                 headers: { Authorization: `Bearer ${accessToken}` },
             });
 
@@ -129,7 +129,7 @@ export default function EditJobPage() {
 
     async function handleRemoveEmployeeFromJob(employeeId) {
         try {
-            const res = await fetch(`/api/loggedIn/employeesFromJobs/${encodeURIComponent(id)}/employees/${encodeURIComponent(employeeId)}`, {
+            const res = await fetch(`/api/loggedIn/jobs/${encodeURIComponent(id)}/employees/${encodeURIComponent(employeeId)}`, {
                 method: "DELETE",
                 headers: {
                     Authorization: `Bearer ${accessToken}`

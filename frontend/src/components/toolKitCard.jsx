@@ -32,7 +32,7 @@ export default function ToolKitCard({ toolKit, onToolKitDeleteSuccess }) {
         try {
             setToolsKitError("");
 
-            const res = await fetch(`/api/loggedin/toolKits/${toolKit.id}`, {
+            const res = await fetch(`/api/loggedin/tool-kits/${toolKit.id}`, {
                 method: "DELETE",
                 headers: { Authorization: `Bearer ${accessToken}` },
             });
