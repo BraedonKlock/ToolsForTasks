@@ -59,7 +59,7 @@ module.exports = class employee {
         FROM job_employees AS je
         INNER JOIN employees AS e
         ON e.id = je.employee_id
-        WHERE je.job_id = ?; ORDER BY name ASC
+        WHERE je.job_id = ? ORDER BY name ASC
         `;
         return db.execute(sql, [jobId]);
     };
