@@ -14,8 +14,9 @@ import JobsPage from "./pages/JobsPage.jsx";
 import AddJobPage from "./pages/addJobPage";
 import JobDetailsPage from "./pages/jobDetailsPage";
 import EditJobPage from "./pages/editJobPage";
-import AddToolKitPage from "./pages/addToolKitPage.jsx"
-import EditToolKitPage from "./pages/editToolKitPage.jsx"
+import AddToolKitPage from "./pages/addToolKitPage.jsx";
+import EditToolKitPage from "./pages/editToolKitPage.jsx";
+import MaterialsPage from "./pages/materialsPage.jsx";
 
 import ManageEmployeesPage from "./pages/manageEmployeesPage";
 import AddEmployeesPage from "./pages/addEmployeesPage";
@@ -60,7 +61,7 @@ export default function App() {
           <Route path="/loggedIn/edit-tool/:id" element={<EditToolPage />} />
           <Route path="/loggedIn/add-tool-kit" element={<AddToolKitPage />} />
           <Route path="/loggedIn/edit-tool-kit" element={< EditToolKitPage/> } />
-
+          <Route path="/loggedIn/materials" element={< MaterialsPage/>} />
         </Route>
 
         {/* Owner-only routes */}
