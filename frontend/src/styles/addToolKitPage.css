@@ -31,7 +31,7 @@
   justify-content: center;
   background-color: var(--color-surface);
   width: min(760px, 100%);
-  padding: 28px;
+  padding: 28px 2px 28px 2px;
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-2);
   margin-top: 60px;
@@ -70,7 +70,7 @@
 .addToolKitPage-field {
   display: flex;
   flex-direction: row;
-  justify-content: flex-end;
+  justify-content: center;
   gap: 16px;
   align-items: center;
 }
@@ -86,11 +86,9 @@
 }
 
 .addToolKitPage-tools {
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
+
   padding: 16px;
-  background: var(--color-surface);
-  box-shadow: var(--shadow-1);
+
 }
 
 .addToolKitPage-toolsHeader {
