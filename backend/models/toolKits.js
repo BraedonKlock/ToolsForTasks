@@ -27,5 +27,14 @@ module.exports = class toolKits {
         [toolKitId]
     );
     }
+    static addToolKit(org_id, name) {
+        return db.execute('INSERT INTO toolkits (name, org_id) VALUES (?,?)', [name, org_id])
+    }
 
+    static addToolsToToolKit(toolkitId, toolId, quantity) {
+        return db.execute(
+            "INSERT INTO toolkit_tools (toolkit_id, tool_id, quantity) VALUES (?,?,?)",
+            [toolkitId, toolId, quantity]
+        );
+    }
 }

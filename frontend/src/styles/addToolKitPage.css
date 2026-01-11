@@ -128,9 +128,13 @@
 }
 
 .addToolKitPage-toolRow {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-rows: auto auto;
+  column-gap: 12px;
+  row-gap: 8px;
   align-items: center;
-  justify-content: space-between;
+  justify-content: unset;
   gap: 12px;
   padding: 12px 14px;
   border-radius: var(--radius-md);
@@ -140,6 +144,8 @@
 }
 
 .addToolKitPage-toolInfo {
+  grid-column: 1;
+  grid-row: 1;
   display: flex;
   align-items: center;
   gap: 12px;
@@ -165,6 +171,9 @@
 }
 
 .addToolKitPage-selectBtn {
+  grid-column: 2;
+  grid-row: 1;
+  justify-self: end;
   border-radius: var(--radius-sm);
   border: 1px solid var(--color-border);
   padding: 6px 16px;
@@ -188,6 +197,24 @@
   font-weight: bold;
   border: none;
   background-color: var(--color-accent);
+}
+
+.addToolKitPage-selectBtn.selected {
+  font-weight: 700;
+  opacity: 0.9;
+  background-color: grey;
+}
+
+.addToolKitPage-selectBtn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.addToolKitPage-qtySelect {
+  grid-column: 2;
+  grid-row: 2;
+  justify-self: end;
+  max-width: 100%;
 }
 
 @media (min-width: 900px) {

@@ -634,3 +634,36 @@ exports.getToolKitTools = async (req, res) => {
     res.status(err.status || 500).json({error: err.message || "Internal server error."})
   }
 }
+/**------------------------------------------------------------------------------------------------ */
+exports.addToolKit = async (req, res) => {
+  try {
+    if (!req.user) return res.status(401).json({ error: "Unauthenticated" });
+
+    const { orgId, role } = req.user;
+    if (role !== "owner" && role !== "manager")
+      return res.status(403).json({ error: "Do not have permission." });
+
+    const { name, tools } = req.body;
+
+    if (!name || !Array.isArray(tools)) {
+      return res.status(400).json({ error: "Invalid payload." });
+    }
+
+    const [result] = await ToolKits.addToolKit(orgId, name);
+    if (!result || result.affectedRows === 0) {
+      return res.status(400).json({ error: "Could not add tool kit, please try again later." });
+    }
+
+    const toolkitId = result.insertId;
+
+    await Promise.all(
+      tools.map((t) =>
+        ToolKits.addToolsToToolKit(toolkitId, t.tool_id, t.quantity)
+      )
+    );
+
+    return res.status(201).json({ ok: true, toolkitId });
+  } catch (err) {
+    return res.status(500).json({ error: "Internal server error." });
+  }
+}
