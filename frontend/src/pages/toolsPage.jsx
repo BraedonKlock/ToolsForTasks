@@ -191,7 +191,7 @@ export default function ToolsPage() {
                 <div className="tools-section__cards">
                     {toolKits.length > 0 ? (
                     toolKits.map((toolKit) => (
-                        <ToolKitCard key={toolKit.id ?? toolKit.name} toolKit={toolKit} onToolKitDeleteSuccess={handleToolKitDeleteSuccess}/>
+                        <ToolKitCard key={toolKit.id ?? toolKit.name} toolKit={toolKit} onToolKitDeleteSuccess={handleToolKitDeleteSuccess} setToolKitError={setToolKitError}/>
                     ))
                     ) : (
                     <h6>No Tool Kits found</h6>

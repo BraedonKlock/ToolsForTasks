@@ -4,7 +4,7 @@ import { AuthContext } from "../context/AuthContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash, faPenToSquare, faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
 
-export default function ToolKitCard({ toolKit, onToolKitDeleteSuccess }) {
+export default function ToolKitCard({ toolKit, onToolKitDeleteSuccess, setToolKitError }) {
     const [menuOpen, setMenuOpen] = useState(false);
     const menuRef = useRef(null);
     const { accessToken, logout } = useContext(AuthContext);
@@ -44,7 +44,7 @@ export default function ToolKitCard({ toolKit, onToolKitDeleteSuccess }) {
                 }
                 setTools(data.tools ?? [])
             } catch(err) {
-                setError(err.message);
+                setToolKitError(err.message);
             }
         })();
     }, [toolKit.id, accessToken, logout])
@@ -54,9 +54,9 @@ export default function ToolKitCard({ toolKit, onToolKitDeleteSuccess }) {
         e.preventDefault();
 
         try {
-            setToolsKitError("");
+            setToolKitError("");
 
-            const res = await fetch(`/api/loggedin/tool-kits/${toolKit.id}`, {
+            const res = await fetch(`/api/loggedIn/tool-kits/${toolKit.id}`, {
                 method: "DELETE",
                 headers: { Authorization: `Bearer ${accessToken}` },
             });
@@ -65,7 +65,7 @@ export default function ToolKitCard({ toolKit, onToolKitDeleteSuccess }) {
 
             if (onToolKitDeleteSuccess) onToolKitDeleteSuccess(toolKit.id);
         } catch (err) {
-            setToolKitsError(err.message);
+            setToolKitError(err.message);
         }
     }
     console.log(tools);
