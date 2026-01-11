@@ -83,7 +83,13 @@ export default function ToolKitCard({ toolKit, onToolKitDeleteSuccess }) {
 
             <div className="kit-card__body">
                 <h4 className="kit-card__title">{name}</h4>
-                <p className="kit-card__meta">{tools[0]?.tool_name?? "No tools yet"}, {tools[1]?.tool_name?? "No tools yet"}, + {tools.length - 2} others</p>
+                <p className="kit-card__meta">
+                {tools.length === 0
+                    ? "No tools yet"
+                    : `${tools[0]?.tool_name ?? ""}${tools[1]?.tool_name ? `, ${tools[1].tool_name}` : ""}${
+                        tools.length > 2 ? ` + ${tools.length - 2}` : ""
+                    }`}
+                </p>
             </div>
             </Link>
 
