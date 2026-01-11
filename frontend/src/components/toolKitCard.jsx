@@ -7,7 +7,8 @@ import { faTrash, faPenToSquare, faEllipsisVertical } from "@fortawesome/free-so
 export default function ToolKitCard({ toolKit, onToolKitDeleteSuccess }) {
     const [menuOpen, setMenuOpen] = useState(false);
     const menuRef = useRef(null);
-    const { accessToken } = useContext(AuthContext);
+    const { accessToken, logout } = useContext(AuthContext);
+    const [tools, setTools] = useState([]);
 
     useEffect(() => {
         function handleClickOutside(event) {
@@ -24,6 +25,29 @@ export default function ToolKitCard({ toolKit, onToolKitDeleteSuccess }) {
             document.removeEventListener("touchstart", handleClickOutside);
         };
     }, []);
+
+    useEffect(() => {
+        (async() => {
+            try {
+                const res = await fetch(`/api/loggedIn/tool-kits/${toolKit.id}/tools`, {
+                    headers: {Authorization: `Bearer ${accessToken}`}
+                })
+
+                if (res.status === 401) {
+                    logout();
+                    return;
+                }
+
+                const data = await res.json().catch(() => {})
+                if (!res.ok) {
+                    throw new Error(data.error || "Could not load tools, try again later.")
+                }
+                setTools(data.tools ?? [])
+            } catch(err) {
+                setError(err.message);
+            }
+        })();
+    }, [toolKit.id, accessToken, logout])
 
     async function handleDelete(e) {
         e.stopPropagation()
@@ -44,7 +68,7 @@ export default function ToolKitCard({ toolKit, onToolKitDeleteSuccess }) {
             setToolKitsError(err.message);
         }
     }
-
+    console.log(tools);
     const name = toolKit?.name ?? "";
     const firstLetter = name ? name.charAt(0).toUpperCase() : "?";
 
@@ -58,8 +82,8 @@ export default function ToolKitCard({ toolKit, onToolKitDeleteSuccess }) {
             <div className="kit-card__avatar">{firstLetter}</div>
 
             <div className="kit-card__body">
-                <h4 className="kit-card__title">{name || "Unnamed tool kit"}</h4>
-                <p className="kit-card__meta">Hammer. Pry Bar. Harness +4 more</p>
+                <h4 className="kit-card__title">{name}</h4>
+                <p className="kit-card__meta">{tools[0]?.tool_name?? "No tools yet"}, {tools[1]?.tool_name?? "No tools yet"}, + {tools.length - 2} others</p>
             </div>
             </Link>
 
