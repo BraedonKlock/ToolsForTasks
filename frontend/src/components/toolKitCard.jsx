@@ -87,7 +87,7 @@ export default function ToolKitCard({ toolKit, onToolKitDeleteSuccess, setToolKi
                 {tools.length === 0
                     ? "No tools yet"
                     : `${tools[0]?.tool_name ?? ""}${tools[1]?.tool_name ? `, ${tools[1].tool_name}` : ""}${
-                        tools.length > 2 ? ` + ${tools.length - 2}` : ""
+                        tools.length > 2 ? ` + ${tools.length - 2} others` : ""
                     }`}
                 </p>
             </div>
