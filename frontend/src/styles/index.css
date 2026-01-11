@@ -187,11 +187,15 @@ button:active {
   border: none;
   box-shadow: none;
   padding: 0;
+  -webkit-tap-highlight-color: transparent;
+
 }
 
 .delete-btn {
   all: unset;
   color: #b42318;
+  -webkit-tap-highlight-color: transparent;
+
 }
 
 .threeDotMenu-options.active {

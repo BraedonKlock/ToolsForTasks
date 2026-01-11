@@ -56,6 +56,7 @@
   background: transparent;
   color: var(--tools-ink);
   cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .pill--active {

@@ -116,6 +116,8 @@ header nav {
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: var(--color-ink);
+  -webkit-tap-highlight-color: transparent;
+
 }
 
 .hamburger-line {

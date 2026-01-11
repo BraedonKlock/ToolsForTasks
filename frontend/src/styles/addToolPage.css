@@ -93,6 +93,7 @@
   font-weight: bold;
   border: none;
   background-color: var(--color-accent);
+  -webkit-tap-highlight-color: transparent;
 }
 
 .error {

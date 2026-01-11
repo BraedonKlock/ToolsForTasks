@@ -104,6 +104,7 @@
   height: auto;
   align-self: flex-end;
   background-color: var(--color-accent);
+  -webkit-tap-highlight-color: transparent;
 }
 
 #addJob-notes {
@@ -136,6 +137,7 @@
   font-weight: bold;
   border: none;
   background-color: var(--color-accent);
+  -webkit-tap-highlight-color: transparent;
 }
 
 #addJob-employeeDisplay {
@@ -183,6 +185,7 @@
   border: none;
   color: #b42318;
   box-shadow: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .error {
