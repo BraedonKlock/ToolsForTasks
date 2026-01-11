@@ -67,7 +67,7 @@ export default function AddToolKit() {
                     <section className="addToolKitPage-tools">
                         <div className="addToolKitPage-toolsHeader">
                             <h2>Tools</h2>
-                            <button type="button" className="addToolKitPage-addToolBtn">+ Add Tool</button>
+                            <button type="button" className="addToolKitPage-addToolBtn">+ Add tools to kit</button>
                         </div>
 
                         <div className="addToolKitPage-toolsList">

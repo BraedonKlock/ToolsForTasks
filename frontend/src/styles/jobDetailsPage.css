@@ -22,7 +22,6 @@
   align-items: center;
   justify-content: center;
   box-shadow: var(--shadow-1);
-  color: var(--color-ink);
   -webkit-tap-highlight-color: transparent;
 }
 
