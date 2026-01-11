@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { AuthContext } from "../context/AuthContext";
 import "../styles/addToolKitPage.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -8,14 +8,29 @@ import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 export default function AddToolKit() {
     const [error, setError] = useState("");
     const { accessToken, logout } = useContext(AuthContext);
+    const [tools, setTools] = useState([]);
     const navigate = useNavigate();
-    const toolOptions = [
-        { id: "hammer", name: "Hammer", initial: "H" },
-        { id: "wench", name: "Wench", initial: "W" },
-        { id: "drill", name: "Drill", initial: "D" },
-        { id: "utility-knife", name: "Utility Knife", initial: "U" },
-        { id: "level", name: "Level", initial: "L" },
-    ];
+
+    useEffect(() => {
+        (async () => {
+            try {
+                const res = await fetch("/api/loggedIn/tools", {
+                    headers: {Authorization: `Bearer ${accessToken}`}
+                })
+                if (res.status === 401) {
+                    logout();
+                    return;
+                }
+                const data = await res.json().catch(() => {});
+                if (!res.ok) {
+                    throw new Error(data.error || "Could not load tools, try again later.")
+                }
+                setTools(data.tools);
+            } catch(err) {
+                setError(err.message);
+            }
+        })();
+    }, [accessToken, logout])
 
     function onSubmit(e) {
 
@@ -36,7 +51,6 @@ export default function AddToolKit() {
                 {error && <p id="error" className="error">{error}</p>}
 
                 <form className="addToolKitPage-form" onSubmit={onSubmit}>
-                    <p className="addToolKitPage-subtitle">Select Tools to Add:</p>
 
                     <div className="addToolKitPage-field">
                         <label className="addToolKitPage-label" htmlFor="name">Name</label>
@@ -44,11 +58,12 @@ export default function AddToolKit() {
                             id="name"
                             type="text"
                             name="name"
-                            placeholder="Name: Carpentry Kit"
+                            placeholder="Enter the tool kit name"
                             required
                         />
                     </div>
 
+                    <p className="addToolKitPage-subtitle">Select Tools to Add:</p>
                     <section className="addToolKitPage-tools">
                         <div className="addToolKitPage-toolsHeader">
                             <h2>Tools</h2>
@@ -56,15 +71,23 @@ export default function AddToolKit() {
                         </div>
 
                         <div className="addToolKitPage-toolsList">
-                            {toolOptions.map((tool) => (
-                                <div className="addToolKitPage-toolRow" key={tool.id}>
-                                    <div className="addToolKitPage-toolInfo">
-                                        <span className="addToolKitPage-toolInitial">{tool.initial}</span>
-                                        <span className="addToolKitPage-toolName">{tool.name}</span>
-                                    </div>
-                                    <button type="button" className="addToolKitPage-selectBtn">Select</button>
-                                </div>
-                            ))}
+                            {tools.length === 0 ? (
+                                <h1>No tools to display</h1>
+                            ) : (
+                                tools.map((tool) => {
+                                    const firstLetter = tool.name? tool.name.charAt(0).toUpperCase() : "?";
+                                    return (
+                                        <div className="addToolKitPage-toolRow" key={tool.id}>
+                                            <div className="addToolKitPage-toolInfo">
+                                                <span className="addToolKitPage-toolInitial">{firstLetter}</span>
+                                                <span className="addToolKitPage-toolName">{tool.name}</span>
+                                            </div>
+                                            <button type="button" className="addToolKitPage-selectBtn">Select</button>
+                                        </div>
+                                    )}
+                                )
+                            )
+                        }
                         </div>
                     </section>
 
