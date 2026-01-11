@@ -44,7 +44,7 @@ module.exports = class employee {
         FROM employees e
         LEFT JOIN accounts a
           ON a.employee_id = e.id AND a.account_type = 'employee'
-        WHERE e.org_id = ?
+        WHERE e.org_id = ? ORDER BY name ASC
         `;
         return db.execute(sql, [orgId]);
     };
@@ -59,7 +59,7 @@ module.exports = class employee {
         FROM job_employees AS je
         INNER JOIN employees AS e
         ON e.id = je.employee_id
-        WHERE je.job_id = ?;
+        WHERE je.job_id = ?; ORDER BY name ASC
         `;
         return db.execute(sql, [jobId]);
     };

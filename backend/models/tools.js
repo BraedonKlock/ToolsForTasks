@@ -7,7 +7,7 @@ module.exports = class tools {
     };
 
     static getAllTools(org_id) {
-        return db.execute('SELECT * FROM tools WHERE org_id = ?', [org_id]);
+        return db.execute('SELECT * FROM tools WHERE org_id = ? ORDER BY name ASC', [org_id]);
     }
     static deleteTool(org_id, id) {
         return db.execute('DELETE FROM tools WHERE org_id = ? AND id = ?', [org_id, id]);
