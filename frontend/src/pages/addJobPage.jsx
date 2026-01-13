@@ -81,7 +81,6 @@ export default function AddJob() {
         // remove junk keys the server doesn’t want
         delete payload["employeeIds[]"];
         delete payload.addEmployee;
-        console.log(payload);
         
         try {
 

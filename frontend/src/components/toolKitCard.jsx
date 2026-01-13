@@ -68,7 +68,6 @@ export default function ToolKitCard({ toolKit, onToolKitDeleteSuccess, setToolKi
             setToolKitError(err.message);
         }
     }
-    console.log(tools);
     const name = toolKit?.name ?? "";
     const firstLetter = name ? name.charAt(0).toUpperCase() : "?";
 

@@ -666,7 +666,6 @@ exports.addToolKit = async (req, res) => {
 
     return res.status(201).json({ ok: true, toolkitId });
   } catch (err) {
-    console.log(err.message);
     return res.status(500).json({ error: "Internal server error." });
   }
 }

@@ -34,7 +34,6 @@ module.exports = class jobs {
         }
         
         if (role === "crew"  || role === "manager" ) {
-                console.log("running");
                 return db.execute(
                     `SELECT j.*
                 FROM job_employees je
