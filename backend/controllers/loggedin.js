@@ -124,12 +124,13 @@ exports.addJob = async (req,res) => {
     const { jobType, jobid, title, date, address, phoneNumber, notes, employeeIds = [] } = req.body;
 
     const jobIdInt = Number.parseInt(jobid, 10);
+    const cleanDate = (date && String(date).trim() !== "") ? date : null;
 
     if (!Number.isInteger(jobIdInt)) {
       return res.status(400).json({ error: "jobid must be an integer" });
     };
 
-    const job = new Jobs(jobType, jobid, title, date, address, phoneNumber, notes, orgId)
+    const job = new Jobs(jobType, jobIdInt, title, cleanDate, address, phoneNumber, notes, orgId)
     const addJobResult = await job.addJob()
 
     if (addJobResult.affectedRows !== 1 || !addJobResult.insertId) return res.status(500).json({error: "Failed to add job, please try again later."});
@@ -170,15 +171,16 @@ exports.updateJob = async (req,res) => {
 
     const orgId = req.user.orgId;
     const dbJobId = Number(req.params.id);
-
+    
     const { jobType, jobid, title, date, address, phoneNumber, notes, employeeIds = [] } = req.body;
-
+    
+    const cleanDate = (date && String(date).trim() !== "") ? date : null;
     const jobIdInt = Number.parseInt(jobid, 10);
     if (!Number.isInteger(jobIdInt)) {
       return res.status(400).json({ error: "jobid must be an integer" });
     };
 
-    const job = new Jobs(jobType, jobid, title, date, address, phoneNumber, notes, orgId);
+    const job = new Jobs(jobType, jobid, title, cleanDate, address, phoneNumber, notes, orgId);
 
     const [result] = await job.updateJob(dbJobId);
 
@@ -664,6 +666,7 @@ exports.addToolKit = async (req, res) => {
 
     return res.status(201).json({ ok: true, toolkitId });
   } catch (err) {
+    console.log(err.message);
     return res.status(500).json({ error: "Internal server error." });
   }
 }

@@ -106,16 +106,14 @@ exports.createAccount = async (req, res) => {
     const passwordHash = await bcrypt.hash(password, 12);
 
 
-    const result = await User.createOwnerAccount(companyName, email, passwordHash);
+    const user = new User(companyName, email, passwordHash);
+    const result = await user.createAccount();
 
     if (!result || result.affectedRows === 0) {
       return res
         .status(404)
         .json({ error: "Could not create account, please try again later." });
     }
-
-    const newId = result.insertId;
-    await db.execute(`UPDATE accounts SET org_id = id WHERE id = ?`, [newId]);
 
     return res.status(200).json({ ok: true });
   } catch (err) {

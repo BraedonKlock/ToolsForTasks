@@ -11,20 +11,30 @@ module.exports = class user {
 
     /**This method saves an OWNER account to the database */
     async createAccount() {
-        // Insert into accounts (owner)
-        const [result] = await db.execute(
-        `INSERT INTO accounts (companyName, email, password, role, account_type)
-        VALUES (?, ?, ?, ?, 'owner')`,
-        [this.name, this.email, this.password, this.role]
-        );
+        const conn = await db.getConnection();
+        try {
+            await conn.beginTransaction();
 
-        // Ensure org_id = id for owners
-        await db.execute(
-        `UPDATE accounts SET org_id = id WHERE id = ?`,
-        [result.insertId]
-        );
+            const [result] = await conn.execute(
+            `INSERT INTO accounts (companyName, email, password, role, account_type)
+            VALUES (?, ?, ?, ?, 'owner')`,
+            [this.name, this.email, this.password, this.role]
+            );
 
-        return result;
+            // Ensure org_id = id for owners
+            await conn.execute(
+            `UPDATE accounts SET org_id = id WHERE id = ?`,
+            [result.insertId]
+            );
+
+            await conn.commit();
+            return result;
+        } catch (err) {
+            await conn.rollback();
+            throw err;
+        } finally {
+            conn.release();
+        }
     }
 
     static findAccountByEmail(email) {

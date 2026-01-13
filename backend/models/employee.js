@@ -64,8 +64,29 @@ module.exports = class employee {
         return db.execute(sql, [jobId]);
     };
 
-    static deleteEmployeeFromOrg(orgId, employeeId) {
-        return db.execute('DELETE from employees WHERE org_id = ? AND id = ?', [orgId, employeeId]);
+    static async deleteEmployeeFromOrg(orgId, employeeId) {
+        const conn = await db.getConnection();
+        try {
+            await conn.beginTransaction();
+
+            await conn.execute(
+                "DELETE FROM accounts WHERE org_id = ? AND employee_id = ? AND account_type = 'employee'",
+                [orgId, employeeId]
+            );
+
+            const [empResult] = await conn.execute(
+                'DELETE FROM employees WHERE org_id = ? AND id = ?',
+                [orgId, employeeId]
+            );
+
+            await conn.commit();
+            return [empResult];
+        } catch (err) {
+            await conn.rollback();
+            throw err;
+        } finally {
+            conn.release();
+        }
     };
 
     async addEmployee() {
