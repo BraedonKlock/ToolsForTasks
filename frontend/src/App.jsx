@@ -60,7 +60,7 @@ export default function App() {
           <Route path="/loggedIn/add-tool" element={<AddToolPage />} />
           <Route path="/loggedIn/edit-tool/:id" element={<EditToolPage />} />
           <Route path="/loggedIn/add-tool-kit" element={<AddToolKitPage />} />
-          <Route path="/loggedIn/edit-tool-kit" element={< EditToolKitPage/> } />
+          <Route path="/loggedIn/edit-tool-kit/:id" element={< EditToolKitPage/> } />
           <Route path="/loggedIn/materials" element={< MaterialsPage/>} />
         </Route>
 
