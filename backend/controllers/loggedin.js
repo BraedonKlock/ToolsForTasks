@@ -512,7 +512,13 @@ exports.deleteTool = async (req,res) => {
       return res.status(400).json({error: "Could not delete Tool, please try again later."})
     }
 
-    return res.status(200).json({ok: true});
+    res.status(200).json({ok: true});
+
+    const io = req.app.get("io");
+    if (io && orgId) {
+      io.to(`org:${orgId}`).emit("tools:changed");
+    }
+
   }catch(err) {
     if(err.message) {
       res.status(err.status).json({error: err.message});
@@ -534,6 +540,12 @@ exports.getAllToolKits = async (req,res) => {
 
     const [toolKits] = await ToolKits.getAllToolKits(orgId);
     res.status(200).json({ok: true, toolKits})
+
+    const io = req.app.get("io");
+    if (io && orgId) {
+      io.to(`org:${orgId}`).emit("toolKits:changed");
+    }
+
   }catch(err) {
     res.status(500).json({error: "Internal server error"})
   }
@@ -555,7 +567,13 @@ exports.deleteToolKit = async(req,res) => {
     if (result.affectedRows === 0) {
       res.status(400).json({error: "Could not delete Tool kit, please try again later."})
     }
-    res.status(200).json({ok: true})
+    res.status(200).json({ok: true});
+
+    const io = req.app.get("io");
+    if (io && orgId) {
+      io.to(`org:${orgId}`).emit("toolKits:changed");
+    }
+
   }catch(err) {
     res.status(500).json({error: "Internal server error."})
   }
@@ -577,6 +595,12 @@ exports.addTool = async(req,res) => {
     if (result.affectedRows === 0) res.status(404).json({error: "Could not add Tool, please try again later."});
 
     res.status(201).json({ok: true});
+
+    const io = req.app.get("io");
+    if (io && orgId) {
+      io.to(`org:${orgId}`).emit("tools:changed");
+    }
+
   } catch(err) {
     res.status(500).json({error: "Internal server error."})
   }
@@ -616,6 +640,12 @@ exports.updateTool = async(req,res) => {
     if (result.affectedRows === 0) res.status(404).json({error: "Could not add Tool, please try again later."});
 
     res.status(200).json({ok: true});
+
+    const io = req.app.get("io");
+    if (io && orgId) {
+      io.to(`org:${orgId}`).emit("tools:changed");
+    }
+
   } catch(err) {
     res.status(500).json({error: "Internal server error."})
   }
@@ -631,7 +661,13 @@ exports.getToolKitTools = async (req, res) => {
     const { id } = req.params;
     const [rows] = await ToolKits.getToolKitTools(id);
 
-    res.status(200).json({ok: true, tools: rows})
+    res.status(200).json({ok: true, tools: rows});
+
+    const io = req.app.get("io");
+    if (io && orgId) {
+      io.to(`org:${orgId}`).emit("toolKits:changed");
+    }
+
   } catch(err) {
     res.status(err.status || 500).json({error: err.message || "Internal server error."})
   }
@@ -664,7 +700,13 @@ exports.addToolKit = async (req, res) => {
       )
     );
 
-    return res.status(201).json({ ok: true, toolkitId });
+    res.status(201).json({ ok: true, toolkitId });
+
+    const io = req.app.get("io");
+    if (io && orgId) {
+      io.to(`org:${orgId}`).emit("toolKits:changed");
+    }
+
   } catch (err) {
     return res.status(500).json({ error: "Internal server error." });
   }
@@ -725,7 +767,13 @@ exports.updateToolKit = async (req,res) => {
       );
     }
 
-    return res.status(200).json({ ok: true });
+    res.status(200).json({ ok: true });
+
+    const io = req.app.get("io");
+    if (io && orgId) {
+      io.to(`org:${orgId}`).emit("toolKits:changed");
+    }
+    
   } catch(err) {
     res.status(500).json({error: "Internal server error."})
   }
