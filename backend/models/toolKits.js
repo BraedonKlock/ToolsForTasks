@@ -8,6 +8,9 @@ module.exports = class toolKits {
     static getAllToolKits(org_id) {
         return db.execute('SELECT * FROM toolkits WHERE org_id = ? ORDER BY name ASC', [org_id]);
     }
+    static getToolKit(org_id, toolKitId) {
+        return db.execute('SELECT * FROM toolkits WHERE org_id = ? AND id = ?', [org_id, toolKitId]);
+    }
     static deleteToolKit(org_id, id) {
         return db.execute('DELETE FROM toolKits WHERE org_id = ? AND id = ?', [org_id, id]);
     }

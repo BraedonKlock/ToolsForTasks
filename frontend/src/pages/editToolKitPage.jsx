@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useState, useContext, useEffect } from "react";
 import { AuthContext } from "../context/AuthContext";
 import "../styles/editToolKitPage.css";
@@ -9,8 +9,9 @@ export default function EditToolKit() {
     const [error, setError] = useState("");
     const { accessToken, logout } = useContext(AuthContext);
     const [tools, setTools] = useState([]);
+    const [toolKit, setToolKit] = useState(null);
     const [selectedTools, setSelectedTools] = useState([]);
-
+    const { id } = useParams();
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -32,7 +33,58 @@ export default function EditToolKit() {
                 setError(err.message);
             }
         })();
+
+        (async () => {
+            try {
+                const res = await fetch(`/api/loggedIn/tool-kit/${encodeURIComponent(id)}`, {
+                    headers: { Authorization: `Bearer ${accessToken}` }
+                });
+                if (res.status === 401) {
+                    logout();
+                    return;
+                }
+                const data = await res.json().catch(() => ({}));
+                if (!res.ok) {
+                    throw new Error(data.error || "Could not load tool kit data, try again later.");
+                }
+                setToolKit(data.toolKit);
+            } catch (err) {
+                setError(err.message);
+            }
+        })();
+
+        (async () => {
+            try {
+                const res = await fetch(`/api/loggedIn/tool-kits/${encodeURIComponent(id)}/tools`, {
+                    headers: { Authorization: `Bearer ${accessToken}` }
+                });
+                if (res.status === 401) {
+                    logout();
+                    return;
+                }
+                const data = await res.json().catch(() => ({}));
+                if (!res.ok) {
+                    throw new Error(data.error || "Could not load the tools assigned to the tool kit, try again later.");
+                }
+                const mappedTools = (data.tools || []).map((tool) => ({
+                    id: tool.tool_id,
+                    name: tool.tool_name,
+                    quantity: tool.quantity,
+                }));
+                setSelectedTools(mappedTools);
+            } catch (err) {
+                setError(err.message);
+            }
+        })();
     }, [accessToken, logout]);
+
+    useEffect(() => {
+        try {
+            
+        } catch(err) {
+            setError(err.message);
+        }
+    })
 
     function toggleSelected(tool) {
         setSelectedTools((prev) => {
@@ -67,7 +119,7 @@ export default function EditToolKit() {
 
         try {
             const res = await fetch("/api/loggedIn/tool-kit", {
-                method: "POST",
+                method: "PATCH",
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${accessToken}`
@@ -81,7 +133,7 @@ export default function EditToolKit() {
             }
             const data = await res.json().catch(() => ({}));
             if (!res.ok) {
-                throw new Error(data.error || "Could not add tool kit, try again later.");
+                throw new Error(data.error || "Could not update tool kit, try again later.");
             }
             navigate("/loggedIn/tools");
         } catch (err) {
@@ -111,7 +163,7 @@ export default function EditToolKit() {
                             id="name"
                             type="text"
                             name="name"
-                            placeholder="Enter the tool kit name"
+                            defaultValue={toolKit?.name?? ""}
                             required
                         />
                     </div>

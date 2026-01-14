@@ -32,4 +32,6 @@ router.get("/tools/:id", loggedinController.getTool);
 router.patch("/tools/:id", loggedinController.updateTool);
 router.get("/tool-kits/:id/tools", loggedinController.getToolKitTools);
 router.post("/tool-kit", loggedinController.addToolKit);
+router.get("/tool-kit/:id", loggedinController.getToolKit);
+router.patch("/tool-kit", loggedinController.updateToolKit);
 module.exports = router;

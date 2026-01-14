@@ -669,3 +669,32 @@ exports.addToolKit = async (req, res) => {
     return res.status(500).json({ error: "Internal server error." });
   }
 }
+/**------------------------------------------------------------------------------------------------ */
+exports.getToolKit = async (req,res) => {
+  try {
+    if (!req.user) return res.status(401).json({ error: "Unauthenticated" });
+
+    const { orgId, role } = req.user;
+    if (role !== "owner" && role !== "manager")
+      return res.status(403).json({ error: "Do not have permission." });
+    
+    const { id } = req.params;
+
+    const [rows] = await ToolKits.getToolKit(orgId, id);
+
+    if (rows.length === 0) return res.status(404).json({error: "Could not get tool kit details, please try again later."});
+
+    return res.status(200).json({ok: true, toolKit: rows[0]});
+
+  } catch(err) {
+    res.status(500).json({error: "Internal sserver error."})
+  }
+}
+/**------------------------------------------------------------------------------------------------ */
+exports.updateToolKit = async (req,res) => {
+  try {
+
+  } catch(err) {
+    res.status(500).json({error: "Internal server error."})
+  }
+}
