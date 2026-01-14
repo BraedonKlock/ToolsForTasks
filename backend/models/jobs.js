@@ -25,27 +25,21 @@ module.exports = class jobs {
     static getAllJobs(loginID, role) {
         if (role === "owner" ) {
             return db.execute(
-            `SELECT 
-                id, jobid, jobType, title,
-                DATE_FORMAT(\`date\`, '%Y-%m-%d') AS \`date\`,
-                address, phoneNumber, notes, org_id
-            FROM jobs
-            WHERE org_id = ?
-            ORDER BY \`date\` ASC`,
+                `SELECT jobs.*, DATE_FORMAT(jobs.\`date\`, '%Y-%m-%d') AS \`date\`
+                 FROM jobs
+                 WHERE org_id = ?
+                 ORDER BY jobs.\`date\` ASC`,
             [loginID]
             );
         }
         
         if (role === "crew"  || role === "manager" ) {
-            return db.execute(
-            `SELECT 
-                id, jobid, jobType, title,
-                DATE_FORMAT(\`date\`, '%Y-%m-%d') AS \`date\`,
-                address, phoneNumber, notes, org_id
-            FROM jobs
-            WHERE org_id = ?
-            ORDER BY \`date\` ASC`,
-            [loginID]
+                return db.execute(
+                `SELECT j.*, DATE_FORMAT(j.\`date\`, '%Y-%m-%d') AS \`date\`
+                 FROM job_employees je
+                 JOIN jobs j ON j.id = je.job_id
+                 WHERE je.employee_id = ?
+                 ORDER BY j.\`date\` ASC`,
             );
         }
         
@@ -53,15 +47,18 @@ module.exports = class jobs {
     }
 
     static getJob(orgId, id) {
-        return db.execute(
-        `SELECT 
-            id, jobid, jobType, title,
-            DATE_FORMAT(\`date\`, '%Y-%m-%d') AS \`date\`,
-            address, phoneNumber, notes, org_id
-        FROM jobs
-        WHERE org_id = ? AND id = ?`,
-        [orgId, id]
-        )
+        return db.execute(            
+            `SELECT jobs.*, DATE_FORMAT(jobs.\`date\`, '%Y-%m-%d') AS \`date\`
+             FROM jobs
+             WHERE org_id = ? AND id = ?`, [orgId, id])
+        .then(([rows]) => { // returns a promise which is a 2d array. getting the first index where the job details are stored
+            if (!rows || rows.length === 0) {
+                const err = new Error();
+                err.status = 404;
+                throw err;
+            }
+            return rows
+        });
     }
 
     static assignEmployeesToJob(jobDbId, employeeDbIds) {
