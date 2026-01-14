@@ -118,7 +118,7 @@ export default function EditToolKit() {
         const finalPayload = { ...payload, tools: toolsForKit };
 
         try {
-            const res = await fetch("/api/loggedIn/tool-kit", {
+            const res = await fetch(`/api/loggedIn/tool-kit/${encodeURIComponent(id)}`, {
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json",

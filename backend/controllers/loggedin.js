@@ -693,7 +693,39 @@ exports.getToolKit = async (req,res) => {
 /**------------------------------------------------------------------------------------------------ */
 exports.updateToolKit = async (req,res) => {
   try {
+    if (!req.user) return res.status(401).json({ error: "Unauthenticated" });
 
+    const { orgId, role } = req.user;
+    if (role !== "owner" && role !== "manager")
+      return res.status(403).json({ error: "Do not have permission." });
+
+    const { name, tools } = req.body;
+    const resolvedToolKitId = Number(req.params.id);
+
+    if (!Number.isInteger(resolvedToolKitId)) {
+      return res.status(400).json({ error: "Invalid tool kit id." });
+    }
+
+    if (!name || !Array.isArray(tools)) {
+      return res.status(400).json({ error: "Invalid payload." });
+    }
+
+    const [result] = await ToolKits.updateToolKit(orgId, resolvedToolKitId, name);
+    if (!result || result.affectedRows === 0) {
+      return res.status(404).json({ error: "Could not update tool kit, please try again later." });
+    }
+
+    await ToolKits.deleteToolKitTools(resolvedToolKitId);
+
+    if (tools.length > 0) {
+      await Promise.all(
+        tools.map((t) =>
+          ToolKits.addToolsToToolKit(resolvedToolKitId, t.tool_id, t.quantity)
+        )
+      );
+    }
+
+    return res.status(200).json({ ok: true });
   } catch(err) {
     res.status(500).json({error: "Internal server error."})
   }

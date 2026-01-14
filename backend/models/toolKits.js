@@ -40,4 +40,18 @@ module.exports = class toolKits {
             [toolkitId, toolId, quantity]
         );
     }
+
+    static updateToolKit(orgId, toolKitId, name) {
+        return db.execute(
+            "UPDATE toolkits SET name = ? WHERE org_id = ? AND id = ?",
+            [name, orgId, toolKitId]
+        );
+    }
+
+    static deleteToolKitTools(toolKitId) {
+        return db.execute(
+            "DELETE FROM toolkit_tools WHERE toolkit_id = ?",
+            [toolKitId]
+        );
+    }
 }
