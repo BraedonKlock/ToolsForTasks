@@ -136,18 +136,20 @@ export default function ToolKitCard({ toolKit, onToolKitDeleteSuccess, setToolKi
             </Link>
 
             <div className="threeDotMenu-container" ref={menuRef}>
-            <section className={`threeDotMenu-options ${menuOpen ? "active" : ""}`}>
-                <Link
-                to={`/loggedIn/edit-tool-kit/${toolKit.id}`}
-                onClick={(e) => e.stopPropagation()}
-                >
-                <FontAwesomeIcon icon={faPenToSquare} className="icon" />
-                </Link>
+            {menuOpen && (
+                <section className="threeDotMenu-options active">
+                    <Link
+                    to={`/loggedIn/edit-tool-kit/${toolKit.id}`}
+                    onClick={(e) => e.stopPropagation()}
+                    >
+                    <FontAwesomeIcon icon={faPenToSquare} className="icon" />
+                    </Link>
 
-                <button type="button" className="delete-btn" onClick={handleDelete}>
-                <FontAwesomeIcon icon={faTrash} />
-                </button>
-            </section>
+                    <button type="button" className="delete-btn" onClick={handleDelete}>
+                    <FontAwesomeIcon icon={faTrash} />
+                    </button>
+                </section>
+            )}
 
             <button
                 className="three-dot-menu-icon"

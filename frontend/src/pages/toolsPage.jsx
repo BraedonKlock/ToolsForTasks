@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useState, useEffect, useContext, useCallback } from "react";
+import { useState, useEffect, useContext, useCallback, useRef } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { io } from "socket.io-client"; // importing socket.io client
 
@@ -15,7 +15,6 @@ export default function ToolsPage() {
     const [tools, setTools] = useState([]);
     const [toolKits, setToolKits] = useState([]);
     const { accessToken, logout } = useContext(AuthContext);
-    const [openToolMenuFor, setOpenToolMenuFor] = useState(null);
     const [socket, setSocket] = useState(null); // holding socket instance
 
     const [toolKitError, setToolKitError] = useState("");
@@ -149,19 +148,6 @@ export default function ToolsPage() {
         };
     }, [socket, loadTools, loadToolKits]);
 
-useEffect(() => {
-    function handleClickOutside(event) {
-    if (event.target.closest(".threeDotMenu-container")) return;
-    setOpenToolMenuFor(null);
-    }
-
-    document.addEventListener("click", handleClickOutside);
-
-    return () => {
-    document.removeEventListener("click", handleClickOutside);
-    };
-}, []);
-
 function handleToolKitDeleteSuccess(deletedId) {
     const newToolKits = toolKits.filter((toolKit) => toolKit.id !== deletedId);
     setToolKits(newToolKits);
@@ -189,7 +175,6 @@ async function handleDeleteTool(toolId) {
         }
 
         setTools((prev) => prev.filter((t) => t.id !== toolId));
-        setOpenToolMenuFor(null);
     } catch (err) {
         setToolsError(err.message);
     }
@@ -269,58 +254,79 @@ async function handleDeleteTool(toolId) {
                     {tools.length === 0 ? (
                     <h6>No tools to display</h6>
                     ) : (
-                    tools.map((tool) => {
-                        const name = tool?.name ?? "";
-                        const firstLetter = name ? name.charAt(0).toUpperCase() : "?";
-                        const isOpen = openToolMenuFor === (tool.id ?? name);
-
-                        return (
-                        <article key={tool.id ?? name} className="tool-card tool-card--compact">
-                            <div className="tool-card__avatar">{firstLetter}</div>
-
-                            <div className="tool-card__body">
-                            <h4 className="tool-card__title">{name || "Unnamed tool"}</h4>
-                            </div>
-
-                            <div className="threeDotMenu-container">
-                            <section
-                                className={`threeDotMenu-options ${isOpen ? "active" : ""}`}
-                            >
-                                <Link to={`/loggedIn/edit-tool/${tool.id ?? ""}`}>
-                                <FontAwesomeIcon icon={faPenToSquare} className="icon" />
-                                </Link>
-
-                                <button
-                                type="button"
-                                className="delete-btn"
-                                onClick={(e) => {
-                                    e.stopPropagation();
-                                    handleDeleteTool(tool.id);
-                                }}
-                                >
-                                <FontAwesomeIcon icon={faTrash} />
-                                </button>
-                            </section>
-
-                            <button
-                                className="three-dot-menu-icon"
-                                aria-label="More options"
-                                type="button"
-                                onClick={(event) => {
-                                event.stopPropagation();
-                                setOpenToolMenuFor(isOpen ? null : tool.id ?? name);
-                                }}
-                            >
-                                <FontAwesomeIcon icon={faEllipsisVertical} />
-                            </button>
-                            </div>
-                        </article>
-                        );
-                    })
+                    tools.map((tool) => (
+                        <ToolCard key={tool.id ?? tool.name} tool={tool} onDelete={handleDeleteTool} />
+                    ))
                     )}
                 </div>
             </section>
         )}
         </main>
+    );
+}
+
+function ToolCard({ tool, onDelete }) {
+    const [menuOpen, setMenuOpen] = useState(false);
+    const menuRef = useRef(null);
+    const name = tool?.name ?? "";
+    const firstLetter = name ? name.charAt(0).toUpperCase() : "?";
+
+    useEffect(() => {
+        function handleClickOutside(event) {
+            if (menuRef.current && !menuRef.current.contains(event.target)) {
+                setMenuOpen(false);
+            }
+        }
+
+        document.addEventListener("mousedown", handleClickOutside);
+        document.addEventListener("touchstart", handleClickOutside);
+
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+            document.removeEventListener("touchstart", handleClickOutside);
+        };
+    }, []);
+
+    return (
+        <article className="tool-card tool-card--compact">
+            <div className="tool-card__avatar">{firstLetter}</div>
+
+            <div className="tool-card__body">
+                <h4 className="tool-card__title">{name || "Unnamed tool"}</h4>
+            </div>
+
+            <div className="threeDotMenu-container" ref={menuRef}>
+                {menuOpen && (
+                    <section className="threeDotMenu-options active">
+                        <Link to={`/loggedIn/edit-tool/${tool.id ?? ""}`}>
+                            <FontAwesomeIcon icon={faPenToSquare} className="icon" />
+                        </Link>
+
+                        <button
+                            type="button"
+                            className="delete-btn"
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                onDelete(tool.id);
+                            }}
+                        >
+                            <FontAwesomeIcon icon={faTrash} />
+                        </button>
+                    </section>
+                )}
+
+                <button
+                    className="three-dot-menu-icon"
+                    aria-label="More options"
+                    type="button"
+                    onClick={(event) => {
+                        event.stopPropagation();
+                        setMenuOpen((prev) => !prev);
+                    }}
+                >
+                    <FontAwesomeIcon icon={faEllipsisVertical} />
+                </button>
+            </div>
+        </article>
     );
 }

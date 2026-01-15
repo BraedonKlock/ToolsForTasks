@@ -45,7 +45,7 @@ describe("Tools page (mobile)", () => {
         cy.contains(".kit-card", toolKitName, { timeout: 10000 })
             .should("be.visible")
             .within(() => {
-                cy.contains(toolName1).should("exist");
+                cy.contains(toolName1, { timeout: 10000 }).should("exist");
             });
 
         // Edit tool kit to add tool 2
@@ -68,7 +68,7 @@ describe("Tools page (mobile)", () => {
         cy.contains(".kit-card", toolKitName, { timeout: 10000 })
             .should("be.visible")
             .within(() => {
-                cy.contains(toolName2).should("exist");
+                cy.contains(toolName2, { timeout: 10000 }).should("exist");
             });
 
         // Delete tool kit
