@@ -140,6 +140,57 @@
   -webkit-tap-highlight-color: transparent;
 }
 
+.addJob-employeeSection {
+  margin-top: 16px;
+}
+
+.addJob-employeeHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 4px 12px;
+  font-family: var(--font-body);
+  color: var(--color-muted);
+}
+
+.addJob-employeeHeader p {
+  margin: 0;
+}
+
+.addJob-employeeCards {
+  max-height: 320px;
+}
+
+.addJob-employeeCard {
+  grid-template-columns: auto 1fr auto;
+}
+
+.addJob-employeeMeta {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--color-muted);
+  font-family: var(--font-body);
+}
+
+.addJob-employeeSelectBtn {
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+  padding: 6px 16px;
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: var(--shadow-1);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.addJob-employeeSelectBtn.selected {
+  background-color: var(--color-accent);
+  color: #fff;
+  border-color: transparent;
+}
+
 #addJob-employeeDisplay {
   display: flex;
   flex-direction: column;

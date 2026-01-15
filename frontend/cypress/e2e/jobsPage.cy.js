@@ -24,16 +24,13 @@ describe("Jobs page (mobile)", () => {
         cy.get('input[name="phoneNumber"]').type("5555555555");
         cy.get('textarea[name="notes"]').type("Cypress test job");
 
-        cy.contains("#addJob-employeeSelect option", "Braedon Klock", { timeout: 10000 })
-        .should("exist");
+        cy.contains(".addJob-employeeCard", "Braedon Klock", { timeout: 10000 })
+        .should("exist")
+        .as("employeeCard");
 
+        cy.get("@employeeCard").find("button").click();
 
-        cy.get("#addJob-employeeSelect").select("2");
-
-        cy.get("#addJob-addEmployeeBtn").click();
-
-        // Confirm the employee pill appears
-        cy.get(".employee-pill").should("contain", "Braedon Klock");
+        cy.get("@employeeCard").find("button").should("contain", "Selected");
 
         // Submit job
         cy.get("#addJob-addJobBtn").click();
@@ -54,16 +51,13 @@ describe("Jobs page (mobile)", () => {
         cy.get('input[name="phoneNumber"]').type("5555555555");
         cy.get('textarea[name="notes"]').type("Cypress test job");
 
-        cy.contains("#addJob-employeeSelect option", "Braedon Klock", { timeout: 10000 })
-        .should("exist");
+        cy.contains(".addJob-employeeCard", "Braedon Klock", { timeout: 10000 })
+        .should("exist")
+        .as("employeeCard");
 
+        cy.get("@employeeCard").find("button").click();
 
-        cy.get("#addJob-employeeSelect").select("2");
-
-        cy.get("#addJob-addEmployeeBtn").click();
-
-        // Confirm the employee pill appears
-        cy.get(".employee-pill").should("contain", "Braedon Klock");
+        cy.get("@employeeCard").find("button").should("contain", "Selected");
 
         // Submit job
         cy.get("#addJob-addJobBtn").click();
@@ -83,16 +77,13 @@ describe("Jobs page (mobile)", () => {
         cy.get('input[name="phoneNumber"]').type("5555555555");
         cy.get('textarea[name="notes"]').type("Cypress test job");
 
-        cy.contains("#addJob-employeeSelect option", "Braedon Klock", { timeout: 10000 })
-        .should("exist");
+        cy.contains(".addJob-employeeCard", "Braedon Klock", { timeout: 10000 })
+        .should("exist")
+        .as("employeeCard");
 
+        cy.get("@employeeCard").find("button").click();
 
-        cy.get("#addJob-employeeSelect").select("2");
-
-        cy.get("#addJob-addEmployeeBtn").click();
-
-        // Confirm the employee pill appears
-        cy.get(".employee-pill").should("contain", "Braedon Klock");
+        cy.get("@employeeCard").find("button").should("contain", "Selected");
 
         // Submit job
         cy.get("#addJob-addJobBtn").click();

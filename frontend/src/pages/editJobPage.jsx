@@ -2,9 +2,9 @@ import { Link, useParams, useNavigate } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";;
 import { AuthContext } from "../context/AuthContext";
 import "../styles/editJobPage.css";
+import "../styles/toolsPage.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
-import { faTrash } from "@fortawesome/free-solid-svg-icons";
 
 export default function EditJobPage() {
     const {accessToken, logout} = useContext(AuthContext);
@@ -12,7 +12,6 @@ export default function EditJobPage() {
     const [currentEmployees, setCurrentEmployees] = useState([]);
     const [addedEmployees, setAddedEmployees] = useState([]);
     const [employees, setEmployees] = useState([]);
-    const [selectedEmpId, setSelectedEmpId] = useState("");
     const [job, setJob] = useState(null);
     const { id } = useParams();
     const navigate = useNavigate();
@@ -91,40 +90,22 @@ export default function EditJobPage() {
 
 
 
-    function handleAddEmployee() {
-        let selected = null;
+    function isEmployeeSelected(employeeId) {
+        return currentEmployees.some((emp) => emp.id === employeeId) ||
+            addedEmployees.some((emp) => emp.id === employeeId);
+    }
 
-        // Find the selected employee by ID
-        for (let i = 0; i < employees.length; i++) {
-            if (employees[i].employeeid === Number(selectedEmpId)) {
-            selected = employees[i];
-            break; // stop looping once found
-            }
+    async function toggleEmployee(employee) {
+        if (currentEmployees.some((emp) => emp.id === employee.id)) {
+            await handleRemoveEmployeeFromJob(employee.id);
+            return;
         }
 
-        // If no match found, stop the function
-        if (!selected) return;
-
-        // Check if the employee was already added
-        let alreadyAdded = false;
-        for (let i = 0; i < addedEmployees.length; i++) {
-            if (addedEmployees[i].employeeid === selected.employeeid) {
-            alreadyAdded = true;
-            break;
-            }
-        }
-        for (let i = 0; i < currentEmployees.length; i++) {
-            if (currentEmployees[i].employeeid === selected.employeeid) {
-            alreadyAdded = true;
-            break;
-            }
-        }
-
-        // If already in list, stop the function
-        if (alreadyAdded) return;
-
-        // Add the employee to state (append to existing list)
-        setAddedEmployees(prev => [...prev, selected]);
+        setAddedEmployees((prev) => {
+            const exists = prev.some((emp) => emp.id === employee.id);
+            if (exists) return prev.filter((emp) => emp.id !== employee.id);
+            return [...prev, employee];
+        });
     }
 
     async function handleRemoveEmployeeFromJob(employeeId) {
@@ -235,104 +216,46 @@ export default function EditJobPage() {
 
                 {error && <p id="error" className="error">{error}</p>}
 
-                {employees.length > 0 && (
+                {employees && (
                 <>
-                    <div className="form-control">
-                    <label htmlFor="addEmployee">Choose:</label>
-                    <select
-                        name="addEmployee"
-                        id="editJob-employeeSelect"
-                        value={selectedEmpId}
-                        onChange={(e) => setSelectedEmpId(e.target.value)}
-                    >
-                        <option value="" disabled hidden>Employees</option>
-                        {employees.map((employee) => (
-                        <option
-                            key={employee.employeeid}
-                            value={employee.employeeid}
-                        >
-                            {employee.name} — #{employee.employeeid} • {employee.role}
-                        </option>
-                        ))}
-                    </select>
-                    </div>
+                    <section className="editJob-employeeSection">
+                        <div className="editJob-employeeHeader">
+                            <p>Select Employees:</p>
+                        </div>
 
-                    <button
-                        type="button"
-                        id="editJob-addEmployeeBtn"
-                        onClick={handleAddEmployee}
-                    >
-                        Add Employee
-                    </button>
-
-                    {/* VISIBLE EMPLOYEE DISPLAY FOR CURRENTEMPLOYEES*/}
-                    <div id="editJob-employeeDisplay">
-                        {(currentEmployees ?? []).map((emp) => (
-                            <div className="employee-pill" key={emp.id}>
-                            <h3>{emp.name}</h3>
-
-                            <div className="editJobForm-employeeData" data-empid={emp.id}>
-                                <div className="emp-div">
-                                <p>ID:</p>
-                                <p>{emp.employeeid}</p>
-                                </div>
-
-                                <div className="emp-div">
-                                <p>Role:</p>
-                                <p>{emp.role}</p>
-                                </div>
-                            </div>
-
-                            {/* Remove button INSIDE the pill, after the data */}
-                            <button
-                                type="button"
-                                className="editJob-removeBtn"
-                                aria-label="Remove from list"
-                                title="Remove"
-                                onClick={() => {handleRemoveEmployeeFromJob(emp.id)}
-                                }
-                            ><FontAwesomeIcon icon={faTrash} />
-                            </button>
-                            </div>
-                        ))}
-
-
-                        {/* VISIBLE EMPLOYEE DISPLAY */}
-                        {(addedEmployees ?? []).map((emp) => (
-                            <div className="employee-pill" key={emp.id}>
-                            <h3>{emp.name}</h3>
-
-                            <div className="editJobForm-employeeData" data-empid={emp.id}>
-                                <div className="emp-div">
-                                <p>ID:</p>
-                                <p>{emp.employeeid}</p>
-                                </div>
-
-                                <div className="emp-div">
-                                <p>Role:</p>
-                                <p>{emp.role}</p>
-                                </div>
-                            </div>
-
-                            {/* Remove button INSIDE the pill, after the data */}
-                            <button
-                                type="button"
-                                className="editJob-removeBtn"
-                                aria-label="Remove from list"
-                                title="Remove"
-                                onClick={() =>
-                                setAddedEmployees((prev) => prev.filter((e) => e.id !== emp.id))
-                                }
-                            ><FontAwesomeIcon icon={faTrash} />
-                            </button>
-                            </div>
-                        ))}
-                    </div>
+                        <div className="tools-section__cards editJob-employeeCards">
+                            {employees.length === 0 ? (
+                                <h6>No employees to display</h6>
+                            ) : (
+                                employees.map((employee) => {
+                                    const name = employee?.name ?? "";
+                                    const firstLetter = name ? name.charAt(0).toUpperCase() : "?";
+                                    const selected = isEmployeeSelected(employee.id);
+                                    return (
+                                        <article key={employee.id ?? employee.employeeid} className="tool-card tool-card--compact editJob-employeeCard">
+                                            <div className="tool-card__avatar">{firstLetter}</div>
+                                            <div className="tool-card__body">
+                                                <h4 className="tool-card__title">{name || "Unnamed employee"}</h4>
+                                                <p className="editJob-employeeMeta">#{employee.employeeid} • {employee.role}</p>
+                                            </div>
+                                            <button
+                                                type="button"
+                                                className={`editJob-employeeSelectBtn ${selected ? "selected" : ""}`}
+                                                onClick={() => toggleEmployee(employee)}
+                                            >
+                                                {selected ? "Selected" : "Select"}
+                                            </button>
+                                        </article>
+                                    );
+                                })
+                            )}
+                        </div>
+                    </section>
 
 
                     {/* HIDDEN INPUTS FOR FORM SUBMIT */}
                     <div id="editJob-hiddenEmployees">
-                        {addedEmployees.map(emp => (
+                        {addedEmployees.map((emp) => (
                             <input
                                 key={`hidden-${emp.employeeid}`}
                                 type="hidden"
