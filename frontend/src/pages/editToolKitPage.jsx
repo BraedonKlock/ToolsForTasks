@@ -1,9 +1,10 @@
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext, useEffect, useCallback } from "react";
 import { AuthContext } from "../context/AuthContext";
 import "../styles/editToolKitPage.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { io } from "socket.io-client"; // importing socket.io client
 
 export default function EditToolKit() {
     const [error, setError] = useState("");
@@ -13,6 +14,31 @@ export default function EditToolKit() {
     const [selectedTools, setSelectedTools] = useState([]);
     const { id } = useParams();
     const navigate = useNavigate();
+    const [socket, setSocket] = useState(null); // holding socket instance
+
+    const loadToolKitTools = useCallback(async () => {
+        try {
+            const res = await fetch(`/api/loggedIn/tool-kits/${encodeURIComponent(id)}/tools`, {
+                headers: { Authorization: `Bearer ${accessToken}` }
+            });
+            if (res.status === 401) {
+                logout();
+                return;
+            }
+            const data = await res.json().catch(() => ({}));
+            if (!res.ok) {
+                throw new Error(data.error || "Could not load the tools assigned to the tool kit, try again later.");
+            }
+            const mappedTools = (data.tools || []).map((tool) => ({
+                id: tool.tool_id,
+                name: tool.tool_name,
+                quantity: tool.quantity,
+            }));
+            setSelectedTools(mappedTools);
+        } catch (err) {
+            setError(err.message);
+        }
+    }, [accessToken, id, logout]);
 
     useEffect(() => {
         (async () => {
@@ -53,38 +79,47 @@ export default function EditToolKit() {
             }
         })();
 
-        (async () => {
-            try {
-                const res = await fetch(`/api/loggedIn/tool-kits/${encodeURIComponent(id)}/tools`, {
-                    headers: { Authorization: `Bearer ${accessToken}` }
-                });
-                if (res.status === 401) {
-                    logout();
-                    return;
-                }
-                const data = await res.json().catch(() => ({}));
-                if (!res.ok) {
-                    throw new Error(data.error || "Could not load the tools assigned to the tool kit, try again later.");
-                }
-                const mappedTools = (data.tools || []).map((tool) => ({
-                    id: tool.tool_id,
-                    name: tool.tool_name,
-                    quantity: tool.quantity,
-                }));
-                setSelectedTools(mappedTools);
-            } catch (err) {
-                setError(err.message);
-            }
-        })();
-    }, [accessToken, logout]);
+        loadToolKitTools();
+    }, [accessToken, logout, loadToolKitTools]);
 
+    // creating socket connection so this page can listen for changes from the server
     useEffect(() => {
-        try {
-            
-        } catch(err) {
-            setError(err.message);
-        }
-    })
+        if (!accessToken) return;
+
+        const socketUrl = `http://${window.location.hostname}:3000`;
+        const s = io(socketUrl, {
+            auth: { token: accessToken },
+        });
+
+        s.on("connect", () => {
+            console.log("Edit tool kit socket connected:", s.id);
+        });
+
+        s.on("connect_error", (err) => {
+            console.error("Edit tool kit socket connect error:", err.message);
+        });
+
+        setSocket(s);
+
+        return () => {
+            s.disconnect();
+        };
+    }, [accessToken]);
+
+    // listening for toolKits:changed so we can reload selected tools
+    useEffect(() => {
+        if (!socket) return;
+
+        const handleToolKitsChanged = () => {
+            loadToolKitTools();
+        };
+
+        socket.on("toolKits:changed", handleToolKitsChanged);
+
+        return () => {
+            socket.off("toolKits:changed", handleToolKitsChanged);
+        };
+    }, [socket, loadToolKitTools]);
 
     function toggleSelected(tool) {
         setSelectedTools((prev) => {
