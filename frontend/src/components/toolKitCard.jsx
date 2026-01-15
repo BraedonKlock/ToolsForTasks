@@ -1,14 +1,16 @@
-import { useEffect, useRef, useState, useContext } from "react";
+import { useEffect, useRef, useState, useContext, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash, faPenToSquare, faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
+import { io } from "socket.io-client"; // importing socket.io client
 
 export default function ToolKitCard({ toolKit, onToolKitDeleteSuccess, setToolKitError }) {
     const [menuOpen, setMenuOpen] = useState(false);
     const menuRef = useRef(null);
     const { accessToken, logout } = useContext(AuthContext);
     const [tools, setTools] = useState([]);
+    const [socket, setSocket] = useState(null); // holding socket instance
 
     useEffect(() => {
         function handleClickOutside(event) {
@@ -26,28 +28,69 @@ export default function ToolKitCard({ toolKit, onToolKitDeleteSuccess, setToolKi
         };
     }, []);
 
-    useEffect(() => {
-        (async() => {
-            try {
-                const res = await fetch(`/api/loggedIn/tool-kits/${toolKit.id}/tools`, {
-                    headers: {Authorization: `Bearer ${accessToken}`}
-                })
+    const loadToolKitTools = useCallback(async () => {
+        try {
+            const res = await fetch(`/api/loggedIn/tool-kits/${toolKit.id}/tools`, {
+                headers: { Authorization: `Bearer ${accessToken}` },
+            });
 
-                if (res.status === 401) {
-                    logout();
-                    return;
-                }
-
-                const data = await res.json().catch(() => {})
-                if (!res.ok) {
-                    throw new Error(data.error || "Could not load tools, try again later.")
-                }
-                setTools(data.tools ?? [])
-            } catch(err) {
-                setToolKitError(err.message);
+            if (res.status === 401) {
+                logout();
+                return;
             }
-        })();
-    }, [toolKit.id, accessToken, logout])
+
+            const data = await res.json().catch(() => ({}));
+            if (!res.ok) {
+                throw new Error(data.error || "Could not load tools, try again later.");
+            }
+            setTools(data.tools ?? []);
+        } catch (err) {
+            setToolKitError(err.message);
+        }
+    }, [toolKit.id, accessToken, logout, setToolKitError]);
+
+    useEffect(() => {
+        loadToolKitTools();
+    }, [loadToolKitTools]);
+
+    // creating socket connection so this card can listen for changes from the server
+    useEffect(() => {
+        if (!accessToken) return;
+
+        const socketUrl = `http://${window.location.hostname}:3000`;
+        const s = io(socketUrl, {
+            auth: { token: accessToken },
+        });
+
+        s.on("connect", () => {
+            console.log("Tool kit card socket connected:", s.id);
+        });
+
+        s.on("connect_error", (err) => {
+            console.error("Tool kit card socket connect error:", err.message);
+        });
+
+        setSocket(s);
+
+        return () => {
+            s.disconnect();
+        };
+    }, [accessToken]);
+
+    // listening for toolKits:changed so we can reload tool kit tools
+    useEffect(() => {
+        if (!socket) return;
+
+        const handleToolKitsChanged = () => {
+            loadToolKitTools();
+        };
+
+        socket.on("toolKits:changed", handleToolKitsChanged);
+
+        return () => {
+            socket.off("toolKits:changed", handleToolKitsChanged);
+        };
+    }, [socket, loadToolKitTools]);
 
     async function handleDelete(e) {
         e.stopPropagation()
