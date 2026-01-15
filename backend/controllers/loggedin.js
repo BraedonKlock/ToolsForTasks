@@ -110,6 +110,52 @@ exports.getEmployeesForJob = async (req,res) => {
 }
 
 /**------------------------------------------------------------------------------------------------ */
+exports.getToolsForJob = async (req, res) => {
+  try {
+    if (!req.user) return res.status(401).json({ error: "unauthenticated" });
+
+    const role = (req.user.role || "").trim().toLowerCase();
+    if (role !== "owner" && role !== "manager") {
+      return res.status(403).json({ error: "Do not have permission." });
+    }
+
+    const { id } = req.params;
+    const { orgId } = req.user;
+    const [rows] = await Jobs.getToolsForJob(id, orgId);
+
+    res.status(200).json({
+      ok: true,
+      tools: rows
+    });
+  } catch (err) {
+    res.status(500).json();
+  }
+}
+
+/**------------------------------------------------------------------------------------------------ */
+exports.getToolKitsForJob = async (req, res) => {
+  try {
+    if (!req.user) return res.status(401).json({ error: "unauthenticated" });
+
+    const role = (req.user.role || "").trim().toLowerCase();
+    if (role !== "owner" && role !== "manager") {
+      return res.status(403).json({ error: "Do not have permission." });
+    }
+
+    const { id } = req.params;
+    const { orgId } = req.user;
+    const [rows] = await Jobs.getToolKitsForJob(id, orgId);
+
+    res.status(200).json({
+      ok: true,
+      toolKits: rows
+    });
+  } catch (err) {
+    res.status(500).json();
+  }
+}
+
+/**------------------------------------------------------------------------------------------------ */
 exports.addJob = async (req,res) => {
   try {
     if (!req.user) return res.status(401).json({error: "unauthenticated"});
@@ -121,7 +167,19 @@ exports.addJob = async (req,res) => {
 
     const orgId = req.user.orgId;
 
-    const { jobType, jobid, title, date, address, phoneNumber, notes, employeeIds = [] } = req.body;
+    const {
+      jobType,
+      jobid,
+      title,
+      date,
+      address,
+      phoneNumber,
+      notes,
+      employeeIds = [],
+      toolKitIds = [],
+      toolIds = [],
+      toolSelections = []
+    } = req.body;
 
     const jobIdInt = Number.parseInt(jobid, 10);
     const cleanDate = (date && String(date).trim() !== "") ? date : null;
@@ -135,11 +193,33 @@ exports.addJob = async (req,res) => {
 
     if (addJobResult.affectedRows !== 1 || !addJobResult.insertId) return res.status(500).json({error: "Failed to add job, please try again later."});
     
-    if (employeeIds.length > 0) {
+    if (Array.isArray(employeeIds) && employeeIds.length > 0) {
       const dbJobId = addJobResult.insertId;
       const assignEmployeesToJobResult =  await Jobs.assignEmployeesToJob(dbJobId, employeeIds);
       
       if (assignEmployeesToJobResult.affectedRows === 0) return res.status(404).json({error: "Failed to assign employees to the job, please try again later."});
+    }
+
+    if (Array.isArray(toolKitIds) && toolKitIds.length > 0) {
+      const dbJobId = addJobResult.insertId;
+      const assignToolKitsToJobResult = await Jobs.assignToolKitsToJob(dbJobId, toolKitIds);
+
+      if (assignToolKitsToJobResult.affectedRows === 0) {
+        return res.status(404).json({ error: "Failed to assign tool kits to the job, please try again later." });
+      }
+    }
+
+    const resolvedToolSelections = Array.isArray(toolSelections) && toolSelections.length > 0
+      ? toolSelections
+      : (Array.isArray(toolIds) ? toolIds.map((id) => ({ tool_id: id, quantity: 1 })) : []);
+
+    if (resolvedToolSelections.length > 0) {
+      const dbJobId = addJobResult.insertId;
+      const assignToolsToJobResult = await Jobs.assignToolsToJob(dbJobId, resolvedToolSelections);
+
+      if (assignToolsToJobResult.affectedRows === 0) {
+        return res.status(404).json({ error: "Failed to assign tools to the job, please try again later." });
+      }
     }
 
     // emit jobs:changed so all sockets in the org room can reload jobs
@@ -172,7 +252,19 @@ exports.updateJob = async (req,res) => {
     const orgId = req.user.orgId;
     const dbJobId = Number(req.params.id);
     
-    const { jobType, jobid, title, date, address, phoneNumber, notes, employeeIds = [] } = req.body;
+    const {
+      jobType,
+      jobid,
+      title,
+      date,
+      address,
+      phoneNumber,
+      notes,
+      employeeIds = [],
+      toolKitIds = [],
+      toolIds = [],
+      toolSelections = []
+    } = req.body;
     
     const cleanDate = (date && String(date).trim() !== "") ? date : null;
     const jobIdInt = Number.parseInt(jobid, 10);
@@ -198,6 +290,36 @@ exports.updateJob = async (req,res) => {
         err.status = 404;
         throw err;
       }
+    }
+
+    if (Array.isArray(toolKitIds) && toolKitIds.length > 0) {
+      await Jobs.deleteToolKitsForJob(dbJobId);
+      const [assignToolKitsToJobResult] = await Jobs.assignToolKitsToJob(dbJobId, toolKitIds);
+
+      if (assignToolKitsToJobResult.affectedRows === 0) {
+        const err = new Error("Could not assign tool kits to the job, please try again later");
+        err.status = 404;
+        throw err;
+      }
+    } else {
+      await Jobs.deleteToolKitsForJob(dbJobId);
+    }
+
+    const resolvedToolSelections = Array.isArray(toolSelections) && toolSelections.length > 0
+      ? toolSelections
+      : (Array.isArray(toolIds) ? toolIds.map((id) => ({ tool_id: id, quantity: 1 })) : []);
+
+    if (resolvedToolSelections.length > 0) {
+      await Jobs.deleteToolsForJob(dbJobId);
+      const [assignToolsToJobResult] = await Jobs.assignToolsToJob(dbJobId, resolvedToolSelections);
+
+      if (assignToolsToJobResult.affectedRows === 0) {
+        const err = new Error("Could not assign tools to the job, please try again later");
+        err.status = 404;
+        throw err;
+      }
+    } else {
+      await Jobs.deleteToolsForJob(dbJobId);
     }
 
     // emit jobs:changed so all sockets in the org room can reload jobs

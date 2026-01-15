@@ -71,6 +71,60 @@ module.exports = class jobs {
         return db.execute(query, flatValues);
     }
 
+    static assignToolsToJob(jobDbId, tools) {
+        const values = tools.map((tool) => [
+            jobDbId,
+            Number(tool.tool_id),
+            Number(tool.quantity ?? 1)
+        ]);
+        const placeholders = values.map(() => '(?, ?, ?)').join(', ');
+        const flatValues = values.flat();
+
+        const query = `INSERT INTO job_tools (job_id, tool_id, quantity) VALUES ${placeholders}`;
+        return db.execute(query, flatValues);
+    }
+
+    static assignToolKitsToJob(jobDbId, toolKitIds) {
+        const values = toolKitIds.map((toolKitId) => [jobDbId, Number(toolKitId)]);
+        const placeholders = values.map(() => '(?, ?)').join(', ');
+        const flatValues = values.flat();
+
+        const query = `INSERT INTO job_toolkits (job_id, toolkit_id) VALUES ${placeholders}`;
+        return db.execute(query, flatValues);
+    }
+
+    static deleteToolsForJob(jobDbId) {
+        return db.execute('DELETE FROM job_tools WHERE job_id = ?', [jobDbId]);
+    }
+
+    static deleteToolKitsForJob(jobDbId) {
+        return db.execute('DELETE FROM job_toolkits WHERE job_id = ?', [jobDbId]);
+    }
+
+    static getToolsForJob(jobDbId, orgId) {
+        const query = `
+        SELECT t.id, t.name, t.quantity AS available_quantity, jt.quantity AS selected_quantity
+        FROM job_tools jt
+        JOIN tools t ON t.id = jt.tool_id
+        JOIN jobs j ON j.id = jt.job_id
+        WHERE jt.job_id = ? AND j.org_id = ?
+        ORDER BY t.name ASC
+        `;
+        return db.execute(query, [jobDbId, orgId]);
+    }
+
+    static getToolKitsForJob(jobDbId, orgId) {
+        const query = `
+        SELECT tk.id, tk.name
+        FROM job_toolkits jt
+        JOIN toolkits tk ON tk.id = jt.toolkit_id
+        JOIN jobs j ON j.id = jt.job_id
+        WHERE jt.job_id = ? AND j.org_id = ?
+        ORDER BY tk.name ASC
+        `;
+        return db.execute(query, [jobDbId, orgId]);
+    }
+
     static deleteJobById(orgId, id) {
         return db.execute('DELETE FROM jobs WHERE org_id = ? AND id = ?', [orgId, id]);
     };

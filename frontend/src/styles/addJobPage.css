@@ -140,11 +140,16 @@
   -webkit-tap-highlight-color: transparent;
 }
 
+.addJob-tabs {
+  margin: 18px 0 8px;
+  justify-content: center;
+}
+
 .addJob-employeeSection {
   margin-top: 16px;
 }
 
-.addJob-employeeHeader {
+.addJob-selectionHeader {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -153,26 +158,26 @@
   color: var(--color-muted);
 }
 
-.addJob-employeeHeader p {
+.addJob-selectionHeader p {
   margin: 0;
 }
 
-.addJob-employeeCards {
+.addJob-selectionCards {
   max-height: 320px;
 }
 
-.addJob-employeeCard {
+.addJob-selectionCard {
   grid-template-columns: auto 1fr auto;
 }
 
-.addJob-employeeMeta {
+.addJob-selectionMeta {
   margin: 0;
   font-size: 0.85rem;
   color: var(--color-muted);
   font-family: var(--font-body);
 }
 
-.addJob-employeeSelectBtn {
+.addJob-selectionSelectBtn {
   border-radius: var(--radius-sm);
   border: 1px solid var(--color-border);
   padding: 6px 16px;
@@ -185,7 +190,7 @@
   -webkit-tap-highlight-color: transparent;
 }
 
-.addJob-employeeSelectBtn.selected {
+.addJob-selectionSelectBtn.selected {
   background-color: var(--color-accent);
   color: #fff;
   border-color: transparent;

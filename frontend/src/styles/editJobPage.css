@@ -139,7 +139,12 @@
   margin-top: 16px;
 }
 
-.editJob-employeeHeader {
+.editJob-tabs {
+  margin: 18px 0 8px;
+  justify-content: center;
+}
+
+.editJob-selectionHeader {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -148,26 +153,26 @@
   color: var(--color-muted);
 }
 
-.editJob-employeeHeader p {
+.editJob-selectionHeader p {
   margin: 0;
 }
 
-.editJob-employeeCards {
+.editJob-selectionCards {
   max-height: 320px;
 }
 
-.editJob-employeeCard {
+.editJob-selectionCard {
   grid-template-columns: auto 1fr auto;
 }
 
-.editJob-employeeMeta {
+.editJob-selectionMeta {
   margin: 0;
   font-size: 0.85rem;
   color: var(--color-muted);
   font-family: var(--font-body);
 }
 
-.editJob-employeeSelectBtn {
+.editJob-selectionSelectBtn {
   border-radius: var(--radius-sm);
   border: 1px solid var(--color-border);
   padding: 6px 16px;
@@ -180,10 +185,21 @@
   -webkit-tap-highlight-color: transparent;
 }
 
-.editJob-employeeSelectBtn.selected {
+.editJob-selectionSelectBtn.selected {
   background-color: var(--color-accent);
   color: #fff;
   border-color: transparent;
+}
+
+.editJob-selectionActions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.editJob-selectionQty {
+  max-width: 100%;
 }
 
 #editJob-employeeDisplay {
