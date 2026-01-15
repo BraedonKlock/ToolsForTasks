@@ -63,71 +63,73 @@ export default function ToolsPage() {
         return () => controller.abort();
     }, [accessToken, logout]);
 
-    useEffect(() => {
-        function handleClickOutside(event) {
-        if (event.target.closest(".threeDotMenu-container")) return;
-        setOpenToolMenuFor(null);
-        }
-
-        document.addEventListener("click", handleClickOutside);
-
-        return () => {
-        document.removeEventListener("click", handleClickOutside);
-        };
-    }, []);
-
+    
     // Load Tools
     useEffect(() => {
         if (!accessToken) return;
-
+        
         const controller = new AbortController();
-
+        
         (async () => {
-        try {
-            setToolsError("");
-
-            const res = await fetch("/api/loggedIn/tools", {
-            headers: { Authorization: `Bearer ${accessToken}` },
-            signal: controller.signal,
-            });
-
-            if (res.status === 401) {
-            setToolsError("Session expired. Please log in again.");
+            try {
+                setToolsError("");
+                
+                const res = await fetch("/api/loggedIn/tools", {
+                    headers: { Authorization: `Bearer ${accessToken}` },
+                    signal: controller.signal,
+                });
+                
+                if (res.status === 401) {
+                    setToolsError("Session expired. Please log in again.");
             logout();
             return;
-            }
-
-            const data = await res.json().catch(() => ({}));
-
-            if (!res.ok) {
+        }
+        
+        const data = await res.json().catch(() => ({}));
+        
+        if (!res.ok) {
             throw new Error(data.error || "Failed to load Tools, try again later");
-            }
-
-            setTools(data.tools ?? []);
+        }
+        
+        setTools(data.tools ?? []);
         } catch (err) {
             if (err.name !== "AbortError") setToolsError(err.message);
         }
-        })();
+    })();
+    
+    return () => controller.abort();
+}, [accessToken, logout]);
 
-        return () => controller.abort();
-    }, [accessToken, logout]);
-
-    function handleToolKitDeleteSuccess(deletedId) {
-        const newToolKits = toolKits.filter((toolKit) => toolKit.id !== deletedId);
-        setToolKits(newToolKits);
+useEffect(() => {
+    function handleClickOutside(event) {
+    if (event.target.closest(".threeDotMenu-container")) return;
+    setOpenToolMenuFor(null);
     }
-    async function handleDeleteTool(toolId) {
+
+    document.addEventListener("click", handleClickOutside);
+
+    return () => {
+    document.removeEventListener("click", handleClickOutside);
+    };
+}, []);
+
+function handleToolKitDeleteSuccess(deletedId) {
+    const newToolKits = toolKits.filter((toolKit) => toolKit.id !== deletedId);
+    setToolKits(newToolKits);
+}
+
+async function handleDeleteTool(toolId) {
     try {
         setToolsError("");
-
+        
         const res = await fetch(`/api/loggedIn/tools/${toolId}`, {
-        method: "DELETE",
-        headers: { Authorization: `Bearer ${accessToken}` },
+            method: "DELETE",
+            headers: { Authorization: `Bearer ${accessToken}` },
         });
-
+        
         if (res.status === 401) {
-        setToolsError("Session expired. Please log in again.");
-        logout();
+            setToolsError("Session expired. Please log in again.");
+            logout();
         return;
         }
 

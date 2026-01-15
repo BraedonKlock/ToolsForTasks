@@ -40,6 +40,7 @@ module.exports = class jobs {
                  JOIN jobs j ON j.id = je.job_id
                  WHERE je.employee_id = ?
                  ORDER BY j.\`date\` ASC`,
+            [loginID]
             );
         }
         
