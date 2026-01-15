@@ -12,7 +12,7 @@ module.exports = class toolKits {
         return db.execute('SELECT * FROM toolkits WHERE org_id = ? AND id = ?', [org_id, toolKitId]);
     }
     static deleteToolKit(org_id, id) {
-        return db.execute('DELETE FROM toolKits WHERE org_id = ? AND id = ?', [org_id, id]);
+        return db.execute('DELETE FROM toolkits WHERE org_id = ? AND id = ?', [org_id, id]);
     }
     static getToolKitTools(toolKitId) {
     return db.execute(

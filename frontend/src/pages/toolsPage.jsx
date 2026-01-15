@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, useCallback } from "react";
 import { AuthContext } from "../context/AuthContext";
+import { io } from "socket.io-client"; // importing socket.io client
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
@@ -15,6 +16,7 @@ export default function ToolsPage() {
     const [toolKits, setToolKits] = useState([]);
     const { accessToken, logout } = useContext(AuthContext);
     const [openToolMenuFor, setOpenToolMenuFor] = useState(null);
+    const [socket, setSocket] = useState(null); // holding socket instance
 
     const [toolKitError, setToolKitError] = useState("");
     const [toolsError, setToolsError] = useState("");
@@ -26,79 +28,126 @@ export default function ToolsPage() {
     const isTools = tabState === "tools";
     const isToolKits = tabState === "toolKits";
 
-    // Load Tool Kits
-    useEffect(() => {
-        if (!accessToken) return;
-
-        const controller = new AbortController();
-
-        (async () => {
+    const loadToolKits = useCallback(async (signal) => {
         try {
             setToolKitError("");
 
             const res = await fetch("/api/loggedIn/tool-kits", {
-            headers: { Authorization: `Bearer ${accessToken}` },
-            signal: controller.signal,
+                headers: { Authorization: `Bearer ${accessToken}` },
+                signal,
             });
 
             // handle auth
             if (res.status === 401) {
-            setToolKitError("Session expired. Please log in again.");
-            logout();
-            return;
+                setToolKitError("Session expired. Please log in again.");
+                logout();
+                return;
             }
 
             const data = await res.json().catch(() => ({}));
 
             if (!res.ok) {
-            throw new Error(data.error || "Failed to load Tool Kits, try again later");
+                throw new Error(data.error || "Failed to load Tool Kits, try again later");
             }
 
             setToolKits(data.toolKits ?? []);
         } catch (err) {
             if (err.name !== "AbortError") setToolKitError(err.message);
         }
-        })();
-
-        return () => controller.abort();
     }, [accessToken, logout]);
 
+    // Load Tool Kits
+    useEffect(() => {
+        if (!accessToken) return;
+
+        const controller = new AbortController();
+        loadToolKits(controller.signal);
+
+        return () => controller.abort();
+    }, [accessToken, loadToolKits]);
+
     
+    const loadTools = useCallback(async (signal) => {
+        try {
+            setToolsError("");
+            
+            const res = await fetch("/api/loggedIn/tools", {
+                headers: { Authorization: `Bearer ${accessToken}` },
+                signal,
+            });
+            
+            if (res.status === 401) {
+                setToolsError("Session expired. Please log in again.");
+                logout();
+                return;
+            }
+            
+            const data = await res.json().catch(() => ({}));
+            
+            if (!res.ok) {
+                throw new Error(data.error || "Failed to load Tools, try again later");
+            }
+            
+            setTools(data.tools ?? []);
+        } catch (err) {
+            if (err.name !== "AbortError") setToolsError(err.message);
+        }
+    }, [accessToken, logout]);
+
     // Load Tools
     useEffect(() => {
         if (!accessToken) return;
         
         const controller = new AbortController();
-        
-        (async () => {
-            try {
-                setToolsError("");
-                
-                const res = await fetch("/api/loggedIn/tools", {
-                    headers: { Authorization: `Bearer ${accessToken}` },
-                    signal: controller.signal,
-                });
-                
-                if (res.status === 401) {
-                    setToolsError("Session expired. Please log in again.");
-            logout();
-            return;
-        }
-        
-        const data = await res.json().catch(() => ({}));
-        
-        if (!res.ok) {
-            throw new Error(data.error || "Failed to load Tools, try again later");
-        }
-        
-        setTools(data.tools ?? []);
-        } catch (err) {
-            if (err.name !== "AbortError") setToolsError(err.message);
-        }
-    })();
+        loadTools(controller.signal);
     
-    return () => controller.abort();
-}, [accessToken, logout]);
+        return () => controller.abort();
+    }, [accessToken, loadTools]);
+
+    // creating socket connection so this page can listen for changes from the server
+    useEffect(() => {
+        if (!accessToken) return;
+
+        const socketUrl = `http://${window.location.hostname}:3000`;
+        const s = io(socketUrl, {
+            auth: { token: accessToken },
+        });
+
+        s.on("connect", () => {
+            console.log("Tools socket connected:", s.id);
+        });
+
+        s.on("connect_error", (err) => {
+            console.error("Tools socket connect error:", err.message);
+        });
+
+        setSocket(s);
+
+        return () => {
+            s.disconnect();
+        };
+    }, [accessToken]);
+
+    // listening for tools:changed and toolKits:changed so we can reload from the database
+    useEffect(() => {
+        if (!socket) return;
+
+        const handleToolsChanged = () => {
+            loadTools();
+        };
+
+        const handleToolKitsChanged = () => {
+            loadToolKits();
+        };
+
+        socket.on("tools:changed", handleToolsChanged);
+        socket.on("toolKits:changed", handleToolKitsChanged);
+
+        return () => {
+            socket.off("tools:changed", handleToolsChanged);
+            socket.off("toolKits:changed", handleToolKitsChanged);
+        };
+    }, [socket, loadTools, loadToolKits]);
 
 useEffect(() => {
     function handleClickOutside(event) {

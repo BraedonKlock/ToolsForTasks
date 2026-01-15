@@ -541,11 +541,6 @@ exports.getAllToolKits = async (req,res) => {
     const [toolKits] = await ToolKits.getAllToolKits(orgId);
     res.status(200).json({ok: true, toolKits})
 
-    const io = req.app.get("io");
-    if (io && orgId) {
-      io.to(`org:${orgId}`).emit("toolKits:changed");
-    }
-
   }catch(err) {
     res.status(500).json({error: "Internal server error"})
   }
@@ -662,11 +657,6 @@ exports.getToolKitTools = async (req, res) => {
     const [rows] = await ToolKits.getToolKitTools(id);
 
     res.status(200).json({ok: true, tools: rows});
-
-    const io = req.app.get("io");
-    if (io && orgId) {
-      io.to(`org:${orgId}`).emit("toolKits:changed");
-    }
 
   } catch(err) {
     res.status(err.status || 500).json({error: err.message || "Internal server error."})
