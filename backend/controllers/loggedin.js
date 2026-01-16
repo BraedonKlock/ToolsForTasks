@@ -486,7 +486,10 @@ exports.addEmployee = async (req, res) => {
     const orgId = req.user.orgId;
     const companyName = req.user.companyName;
 
-    let { email, employeeid, name, password, role, avatar } = req.body;
+    let { email, employeeid, name, password, role } = req.body;
+
+    // Use uploaded file name or default.png
+    const avatar = req.file ? req.file.filename : 'default.png';
 
     const employeeIdInt = Number.parseInt(employeeid, 10);
     if (!Number.isInteger(employeeIdInt)) {
@@ -555,7 +558,10 @@ exports.updateEmployee = async (req,res) => {
     const { orgId } = req.user;
     const { id } = req.params;
 
-    let {employeeid, name, role, email, avatar, password } = req.body;
+    let {employeeid, name, role, email, password, currentAvatar } = req.body;
+
+    // Use new uploaded file if present, otherwise keep existing avatar
+    const avatar = req.file ? req.file.filename : currentAvatar;
 
     const employeeIdInt = Number.parseInt(employeeid, 10);
     if (!Number.isInteger(employeeIdInt)) {
@@ -569,7 +575,7 @@ exports.updateEmployee = async (req,res) => {
     if (typeof password === "string" && password.trim().length > 0) {
       passwordHash = await bcrypt.hash(password.trim(), 12);
     }
-    
+
     const result = await Employees.updateEmployee(orgId, id, name, role, employeeid, email, passwordHash, avatar);
 
     if(result.affectedRows !== 1) {

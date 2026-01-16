@@ -155,8 +155,11 @@
 .employee-card:nth-child(6) { animation-delay: 0.3s; }
 
 .employee-image {
-  width: clamp(56px, 18vw, 96px);
+  width: 64px;
+  height: 64px;
   border-radius: var(--md-radius-full);
+  object-fit: cover;
+  flex-shrink: 0;
 }
 
 .employee-text {

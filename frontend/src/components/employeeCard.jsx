@@ -12,6 +12,21 @@ export default function employeeCard({employee, onDeleteSuccess}) {
     const menuRef = useRef(null);
     const { accessToken } = useContext(AuthContext);
 
+    // Handle both old (number) and new (filename) avatar formats
+    const getAvatarSrc = () => {
+        const avatar = employee.avatar;
+        // If avatar is a number or numeric string, use old format
+        if (!isNaN(avatar) && avatar !== null && avatar !== '') {
+            return `/images/user${avatar}.png`;
+        }
+        // If avatar is a filename, use uploads path
+        if (avatar && typeof avatar === 'string') {
+            return `http://${window.location.hostname}:3000/uploads/employees/${avatar}`;
+        }
+        // Default fallback
+        return `/images/user0.png`;
+    };
+
     useEffect(() => {
         function handleClickOutside(event) {
             if(menuRef.current && !menuRef.current.contains(event.target)) {
@@ -51,7 +66,8 @@ export default function employeeCard({employee, onDeleteSuccess}) {
             <div className="employee-card" data-employee-id={employee.id}>
                 <img
                     className="employee-image"
-                    src={`/images/user${employee.avatar}.png`}
+                    src={getAvatarSrc()}
+                    alt={`${employee.name}'s avatar`}
                 />
                 <div className="employee-text">
                     <h6>ID: {employee.employeeid}</h6>

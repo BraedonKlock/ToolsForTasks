@@ -1,4 +1,4 @@
-describe("Jobs page (mobile)", () => {
+describe("Manage Employees page (mobile)", () => {
     beforeEach(() => {
         cy.viewport("iphone-x");
         cy.visit("/login");
@@ -15,7 +15,10 @@ describe("Jobs page (mobile)", () => {
     it("adds an employee", () => {
         cy.get('a[href="/loggedIn/add-employee"]').should("be.visible").click();
         cy.url().should("include", "/loggedIn/add-employee");
-        cy.get("#avatarPicker").select("1");
+
+        // Avatar upload is optional - default image will be used
+        cy.get(".avatar-upload-container").should("be.visible");
+
         cy.get("#employeeid").type("1515");
         cy.get("#name").type("Test");
         cy.get("#addEmployeePage-roleSelect").select("manager");
@@ -31,7 +34,7 @@ describe("Jobs page (mobile)", () => {
     it("fails to add employee when duplicate email exists and displays the correct error message ", () => {
         cy.get('a[href="/loggedIn/add-employee"]').should("be.visible").click();
         cy.url().should("include", "/loggedIn/add-employee");
-        cy.get("#avatarPicker").select("1");
+
         cy.get("#employeeid").type("1515");
         cy.get("#name").type("Test");
         cy.get("#addEmployeePage-roleSelect").select("manager");
@@ -58,6 +61,8 @@ describe("Jobs page (mobile)", () => {
 
         cy.url().should("include", "/loggedIn/edit-employee/");
 
+        // Verify avatar upload container is visible
+        cy.get(".avatar-upload-container").should("be.visible");
 
         cy.get("#employeeid").clear().type("2");
 
@@ -81,6 +86,8 @@ describe("Jobs page (mobile)", () => {
 
         cy.url().should("include", "/loggedIn/edit-employee/");
 
+        // Verify avatar upload container is visible
+        cy.get(".avatar-upload-container").should("be.visible");
 
         cy.get("#name").clear().type("Test Edited");
 

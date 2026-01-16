@@ -1,22 +1,59 @@
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext, useEffect, useRef } from "react";
 import { AuthContext } from "../context/AuthContext";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { faArrowLeft, faCamera } from "@fortawesome/free-solid-svg-icons";
 
 import "../styles/editEmployeePage.css";
 
 export default function EditEmployee() {
     const [error, setError] = useState("");
     const { accessToken, logout } = useContext(AuthContext);
-    const [avatarNum, setAvatarNum] = useState(0);
+    const [avatarPreview, setAvatarPreview] = useState(null);
+    const [avatarFile, setAvatarFile] = useState(null);
+    const [currentAvatar, setCurrentAvatar] = useState(null);
+    const fileInputRef = useRef(null);
     const navigate = useNavigate();
     const { id } = useParams();
     const [employee, setEmployee] = useState(null);
 
-    const avatarFile = `user${avatarNum}.png`;
-    const avatarSrc = `/images/${avatarFile}`;
+    // Get avatar source based on current or new avatar
+    const getAvatarSrc = () => {
+        if (avatarPreview) return avatarPreview;
+        if (!currentAvatar) return "/images/user0.png";
+        // If it's a number, use old format
+        if (!isNaN(currentAvatar) && currentAvatar !== '') {
+            return `/images/user${currentAvatar}.png`;
+        }
+        // If it's a filename, use uploads path
+        return `http://${window.location.hostname}:3000/uploads/employees/${currentAvatar}`;
+    };
+
+    function handleFileChange(e) {
+        const file = e.target.files[0];
+        if (file) {
+            if (!file.type.startsWith('image/')) {
+                setError("Please select an image file");
+                return;
+            }
+            if (file.size > 5 * 1024 * 1024) {
+                setError("Image must be less than 5MB");
+                return;
+            }
+            setError("");
+            setAvatarFile(file);
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setAvatarPreview(reader.result);
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+
+    function handleAvatarClick() {
+        fileInputRef.current?.click();
+    }
 
     useEffect(() => {
         (async () => {
@@ -35,8 +72,7 @@ export default function EditEmployee() {
                 if(res.ok) {
                     const data = await res.json();
                     setEmployee(data.employee);
-                    const n = Number(data.employee.avatar);
-                    setAvatarNum(Number.isFinite(n) ? n : 0);
+                    setCurrentAvatar(data.employee.avatar);
                 }
             } catch(err) {
                 setError(err.message)
@@ -45,24 +81,30 @@ export default function EditEmployee() {
     }, [accessToken, logout, id]);
 
     async function onSubmit(e) {
-        const form = new FormData(e.currentTarget);
-        const payload = Object.fromEntries(form.entries());
+        e.preventDefault();
 
-        // If password is blank, don't send it at all
-        if (!payload.password || payload.password.trim().length === 0) {
-            delete payload.password;
+        const formData = new FormData(e.currentTarget);
+
+        // Remove any existing avatar field and add our controlled values
+        formData.delete('avatar');
+        formData.append('currentAvatar', currentAvatar || '');
+        if (avatarFile) {
+            formData.append('avatar', avatarFile);
+        }
+
+        // Remove password if blank
+        const password = formData.get('password');
+        if (!password || password.trim().length === 0) {
+            formData.delete('password');
         }
 
         try {
-            e.preventDefault();
-
             const res = await fetch(`/api/loggedIn/employees/${encodeURIComponent(id)}`, {
                 method: "PATCH",
                 headers: {
-                    "Content-Type": "application/json",
                     Authorization: `Bearer ${accessToken}`
                 },
-                body: JSON.stringify(payload)
+                body: formData
             });
 
             if (res.status === 401) {
@@ -95,37 +137,30 @@ export default function EditEmployee() {
             {error && <p id="error" className="error">{error}</p>}
 
             <form className="forms" onSubmit={onSubmit}>
-            {/* AVATAR PICKER */}
+            {/* AVATAR UPLOAD */}
             <div className="form-control" id="avatarDiv">
+                <div className="avatar-upload-container" onClick={handleAvatarClick}>
+                    <img
+                        src={getAvatarSrc()}
+                        alt="Employee avatar"
+                        className="avatar-preview"
+                    />
+                    <div className="avatar-upload-overlay">
+                        <FontAwesomeIcon icon={faCamera} className="camera-icon" />
+                    </div>
+                </div>
 
-                {/* preview */}
-                <img
-                    src={avatarSrc}
-                    alt={`Avatar ${avatarNum}`}
-                    style={{
-                    width: "64px",
-                    height: "64px",
-                    borderRadius: "50%",
-                    objectFit: "cover",
-                    border: "1px solid #ccc",
-                    }}
+                <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/*"
+                    onChange={handleFileChange}
+                    className="avatar-file-input"
                 />
 
-                {/* select number */}
-                <select
-                    id="avatarPicker"
-                    value={avatarNum}
-                    onChange={(e) => setAvatarNum(Number(e.target.value))}
-                >
-                    {Array.from({ length: 10 }, (_, i) => (
-                    <option key={i} value={i}>
-                        {`Avatar ${i}`}
-                    </option>
-                    ))}
-                </select>
-
-                {/* This is what actually gets submitted */}
-                <input type="hidden" name="avatar" value={avatarNum} />
+                <span className="avatar-upload-hint">
+                    {avatarFile ? avatarFile.name : "Click to change photo"}
+                </span>
             </div>
 
             <div className="form-control">
