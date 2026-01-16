@@ -16,6 +16,7 @@ export default function AddJob() {
     const [addedEmployees, setAddedEmployees] = useState([]);
     const [selectedToolKits, setSelectedToolKits] = useState([]);
     const [selectedTools, setSelectedTools] = useState([]);
+    const excludedToolIds = useRef(new Set());
     const [tabState, setTabState] = useState("employees");
     const toolKitToolsCache = useRef({});
     const navigate = useNavigate();
@@ -123,6 +124,13 @@ export default function AddJob() {
         });
 
         if (exists) {
+            // Clear excluded tools for this toolkit so re-selecting brings them back
+            const kitTools = toolKitToolsCache.current[toolKit.id] ?? [];
+            kitTools.forEach((kitTool) => {
+                const toolId = kitTool.tool_id ?? kitTool.id;
+                excludedToolIds.current.delete(toolId);
+            });
+
             setSelectedTools((prev) =>
                 prev.reduce((acc, tool) => {
                     if (!tool.toolKitIds?.includes(toolKit.id)) {
@@ -162,30 +170,36 @@ export default function AddJob() {
 
                 const kitTools = toolKitToolsCache.current[toolKit.id] ?? [];
                 setSelectedTools((prev) => {
-                    const next = [...prev];
-                    kitTools.forEach((kitTool) => {
-                        const toolId = kitTool.tool_id ?? kitTool.id;
-                        if (!toolId) return;
-                    const existing = next.find((tool) => tool.id === toolId);
-                    if (existing) {
-                        const toolKitIds = existing.toolKitIds ?? [];
-                        if (!toolKitIds.includes(toolKit.id)) {
-                            existing.toolKitIds = [...toolKitIds, toolKit.id];
-                        }
-                        if (!existing.manual && existing.selectedQuantity == null) {
-                            existing.selectedQuantity = kitTool.quantity ?? 1;
-                        }
-                    } else {
-                        next.push({
-                            id: toolId,
+                    const updatedTools = prev.map((tool) => {
+                        const kitTool = kitTools.find((kt) => (kt.tool_id ?? kt.id) === tool.id);
+                        if (!kitTool) return tool;
+
+                        const toolKitIds = tool.toolKitIds ?? [];
+                        if (toolKitIds.includes(toolKit.id)) return tool;
+
+                        const kitQty = kitTool.quantity ?? 1;
+                        return {
+                            ...tool,
+                            toolKitIds: [...toolKitIds, toolKit.id],
+                            selectedQuantity: tool.manual ? tool.selectedQuantity : kitQty
+                        };
+                    });
+
+                    const newTools = kitTools
+                        .filter((kitTool) => {
+                            const toolId = kitTool.tool_id ?? kitTool.id;
+                            return !prev.some((t) => t.id === toolId) && !excludedToolIds.current.has(toolId);
+                        })
+                        .map((kitTool) => ({
+                            id: kitTool.tool_id ?? kitTool.id,
                             name: kitTool.tool_name ?? kitTool.name ?? "Unnamed tool",
                             selectedQuantity: kitTool.quantity ?? 1,
+                            quantityLocked: true,
                             manual: false,
                             toolKitIds: [toolKit.id],
-                        });
-                    }
-                    });
-                    return next;
+                        }));
+
+                    return [...updatedTools, ...newTools];
                 });
             } catch (err) {
                 setError(err.message);
@@ -201,26 +215,18 @@ export default function AddJob() {
         setSelectedTools((prev) => {
             const exists = prev.some((t) => t.id === tool.id);
             if (!exists) {
-                return [...prev, { ...tool, manual: true, toolKitIds: [], selectedQuantity: 1 }];
+                excludedToolIds.current.delete(tool.id);
+                return [...prev, {
+                    ...tool,
+                    manual: true,
+                    toolKitIds: [],
+                    selectedQuantity: 1,
+                    quantityLocked: true
+                }];
             }
 
-            return prev.reduce((acc, t) => {
-                if (t.id !== tool.id) {
-                    acc.push(t);
-                    return acc;
-                }
-
-                const toolKitIds = t.toolKitIds ?? [];
-                if (t.manual) {
-                    if (toolKitIds.length > 0) {
-                        acc.push({ ...t, manual: false });
-                    }
-                    return acc;
-                }
-
-                acc.push({ ...t, manual: true });
-                return acc;
-            }, []);
+            excludedToolIds.current.add(tool.id);
+            return prev.filter((t) => t.id !== tool.id);
         });
     }
 
@@ -232,7 +238,7 @@ export default function AddJob() {
         const n = Math.max(1, Math.min(10, Number(qty) || 1));
         setSelectedTools((prev) =>
             prev.map((tool) =>
-                tool.id === toolId ? { ...tool, selectedQuantity: n } : tool
+                tool.id === toolId ? { ...tool, selectedQuantity: n, quantityLocked: true, manual: true } : tool
             )
         );
     }

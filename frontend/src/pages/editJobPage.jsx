@@ -17,6 +17,8 @@ export default function EditJobPage() {
     const [tools, setTools] = useState([]);
     const [selectedToolKits, setSelectedToolKits] = useState([]);
     const [selectedTools, setSelectedTools] = useState([]);
+    const excludedToolIds = useRef(new Set());
+    const initialToolKitIds = useRef(new Set());
     const [tabState, setTabState] = useState("employees");
     const toolKitToolsCache = useRef({});
     const [job, setJob] = useState(null);
@@ -117,7 +119,9 @@ export default function EditJobPage() {
                     throw new Error(data.error || "Failed to load job tool kits.");
                 }
 
-                setSelectedToolKits(data.toolKits ?? []);
+                const loadedToolKits = data.toolKits ?? [];
+                initialToolKitIds.current = new Set(loadedToolKits.map((tk) => tk.id));
+                setSelectedToolKits(loadedToolKits);
             } catch (err) {
                 setError(err.message);
                 setSelectedToolKits([]);
@@ -240,6 +244,15 @@ export default function EditJobPage() {
         });
 
         if (exists) {
+            // Clear excluded tools for this toolkit so re-selecting brings them back
+            const kitTools = toolKitToolsCache.current[toolKit.id] ?? [];
+            kitTools.forEach((kitTool) => {
+                const toolId = kitTool.tool_id ?? kitTool.id;
+                excludedToolIds.current.delete(toolId);
+            });
+            // Remove from initial set so re-selecting will add tools
+            initialToolKitIds.current.delete(toolKit.id);
+
             setSelectedTools((prev) =>
                 prev.reduce((acc, tool) => {
                     if (!tool.toolKitIds?.includes(toolKit.id)) {
@@ -268,6 +281,7 @@ export default function EditJobPage() {
         setSelectedTools((prev) => {
             const exists = prev.some((t) => t.id === tool.id);
             if (!exists) {
+                excludedToolIds.current.delete(tool.id);
                 return [...prev, {
                     ...tool,
                     manual: true,
@@ -277,23 +291,8 @@ export default function EditJobPage() {
                 }];
             }
 
-            return prev.reduce((acc, t) => {
-                if (t.id !== tool.id) {
-                    acc.push(t);
-                    return acc;
-                }
-
-                const toolKitIds = t.toolKitIds ?? [];
-                if (t.manual) {
-                    if (toolKitIds.length > 0) {
-                        acc.push({ ...t, manual: false });
-                    }
-                    return acc;
-                }
-
-                acc.push({ ...t, manual: true });
-                return acc;
-            }, []);
+            excludedToolIds.current.add(tool.id);
+            return prev.filter((t) => t.id !== tool.id);
         });
     }
 
@@ -305,7 +304,7 @@ export default function EditJobPage() {
         const n = Math.max(1, Math.min(10, Number(qty) || 1));
         setSelectedTools((prev) =>
             prev.map((tool) =>
-                tool.id === toolId ? { ...tool, selectedQuantity: n, quantityLocked: true } : tool
+                tool.id === toolId ? { ...tool, selectedQuantity: n, quantityLocked: true, manual: true } : tool
             )
         );
     }
@@ -332,28 +331,36 @@ export default function EditJobPage() {
 
             const kitTools = toolKitToolsCache.current[toolKit.id] ?? [];
             setSelectedTools((prev) => {
-                const next = [...prev];
-                kitTools.forEach((kitTool) => {
-                    const toolId = kitTool.tool_id ?? kitTool.id;
-                    if (!toolId) return;
-                    const existing = next.find((tool) => tool.id === toolId);
-                    if (existing) {
-                        const toolKitIds = existing.toolKitIds ?? [];
-                        if (!toolKitIds.includes(toolKit.id)) {
-                            existing.toolKitIds = [...toolKitIds, toolKit.id];
-                        }
-                    } else {
-                        next.push({
-                            id: toolId,
-                            name: kitTool.tool_name ?? kitTool.name ?? "Unnamed tool",
-                            selectedQuantity: 1,
-                            quantityLocked: true,
-                            manual: false,
-                            toolKitIds: [toolKit.id],
-                        });
-                    }
+                const updatedTools = prev.map((tool) => {
+                    const kitTool = kitTools.find((kt) => (kt.tool_id ?? kt.id) === tool.id);
+                    if (!kitTool) return tool;
+
+                    const toolKitIds = tool.toolKitIds ?? [];
+                    if (toolKitIds.includes(toolKit.id)) return tool;
+
+                    const kitQty = kitTool.quantity ?? 1;
+                    return {
+                        ...tool,
+                        toolKitIds: [...toolKitIds, toolKit.id],
+                        selectedQuantity: tool.manual ? tool.selectedQuantity : kitQty
+                    };
                 });
-                return next;
+
+                const newTools = kitTools
+                    .filter((kitTool) => {
+                        const toolId = kitTool.tool_id ?? kitTool.id;
+                        return !prev.some((t) => t.id === toolId) && !excludedToolIds.current.has(toolId);
+                    })
+                    .map((kitTool) => ({
+                        id: kitTool.tool_id ?? kitTool.id,
+                        name: kitTool.tool_name ?? kitTool.name ?? "Unnamed tool",
+                        selectedQuantity: kitTool.quantity ?? 1,
+                        quantityLocked: true,
+                        manual: false,
+                        toolKitIds: [toolKit.id],
+                    }));
+
+                return [...updatedTools, ...newTools];
             });
         } catch (err) {
             setError(err.message);
@@ -363,6 +370,8 @@ export default function EditJobPage() {
     useEffect(() => {
         if (selectedToolKits.length === 0) return;
         selectedToolKits.forEach((toolKit) => {
+            // Skip toolkits that were loaded with the job - tools already loaded from job_tools
+            if (initialToolKitIds.current.has(toolKit.id)) return;
             addToolsFromToolKit(toolKit);
         });
     }, [selectedToolKits]);
