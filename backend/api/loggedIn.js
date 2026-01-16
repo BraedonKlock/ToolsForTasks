@@ -15,6 +15,7 @@ router.get("/employees", loggedinController.getAllEmployees);
 router.get("/jobs/:id", loggedinController.getJob);
 router.get("/jobs/:id/employees", loggedinController.getEmployeesForJob)
 router.get("/jobs/:id/tools", loggedinController.getToolsForJob);
+router.patch("/jobs/:id/tools/:toolId", loggedinController.updateJobToolSelection);
 router.get("/jobs/:id/tool-kits", loggedinController.getToolKitsForJob);
 router.post("/jobs", loggedinController.addJob);
 router.delete("/jobs/:jobId/employees/:employeeId", loggedinController.deleteEmployeeFromJob);

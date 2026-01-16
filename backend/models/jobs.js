@@ -75,12 +75,13 @@ module.exports = class jobs {
         const values = tools.map((tool) => [
             jobDbId,
             Number(tool.tool_id),
-            Number(tool.quantity ?? 1)
+            Number(tool.quantity ?? 1),
+            0
         ]);
-        const placeholders = values.map(() => '(?, ?, ?)').join(', ');
+        const placeholders = values.map(() => '(?, ?, ?, ?)').join(', ');
         const flatValues = values.flat();
 
-        const query = `INSERT INTO job_tools (job_id, tool_id, quantity) VALUES ${placeholders}`;
+        const query = `INSERT INTO job_tools (job_id, tool_id, quantity, is_selected) VALUES ${placeholders}`;
         return db.execute(query, flatValues);
     }
 
@@ -103,7 +104,7 @@ module.exports = class jobs {
 
     static getToolsForJob(jobDbId, orgId) {
         const query = `
-        SELECT t.id, t.name, t.quantity AS available_quantity, jt.quantity AS selected_quantity
+        SELECT t.id, t.name, t.quantity AS available_quantity, jt.quantity AS selected_quantity, jt.is_selected
         FROM job_tools jt
         JOIN tools t ON t.id = jt.tool_id
         JOIN jobs j ON j.id = jt.job_id
@@ -111,6 +112,16 @@ module.exports = class jobs {
         ORDER BY t.name ASC
         `;
         return db.execute(query, [jobDbId, orgId]);
+    }
+
+    static updateJobToolSelection(jobDbId, toolId, isSelected, orgId) {
+        const query = `
+        UPDATE job_tools jt
+        JOIN jobs j ON j.id = jt.job_id
+        SET jt.is_selected = ?
+        WHERE jt.job_id = ? AND jt.tool_id = ? AND j.org_id = ?
+        `;
+        return db.execute(query, [isSelected, jobDbId, toolId, orgId]);
     }
 
     static getToolKitsForJob(jobDbId, orgId) {

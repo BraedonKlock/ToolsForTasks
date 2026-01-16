@@ -133,6 +133,52 @@ exports.getToolsForJob = async (req, res) => {
 }
 
 /**------------------------------------------------------------------------------------------------ */
+exports.updateJobToolSelection = async (req, res) => {
+  try {
+    if (!req.user) return res.status(401).json({ error: "unauthenticated" });
+
+    const role = (req.user.role || "").trim().toLowerCase();
+    if (role !== "owner" && role !== "manager") {
+      return res.status(403).json({ error: "Do not have permission." });
+    }
+
+    const jobId = Number(req.params.id);
+    const toolId = Number(req.params.toolId);
+    const orgId = req.user.orgId;
+
+    const { isSelected } = req.body;
+    const normalized =
+      isSelected === true || isSelected === 1 || isSelected === "1"
+        ? 1
+        : isSelected === false || isSelected === 0 || isSelected === "0"
+          ? 0
+          : null;
+
+    if (!Number.isInteger(jobId) || !Number.isInteger(toolId) || normalized === null) {
+      return res.status(400).json({ error: "Invalid job, tool, or selection value." });
+    }
+
+    const [result] = await Jobs.updateJobToolSelection(jobId, toolId, normalized, orgId);
+    if (!result || result.affectedRows === 0) {
+      return res.status(404).json({ error: "Could not update tool selection for this job." });
+    }
+
+    const io = req.app.get("io");
+    if (io && orgId) {
+      io.to(`org:${orgId}`).emit("jobTools:changed", {
+        jobId,
+        toolId,
+        isSelected: normalized
+      });
+    }
+
+    res.status(200).json({ ok: true });
+  } catch (err) {
+    res.status(500).json();
+  }
+}
+
+/**------------------------------------------------------------------------------------------------ */
 exports.getToolKitsForJob = async (req, res) => {
   try {
     if (!req.user) return res.status(401).json({ error: "unauthenticated" });

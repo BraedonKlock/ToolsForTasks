@@ -1,6 +1,7 @@
 import { Link, useParams } from "react-router-dom";
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState, useContext, useCallback } from "react";
 import { AuthContext } from "../context/AuthContext";
+import { io } from "socket.io-client";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import "../styles/jobDetailsPage.css";
@@ -11,40 +12,38 @@ export default function JobDetailsPage() {
     const [job, setJob] = useState(null);
     const [tools, setTools] = useState([]);
     const [selectedToolIds, setSelectedToolIds] = useState([]);
+    const [socket, setSocket] = useState(null);
     const { id } = useParams();
 
 
-    useEffect(() => {
-    (async () => {
+    const loadJobDetails = useCallback(async (signal) => {
         try {
             const res = await fetch(`/api/loggedIn/jobs/${encodeURIComponent(id)}`, {
-            headers: { Authorization: `Bearer ${accessToken}` },
-        });
+                headers: { Authorization: `Bearer ${accessToken}` },
+                signal,
+            });
 
-        if (res.status === 401) {
-            logout();
-            return;
-        }
+            if (res.status === 401) {
+                logout();
+                return;
+            }
 
-        if (!res.ok) {
-            throw new Error("Failed to fetch job details, try again later.");
-        }
+            if (!res.ok) {
+                throw new Error("Failed to fetch job details, try again later.");
+            }
 
-        if (res.ok) {
             const data = await res.json();
             setJob(data.job);
-        }
         } catch (err) {
-        setError(err.message);
+            if (err.name !== "AbortError") setError(err.message);
         }
-    })();
     }, [accessToken, id, logout]);
 
-    useEffect(() => {
-    (async () => {
+    const loadJobTools = useCallback(async (signal) => {
         try {
             const res = await fetch(`/api/loggedIn/jobs/${encodeURIComponent(id)}/tools`, {
                 headers: { Authorization: `Bearer ${accessToken}` },
+                signal,
             });
 
             if (res.status === 401) {
@@ -57,18 +56,101 @@ export default function JobDetailsPage() {
             }
 
             const data = await res.json();
-            setTools(data.tools ?? []);
+            const loadedTools = data.tools ?? [];
+            setTools(loadedTools);
+            setSelectedToolIds(
+                loadedTools
+                    .filter((tool) => Number(tool.is_selected) === 1)
+                    .map((tool) => tool.id)
+            );
         } catch (err) {
-            setError(err.message);
-            setTools([]);
+            if (err.name !== "AbortError") {
+                setError(err.message);
+                setTools([]);
+            }
         }
-    })();
     }, [accessToken, id, logout]);
 
-    function toggleToolSelection(toolId) {
+    useEffect(() => {
+        const controller = new AbortController();
+        loadJobDetails(controller.signal);
+        return () => controller.abort();
+    }, [loadJobDetails]);
+
+    useEffect(() => {
+        const controller = new AbortController();
+        loadJobTools(controller.signal);
+        return () => controller.abort();
+    }, [loadJobTools]);
+
+    useEffect(() => {
+        if (!accessToken) return;
+
+        const socketUrl = `http://${window.location.hostname}:3000`;
+        const s = io(socketUrl, {
+            auth: { token: accessToken },
+        });
+
+        s.on("connect", () => {
+            console.log("Job details socket connected:", s.id);
+        });
+
+        s.on("connect_error", (err) => {
+            console.error("Job details socket connect error:", err.message);
+        });
+
+        setSocket(s);
+
+        return () => {
+            s.disconnect();
+        };
+    }, [accessToken]);
+
+    useEffect(() => {
+        if (!socket) return;
+
+        const handleJobToolsChanged = (payload) => {
+            if (!payload || Number(payload.jobId) !== Number(id)) return;
+            loadJobTools();
+        };
+
+        socket.on("jobTools:changed", handleJobToolsChanged);
+
+        return () => {
+            socket.off("jobTools:changed", handleJobToolsChanged);
+        };
+    }, [socket, loadJobTools, id]);
+
+    async function toggleToolSelection(toolId) {
+        const shouldSelect = !selectedToolIds.includes(toolId);
         setSelectedToolIds((prev) =>
-            prev.includes(toolId) ? prev.filter((id) => id !== toolId) : [...prev, toolId]
+            shouldSelect ? [...prev, toolId] : prev.filter((id) => id !== toolId)
         );
+
+        try {
+            const res = await fetch(`/api/loggedIn/jobs/${encodeURIComponent(id)}/tools/${toolId}`, {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${accessToken}`
+                },
+                body: JSON.stringify({ isSelected: shouldSelect ? 1 : 0 })
+            });
+
+            if (res.status === 401) {
+                logout();
+                return;
+            }
+
+            if (!res.ok) {
+                throw new Error("Failed to update tool selection, try again later.");
+            }
+        } catch (err) {
+            setError(err.message);
+            setSelectedToolIds((prev) =>
+                shouldSelect ? prev.filter((id) => id !== toolId) : [...prev, toolId]
+            );
+        }
     }
 
 
