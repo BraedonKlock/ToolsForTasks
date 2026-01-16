@@ -170,7 +170,13 @@ export default function JobDetailsPage() {
                 {job && (
                     <>
                     <article className="jobDetails-subContainer">
-                        <div className="jobDetails-avatar">{job.jobid}</div>
+                        <div className={`jobDetails-avatar ${job.image ? 'has-image' : ''}`}>
+                            {job.image ? (
+                                <img src={`/uploads/jobs/${job.image}`} alt={job.title || 'Job'} className="jobDetails-avatar-image" />
+                            ) : (
+                                job.jobid
+                            )}
+                        </div>
                         <div className="jobDetails-text">
                         <h6>{job.title}</h6>
                         <h6>{job.date}</h6>

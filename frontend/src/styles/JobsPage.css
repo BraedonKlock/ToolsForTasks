@@ -137,6 +137,17 @@
   background: var(--md-primary-container);
   color: var(--md-on-primary-container);
   flex-shrink: 0;
+  overflow: hidden;
+}
+
+.job-avatar.has-image {
+  background: transparent;
+}
+
+.job-avatar-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .job-text {

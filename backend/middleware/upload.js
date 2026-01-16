@@ -36,6 +36,28 @@ const uploadEmployeeImage = multer({
     fileFilter: imageFilter
 });
 
+// Configure storage for job images
+const jobStorage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, path.join(__dirname, '../uploads/jobs'));
+    },
+    filename: (req, file, cb) => {
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+        const ext = path.extname(file.originalname);
+        cb(null, `job-${uniqueSuffix}${ext}`);
+    }
+});
+
+// Multer instance for job uploads
+const uploadJobImage = multer({
+    storage: jobStorage,
+    limits: {
+        fileSize: 5 * 1024 * 1024 // 5MB limit
+    },
+    fileFilter: imageFilter
+});
+
 module.exports = {
-    uploadEmployeeImage
+    uploadEmployeeImage,
+    uploadJobImage
 };

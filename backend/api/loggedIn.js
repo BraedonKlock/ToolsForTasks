@@ -1,7 +1,7 @@
 const path = require('path'); // importing path for linux OS path compatability
 const express = require('express'); // importing express
 const loggedinController = require('../controllers/loggedin');
-const { uploadEmployeeImage } = require('../middleware/upload');
+const { uploadEmployeeImage, uploadJobImage } = require('../middleware/upload');
 
 /**Creating a mini express router
  * I'm doing this because i dont want to spin up another express() object
@@ -18,9 +18,9 @@ router.get("/jobs/:id/employees", loggedinController.getEmployeesForJob)
 router.get("/jobs/:id/tools", loggedinController.getToolsForJob);
 router.patch("/jobs/:id/tools/:toolId", loggedinController.updateJobToolSelection);
 router.get("/jobs/:id/tool-kits", loggedinController.getToolKitsForJob);
-router.post("/jobs", loggedinController.addJob);
+router.post("/jobs", uploadJobImage.single('image'), loggedinController.addJob);
 router.delete("/jobs/:jobId/employees/:employeeId", loggedinController.deleteEmployeeFromJob);
-router.patch("/jobs/:id", loggedinController.updateJob);
+router.patch("/jobs/:id", uploadJobImage.single('image'), loggedinController.updateJob);
 router.delete("/employees/:id", loggedinController.deleteEmployeeFromOrg);
 router.post("/employees", uploadEmployeeImage.single('avatar'), loggedinController.addEmployee);
 router.get("/employees/:id", loggedinController.getEmployee);

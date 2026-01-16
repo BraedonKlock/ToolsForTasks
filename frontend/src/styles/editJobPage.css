@@ -99,6 +99,98 @@
   font-weight: 500;
 }
 
+/* Job Image Upload */
+#editJob-imageDiv {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+  padding: 16px 0;
+}
+
+.editJob-page .job-image-upload-container {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  border-radius: var(--md-radius-lg);
+  cursor: pointer;
+  overflow: hidden;
+  box-shadow: var(--md-elevation-2);
+  transition: all var(--md-duration-short) var(--md-motion-standard);
+  background: var(--md-surface-container-low);
+  border: 2px dashed var(--md-outline-variant);
+}
+
+.editJob-page .job-image-upload-container:hover {
+  box-shadow: var(--md-elevation-3);
+  transform: scale(1.02);
+  border-color: var(--md-primary);
+}
+
+.editJob-page .job-image-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: var(--md-on-surface-variant);
+}
+
+.editJob-page .job-image-placeholder .camera-icon {
+  font-size: 1.5rem;
+}
+
+.editJob-page .job-image-placeholder span {
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.editJob-page .job-image-preview {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.editJob-page .job-image-upload-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 32px;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity var(--md-duration-short) var(--md-motion-standard);
+}
+
+.editJob-page .job-image-upload-container:hover .job-image-upload-overlay {
+  opacity: 1;
+}
+
+.editJob-page .job-image-upload-overlay .camera-icon {
+  color: white;
+  font-size: 1rem;
+}
+
+.editJob-page .job-image-file-input {
+  display: none;
+}
+
+.editJob-page .job-image-upload-hint {
+  font-size: 0.85rem;
+  color: var(--md-on-surface-variant);
+  text-align: center;
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 /* MD3 Filled Text Fields */
 .editJob-page .form-control input,
 .editJob-page .form-control select {

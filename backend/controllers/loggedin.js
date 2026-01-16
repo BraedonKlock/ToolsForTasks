@@ -219,12 +219,29 @@ exports.addJob = async (req,res) => {
       date,
       address,
       phoneNumber,
-      notes,
-      employeeIds = [],
-      toolKitIds = [],
-      toolIds = [],
-      toolSelections = []
+      notes
     } = req.body;
+
+    // Parse JSON strings from FormData (arrays sent as JSON strings)
+    let employeeIds = [];
+    let toolKitIds = [];
+    let toolSelections = [];
+    try {
+      if (req.body.employeeIds) {
+        employeeIds = JSON.parse(req.body.employeeIds);
+      }
+      if (req.body.toolKitIds) {
+        toolKitIds = JSON.parse(req.body.toolKitIds);
+      }
+      if (req.body.toolSelections) {
+        toolSelections = JSON.parse(req.body.toolSelections);
+      }
+    } catch (e) {
+      // If parsing fails, arrays remain empty
+    }
+
+    // Use uploaded file name or null (will display job ID as fallback)
+    const image = req.file ? req.file.filename : null;
 
     const jobIdInt = Number.parseInt(jobid, 10);
     const cleanDate = (date && String(date).trim() !== "") ? date : null;
@@ -233,7 +250,7 @@ exports.addJob = async (req,res) => {
       return res.status(400).json({ error: "jobid must be an integer" });
     };
 
-    const job = new Jobs(jobIdInt, title, cleanDate, address, phoneNumber, notes, orgId)
+    const job = new Jobs(jobIdInt, title, cleanDate, address, phoneNumber, notes, orgId, image)
     const addJobResult = await job.addJob()
 
     if (addJobResult.affectedRows !== 1 || !addJobResult.insertId) return res.status(500).json({error: "Failed to add job, please try again later."});
@@ -254,9 +271,7 @@ exports.addJob = async (req,res) => {
       }
     }
 
-    const resolvedToolSelections = Array.isArray(toolSelections) && toolSelections.length > 0
-      ? toolSelections
-      : (Array.isArray(toolIds) ? toolIds.map((id) => ({ tool_id: id, quantity: 1 })) : []);
+    const resolvedToolSelections = Array.isArray(toolSelections) ? toolSelections : [];
 
     if (resolvedToolSelections.length > 0) {
       const dbJobId = addJobResult.insertId;
@@ -304,11 +319,29 @@ exports.updateJob = async (req,res) => {
       address,
       phoneNumber,
       notes,
-      employeeIds = [],
-      toolKitIds = [],
-      toolIds = [],
-      toolSelections = []
+      currentImage
     } = req.body;
+
+    // Parse JSON strings from FormData (arrays sent as JSON strings)
+    let employeeIds = [];
+    let toolKitIds = [];
+    let toolSelections = [];
+    try {
+      if (req.body.employeeIds) {
+        employeeIds = JSON.parse(req.body.employeeIds);
+      }
+      if (req.body.toolKitIds) {
+        toolKitIds = JSON.parse(req.body.toolKitIds);
+      }
+      if (req.body.toolSelections) {
+        toolSelections = JSON.parse(req.body.toolSelections);
+      }
+    } catch (e) {
+      // If parsing fails, arrays remain empty
+    }
+
+    // Use new uploaded file if present, otherwise keep existing image
+    const image = req.file ? req.file.filename : (currentImage || null);
 
     const cleanDate = (date && String(date).trim() !== "") ? date : null;
     const jobIdInt = Number.parseInt(jobid, 10);
@@ -316,7 +349,7 @@ exports.updateJob = async (req,res) => {
       return res.status(400).json({ error: "jobid must be an integer" });
     };
 
-    const job = new Jobs(jobid, title, cleanDate, address, phoneNumber, notes, orgId);
+    const job = new Jobs(jobid, title, cleanDate, address, phoneNumber, notes, orgId, image);
 
     const [result] = await job.updateJob(dbJobId);
 
@@ -349,9 +382,7 @@ exports.updateJob = async (req,res) => {
       await Jobs.deleteToolKitsForJob(dbJobId);
     }
 
-    const resolvedToolSelections = Array.isArray(toolSelections) && toolSelections.length > 0
-      ? toolSelections
-      : (Array.isArray(toolIds) ? toolIds.map((id) => ({ tool_id: id, quantity: 1 })) : []);
+    const resolvedToolSelections = Array.isArray(toolSelections) ? toolSelections : [];
 
     if (resolvedToolSelections.length > 0) {
       await Jobs.deleteToolsForJob(dbJobId);

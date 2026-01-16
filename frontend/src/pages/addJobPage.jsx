@@ -5,7 +5,7 @@ import "../styles/addJobPage.css";
 import "../styles/addToolKitPage.css";
 import "../styles/toolsPage.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { faArrowLeft, faCamera } from "@fortawesome/free-solid-svg-icons";
 import LoadingSpinner from "../components/LoadingSpinner";
 
 export default function AddJob() {
@@ -22,7 +22,10 @@ export default function AddJob() {
     const [isLoadingEmployees, setIsLoadingEmployees] = useState(true);
     const [isLoadingToolKits, setIsLoadingToolKits] = useState(true);
     const [isLoadingTools, setIsLoadingTools] = useState(true);
+    const [imageFile, setImageFile] = useState(null);
+    const [imagePreview, setImagePreview] = useState(null);
     const toolKitToolsCache = useRef({});
+    const imageInputRef = useRef(null);
     const navigate = useNavigate();
 
     const isEmployees = tabState === "employees";
@@ -256,40 +259,63 @@ export default function AddJob() {
         );
     }
 
+    function handleImageChange(e) {
+        const file = e.target.files[0];
+        if (file) {
+            setImageFile(file);
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setImagePreview(reader.result);
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+
     async function onSubmit(e) {
         e.preventDefault();
         setError("");
-        // build payload from the form
-        const form = new FormData(e.currentTarget);
-        const payload = Object.fromEntries(form.entries());
-        payload.employeeIds = form.getAll("employeeIds[]").map(Number);
-        payload.toolKitIds = form.getAll("toolKitIds[]").map(Number);
-        payload.toolIds = form.getAll("toolIds[]").map(Number);
-        payload.toolSelections = selectedTools.map((tool) => ({
+
+        // Build FormData for multipart/form-data submission
+        const formData = new FormData();
+        const htmlForm = e.currentTarget;
+
+        // Add text fields
+        formData.append("jobid", htmlForm.jobid.value);
+        formData.append("title", htmlForm.title.value);
+        formData.append("date", htmlForm.date.value);
+        formData.append("address", htmlForm.address.value);
+        formData.append("phoneNumber", htmlForm.phoneNumber.value);
+        formData.append("notes", htmlForm.notes.value);
+
+        // Add image if selected
+        if (imageFile) {
+            formData.append("image", imageFile);
+        }
+
+        // Add arrays as JSON strings
+        const employeeIds = addedEmployees.map(emp => emp.id);
+        const toolKitIds = selectedToolKits.map(kit => kit.id);
+        const toolSelections = selectedTools.map((tool) => ({
             tool_id: tool.id,
             quantity: tool.selectedQuantity ?? 1
         }));
 
-        // remove junk keys the server doesn’t want
-        delete payload["employeeIds[]"];
-        delete payload["toolKitIds[]"];
-        delete payload["toolIds[]"];
-        delete payload.addEmployee;
-        
-        try {
+        formData.append("employeeIds", JSON.stringify(employeeIds));
+        formData.append("toolKitIds", JSON.stringify(toolKitIds));
+        formData.append("toolSelections", JSON.stringify(toolSelections));
 
+        try {
             const res = await fetch("/api/loggedIn/jobs", {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json",
                     Authorization: `Bearer ${accessToken}`
                 },
-                body: JSON.stringify(payload),
+                body: formData,
             });
 
             if (res.status === 401) {
-            logout();
-            return;
+                logout();
+                return;
             }
             if (!res.ok) {
                 const data = await res.json();
@@ -298,7 +324,6 @@ export default function AddJob() {
             navigate("/loggedIn/jobs");
         } catch(err) {
             setError(err.message);
-
         }
     }
 
@@ -313,6 +338,35 @@ export default function AddJob() {
             <h1>Add Job</h1>
 
             <form className="forms" onSubmit={onSubmit}>
+                <div id="addJob-imageDiv">
+                    <label
+                        className="job-image-upload-container"
+                        onClick={() => imageInputRef.current?.click()}
+                    >
+                        {imagePreview ? (
+                            <img src={imagePreview} alt="Job preview" className="job-image-preview" />
+                        ) : (
+                            <div className="job-image-placeholder">
+                                <FontAwesomeIcon icon={faCamera} className="camera-icon" />
+                                <span>Add Photo</span>
+                            </div>
+                        )}
+                        <div className="job-image-upload-overlay">
+                            <FontAwesomeIcon icon={faCamera} className="camera-icon" />
+                        </div>
+                    </label>
+                    <input
+                        type="file"
+                        ref={imageInputRef}
+                        className="job-image-file-input"
+                        accept="image/jpeg,image/jpg,image/png,image/gif,image/webp"
+                        onChange={handleImageChange}
+                    />
+                    <p className="job-image-upload-hint">
+                        {imageFile ? imageFile.name : "Optional: Upload a job image"}
+                    </p>
+                </div>
+
                 <div className="form-control">
                     <label htmlFor="jobid">Job ID:</label>
                     <input type="text" name="jobid" />

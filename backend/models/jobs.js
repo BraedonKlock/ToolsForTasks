@@ -3,20 +3,21 @@
 const db = require('../util/database');
 
 module.exports = class jobs {
-    constructor(jobID, title, date, address, phoneNumber, notes, orgId) {
+    constructor(jobID, title, date, address, phoneNumber, notes, orgId, image) {
         this.jobID = jobID,
         this.title = title,
         this.date = date,
         this.address = address,
         this.phoneNumber = phoneNumber,
         this.notes = notes,
-        this.orgId = orgId
+        this.orgId = orgId,
+        this.image = image
     }
 
     async addJob() {
         const [result] = await db.execute(
-            'INSERT INTO jobs (jobid, title, date, address, phoneNumber, notes, org_id) VALUES (?, ?, ?, ?, ?, ?, ?)',
-            [this.jobID, this.title, this.date, this.address, this.phoneNumber, this.notes, this.orgId]
+            'INSERT INTO jobs (jobid, title, date, address, phoneNumber, notes, org_id, image) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+            [this.jobID, this.title, this.date, this.address, this.phoneNumber, this.notes, this.orgId, this.image]
         )
         return result;
     }
@@ -146,9 +147,9 @@ module.exports = class jobs {
     updateJob(dbJobId) {
         return db.execute(
             `UPDATE jobs
-            SET jobid = ?, title = ?, date = ?, address = ?, phoneNumber = ?, notes = ?
+            SET jobid = ?, title = ?, date = ?, address = ?, phoneNumber = ?, notes = ?, image = ?
             WHERE org_id = ? AND id = ?`,
-            [this.jobID, this.title, this.date, this.address, this.phoneNumber, this.notes, this.orgId, dbJobId]
+            [this.jobID, this.title, this.date, this.address, this.phoneNumber, this.notes, this.image, this.orgId, dbJobId]
         );
     }
 }
