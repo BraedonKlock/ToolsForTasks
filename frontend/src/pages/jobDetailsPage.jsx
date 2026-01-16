@@ -5,7 +5,6 @@ import { io } from "socket.io-client";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import "../styles/jobDetailsPage.css";
-import LoadingSpinner from "../components/LoadingSpinner";
 
 export default function JobDetailsPage() {
     const { accessToken, logout } = useContext(AuthContext);
@@ -14,14 +13,11 @@ export default function JobDetailsPage() {
     const [tools, setTools] = useState([]);
     const [selectedToolIds, setSelectedToolIds] = useState([]);
     const [socket, setSocket] = useState(null);
-    const [isLoading, setIsLoading] = useState(true);
-    const [isLoadingTools, setIsLoadingTools] = useState(true);
     const { id } = useParams();
 
 
     const loadJobDetails = useCallback(async (signal) => {
         try {
-            setIsLoading(true);
             const res = await fetch(`/api/loggedIn/jobs/${encodeURIComponent(id)}`, {
                 headers: { Authorization: `Bearer ${accessToken}` },
                 signal,
@@ -40,14 +36,11 @@ export default function JobDetailsPage() {
             setJob(data.job);
         } catch (err) {
             if (err.name !== "AbortError") setError(err.message);
-        } finally {
-            setIsLoading(false);
         }
     }, [accessToken, id, logout]);
 
     const loadJobTools = useCallback(async (signal) => {
         try {
-            setIsLoadingTools(true);
             const res = await fetch(`/api/loggedIn/jobs/${encodeURIComponent(id)}/tools`, {
                 headers: { Authorization: `Bearer ${accessToken}` },
                 signal,
@@ -75,8 +68,6 @@ export default function JobDetailsPage() {
                 setError(err.message);
                 setTools([]);
             }
-        } finally {
-            setIsLoadingTools(false);
         }
     }, [accessToken, id, logout]);
 
@@ -176,9 +167,7 @@ export default function JobDetailsPage() {
             <section className="jobDetails-container">
                 {error && (<p className="error">{error}</p>)}
 
-                {isLoading ? (
-                    <LoadingSpinner message="Loading job details..." />
-                ) : job && (
+                {job && (
                     <>
                     <article className="jobDetails-subContainer">
                         <img
@@ -203,9 +192,7 @@ export default function JobDetailsPage() {
                             <h4>Tools</h4>
                         </div>
                         <div className="addToolKitPage-toolsList jobDetails-toolsList">
-                            {isLoadingTools ? (
-                                <LoadingSpinner message="Loading tools..." />
-                            ) : tools.length === 0 ? (
+                            {tools.length === 0 ? (
                                 <h6>No tools to display</h6>
                             ) : (
                                 tools.map((tool) => {

@@ -10,7 +10,6 @@ import { faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
 
 import "../styles/toolsPage.css";
 import ToolKitCard from "../components/toolKitCard";
-import LoadingSpinner from "../components/LoadingSpinner";
 
 export default function ToolsPage() {
     const [tools, setTools] = useState([]);
@@ -20,8 +19,6 @@ export default function ToolsPage() {
 
     const [toolKitError, setToolKitError] = useState("");
     const [toolsError, setToolsError] = useState("");
-    const [isLoadingToolKits, setIsLoadingToolKits] = useState(true);
-    const [isLoadingTools, setIsLoadingTools] = useState(true);
 
     // tabs: "all" | "tools" | "toolKits"
     const [tabState, setTabState] = useState("all");
@@ -48,7 +45,6 @@ export default function ToolsPage() {
     const loadToolKits = useCallback(async (signal) => {
         try {
             setToolKitError("");
-            setIsLoadingToolKits(true);
 
             const res = await fetch("/api/loggedIn/tool-kits", {
                 headers: { Authorization: `Bearer ${accessToken}` },
@@ -71,8 +67,6 @@ export default function ToolsPage() {
             setToolKits(data.toolKits ?? []);
         } catch (err) {
             if (err.name !== "AbortError") setToolKitError(err.message);
-        } finally {
-            setIsLoadingToolKits(false);
         }
     }, [accessToken, logout]);
 
@@ -90,7 +84,6 @@ export default function ToolsPage() {
     const loadTools = useCallback(async (signal) => {
         try {
             setToolsError("");
-            setIsLoadingTools(true);
 
             const res = await fetch("/api/loggedIn/tools", {
                 headers: { Authorization: `Bearer ${accessToken}` },
@@ -112,8 +105,6 @@ export default function ToolsPage() {
             setTools(data.tools ?? []);
         } catch (err) {
             if (err.name !== "AbortError") setToolsError(err.message);
-        } finally {
-            setIsLoadingTools(false);
         }
     }, [accessToken, logout]);
 
@@ -258,9 +249,7 @@ async function handleDeleteTool(toolId) {
                 {toolKitError && <p className="error">{toolKitError}</p>}
 
                 <div className="tools-section__cards">
-                    {isLoadingToolKits ? (
-                        <LoadingSpinner message="Loading tool kits..." />
-                    ) : filteredToolKits.length > 0 ? (
+                    {filteredToolKits.length > 0 ? (
                         filteredToolKits.map((toolKit) => (
                             <ToolKitCard key={toolKit.id ?? toolKit.name} toolKit={toolKit} onToolKitDeleteSuccess={handleToolKitDeleteSuccess} setToolKitError={setToolKitError}/>
                         ))
@@ -288,9 +277,7 @@ async function handleDeleteTool(toolId) {
                 {toolsError && <p className="error">{toolsError}</p>}
 
                 <div className="tools-section__cards">
-                    {isLoadingTools ? (
-                        <LoadingSpinner message="Loading tools..." />
-                    ) : filteredTools.length > 0 ? (
+                    {filteredTools.length > 0 ? (
                         filteredTools.map((tool) => (
                             <ToolCard key={tool.id ?? tool.name} tool={tool} onDelete={handleDeleteTool} />
                         ))
