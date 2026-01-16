@@ -157,6 +157,17 @@
   font-family: var(--font-body);
 }
 
+/* Job Details Tools Scroll Container - shows 5 tools then scrolls */
+.jobDetails-toolsScroll {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-height: 408px;
+  overflow-y: auto;
+  padding-right: 4px;
+  padding-top: 6px;
+}
+
 /* Tools List */
 .addToolKitPage-toolsList {
   display: flex;
@@ -226,6 +237,7 @@
   font: inherit;
   color: var(--md-on-surface);
   -webkit-tap-highlight-color: transparent;
+  flex-shrink: 0;
 }
 
 .jobDetails-toolRow:focus-visible {

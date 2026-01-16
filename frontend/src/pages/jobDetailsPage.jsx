@@ -195,7 +195,7 @@ export default function JobDetailsPage() {
                         <div className="jobDetails-toolsHeader">
                             <h4>Tools</h4>
                         </div>
-                        <div className="addToolKitPage-toolsList jobDetails-toolsList">
+                        <div className="jobDetails-toolsScroll">
                             {tools.length === 0 ? (
                                 <h6>No tools to display</h6>
                             ) : (
