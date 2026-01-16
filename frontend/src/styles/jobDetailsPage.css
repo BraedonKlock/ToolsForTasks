@@ -69,6 +69,119 @@
   word-break: break-word;
 }
 
+.jobDetails-toolsSection {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.jobDetails-toolsHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.jobDetails-toolsHeader h4 {
+  margin: 0;
+  font-size: 1.05rem;
+  color: var(--color-text);
+  font-family: var(--font-body);
+}
+
+.addToolKitPage-toolsList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-height: 280px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.addToolKitPage-toolRow {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-rows: auto auto;
+  column-gap: 12px;
+  row-gap: 8px;
+  align-items: center;
+  justify-content: unset;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-1);
+}
+
+.addToolKitPage-toolInfo {
+  grid-column: 1;
+  grid-row: 1;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.addToolKitPage-toolInitial {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-body);
+  font-weight: 600;
+  background: #f1d3b6;
+  color: #a2602b;
+}
+
+.addToolKitPage-toolName {
+  font-size: 1rem;
+  color: var(--color-ink);
+  font-family: var(--font-body);
+}
+
+.jobDetails-toolRow {
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  font: inherit;
+  color: var(--color-ink);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.jobDetails-toolRow:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.jobDetails-toolQty {
+  grid-column: 2;
+  grid-row: 1;
+  justify-self: end;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+  padding: 6px 14px;
+  background: var(--color-surface);
+  color: var(--color-ink);
+  font-size: 0.85rem;
+  font-weight: 600;
+  box-shadow: var(--shadow-1);
+}
+
+.jobDetails-toolRow--selected {
+  border-color: var(--color-accent);
+  background: linear-gradient(135deg, rgba(244, 179, 95, 0.22), rgba(255, 255, 255, 0.9));
+  box-shadow: 0 10px 20px rgba(35, 31, 25, 0.12);
+}
+
+.jobDetails-toolRow--selected .jobDetails-toolQty {
+  background-color: var(--color-accent);
+  color: #fff;
+  border-color: transparent;
+}
+
 .error {
   text-align: center;
   color: #b42318;

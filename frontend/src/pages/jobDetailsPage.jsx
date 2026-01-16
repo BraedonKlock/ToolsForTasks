@@ -9,6 +9,8 @@ export default function JobDetailsPage() {
     const { accessToken, logout } = useContext(AuthContext);
     const [error, setError] = useState("");
     const [job, setJob] = useState(null);
+    const [tools, setTools] = useState([]);
+    const [selectedToolIds, setSelectedToolIds] = useState([]);
     const { id } = useParams();
 
 
@@ -36,7 +38,38 @@ export default function JobDetailsPage() {
         setError(err.message);
         }
     })();
-    }, []);
+    }, [accessToken, id, logout]);
+
+    useEffect(() => {
+    (async () => {
+        try {
+            const res = await fetch(`/api/loggedIn/jobs/${encodeURIComponent(id)}/tools`, {
+                headers: { Authorization: `Bearer ${accessToken}` },
+            });
+
+            if (res.status === 401) {
+                logout();
+                return;
+            }
+
+            if (!res.ok) {
+                throw new Error("Failed to fetch job tools, try again later.");
+            }
+
+            const data = await res.json();
+            setTools(data.tools ?? []);
+        } catch (err) {
+            setError(err.message);
+            setTools([]);
+        }
+    })();
+    }, [accessToken, id, logout]);
+
+    function toggleToolSelection(toolId) {
+        setSelectedToolIds((prev) =>
+            prev.includes(toolId) ? prev.filter((id) => id !== toolId) : [...prev, toolId]
+        );
+    }
 
 
     return (
@@ -65,6 +98,37 @@ export default function JobDetailsPage() {
                         Notes:<br />
                         {job.notes}
                     </p>
+                    <section className="jobDetails-toolsSection">
+                        <div className="jobDetails-toolsHeader">
+                            <h4>Tools</h4>
+                        </div>
+                        <div className="addToolKitPage-toolsList jobDetails-toolsList">
+                            {tools.length === 0 ? (
+                                <h6>No tools to display</h6>
+                            ) : (
+                                tools.map((tool) => {
+                                    const name = tool?.name ?? "";
+                                    const firstLetter = name ? name.charAt(0).toUpperCase() : "?";
+                                    const selectedQuantity = tool.selected_quantity ?? tool.selectedQuantity ?? 1;
+                                    const selected = selectedToolIds.includes(tool.id);
+                                    return (
+                                        <button
+                                            key={tool.id ?? name}
+                                            type="button"
+                                            className={`addToolKitPage-toolRow jobDetails-toolRow ${selected ? "jobDetails-toolRow--selected" : ""}`}
+                                            onClick={() => toggleToolSelection(tool.id)}
+                                        >
+                                            <div className="addToolKitPage-toolInfo">
+                                                <span className="addToolKitPage-toolInitial">{firstLetter}</span>
+                                                <span className="addToolKitPage-toolName">{name || "Unnamed tool"}</span>
+                                            </div>
+                                            <span className="jobDetails-toolQty">x{selectedQuantity}</span>
+                                        </button>
+                                    );
+                                })
+                            )}
+                        </div>
+                    </section>
                     </>
                 )}
             </section>
