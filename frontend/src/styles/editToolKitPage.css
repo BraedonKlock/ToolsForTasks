@@ -188,10 +188,9 @@
 }
 
 .editToolKitPage-selectBtn.selected {
-  font-weight: 700;
-  opacity: 0.9;
-  background-color: grey;
-
+  background-color: var(--color-accent);
+  color: #fff;
+  border-color: transparent;
 }
 .editToolKitPage-selectBtn {
   -webkit-tap-highlight-color: transparent;
