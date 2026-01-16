@@ -114,10 +114,16 @@ export default function JobDetailsPage() {
             loadJobTools();
         };
 
+        const handleJobsChanged = () => {
+            loadJobDetails();
+        };
+
         socket.on("jobTools:changed", handleJobToolsChanged);
+        socket.on("jobs:changed", handleJobsChanged);
 
         return () => {
             socket.off("jobTools:changed", handleJobToolsChanged);
+            socket.off("jobs:changed", handleJobsChanged);
         };
     }, [socket, loadJobTools, id]);
 
