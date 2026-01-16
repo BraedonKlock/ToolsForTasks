@@ -2,6 +2,7 @@ import { useEffect, useState, useContext, useCallback } from "react";
 import { Link } from "react-router-dom";
 import "../styles/JobsPage.css";
 import JobCard from "../components/JobCard";
+import LoadingSpinner from "../components/LoadingSpinner";
 import { AuthContext } from "../context/AuthContext";
 import { io } from "socket.io-client"; // importing socket.io client
 
@@ -9,6 +10,7 @@ export default function JobsPage() {
   const { accessToken, user, logout } = useContext(AuthContext);
   const [jobs, setJobs] = useState([]);
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
   const [socket, setSocket] = useState(null); // holding socket instance
 
   /** fetching jobs from the backend so the page can be updated when the db changes
@@ -19,6 +21,7 @@ export default function JobsPage() {
   */
   const loadJobs = useCallback(async () => {
     try {
+      setIsLoading(true);
       const res = await fetch("/api/loggedIn/jobs", {
           headers:{ Authorization: `Bearer ${accessToken}` },
       });
@@ -40,6 +43,8 @@ export default function JobsPage() {
 
     } catch(err) {
       setError(err.message)
+    } finally {
+      setIsLoading(false);
     }
   }, [accessToken, logout]);
 
@@ -112,7 +117,9 @@ export default function JobsPage() {
       {error && <p id="error" className="error">{error}</p>}
 
       <section id="jobs-jobsContainer" className="jobs-container">
-        {jobs.length > 0 ? (
+        {isLoading ? (
+          <LoadingSpinner message="Loading jobs..." />
+        ) : jobs.length > 0 ? (
           jobs.map((job) => (
             <JobCard key={job.id} job={job} isJobsPage={true} onDeleteSuccess={handleDeleteSuccess}/>
           ))

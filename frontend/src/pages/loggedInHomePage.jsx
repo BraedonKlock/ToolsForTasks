@@ -3,11 +3,13 @@ import { useEffect, useState, useContext, useCallback } from "react";
 import { AuthContext } from "../context/AuthContext";
 import JobCard from "../components/JobCard"
 import { io } from "socket.io-client"; // importing socket.io client
+import LoadingSpinner from "../components/LoadingSpinner";
 
 export default function LoggedInHomePage() {
   const [jobs, setJobs] = useState([]);
   const { accessToken, logout } = useContext(AuthContext);
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
   const [socket, setSocket] = useState(null); // holding socket instance
 
   /** fetching jobs from the backend so the page can be updated when the db changes
@@ -18,6 +20,7 @@ export default function LoggedInHomePage() {
   */
   const loadJobs = useCallback(async () => {
     try {
+      setIsLoading(true);
       const res = await fetch("/api/loggedIn/jobs", {
         headers: { Authorization: `Bearer ${accessToken}` },
       });
@@ -37,6 +40,8 @@ export default function LoggedInHomePage() {
       }
     } catch (err) {
       setError(err.message);
+    } finally {
+      setIsLoading(false);
     }
   }, [accessToken, logout]);
 
@@ -97,7 +102,9 @@ export default function LoggedInHomePage() {
         {error && (
           <p className="error">{error}</p>
         )}
-        {jobs && jobs.length > 0 ? (
+        {isLoading ? (
+          <LoadingSpinner message="Loading jobs..." />
+        ) : jobs && jobs.length > 0 ? (
           jobs.map((job) => (
             <JobCard key={job.jobid} job={job} isJobsPage={false} />
           ))

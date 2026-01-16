@@ -6,6 +6,7 @@ import "../styles/addToolKitPage.css";
 import "../styles/toolsPage.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 export default function EditJobPage() {
     const {accessToken, logout} = useContext(AuthContext);
@@ -20,6 +21,9 @@ export default function EditJobPage() {
     const excludedToolIds = useRef(new Set());
     const initialToolKitIds = useRef(new Set());
     const [tabState, setTabState] = useState("employees");
+    const [isLoadingEmployees, setIsLoadingEmployees] = useState(true);
+    const [isLoadingToolKits, setIsLoadingToolKits] = useState(true);
+    const [isLoadingTools, setIsLoadingTools] = useState(true);
     const toolKitToolsCache = useRef({});
     const [job, setJob] = useState(null);
     const { id } = useParams();
@@ -55,6 +59,7 @@ export default function EditJobPage() {
 
         (async () => {
             try {
+            setIsLoadingEmployees(true);
             const res = await fetch("/api/loggedIn/employees", {
                 headers: { Authorization: `Bearer ${accessToken}` },
             });
@@ -72,6 +77,8 @@ export default function EditJobPage() {
             setEmployees(data.employees);
             } catch (err) {
             setError(err.message);
+            } finally {
+                setIsLoadingEmployees(false);
             }
         })();
 
@@ -166,6 +173,7 @@ export default function EditJobPage() {
     useEffect(() => {
         (async () => {
             try {
+                setIsLoadingToolKits(true);
                 const res = await fetch("/api/loggedIn/tool-kits", {
                     headers: { Authorization: `Bearer ${accessToken}` },
                 });
@@ -185,6 +193,8 @@ export default function EditJobPage() {
             } catch (err) {
                 setError(err.message);
                 setToolKits([]);
+            } finally {
+                setIsLoadingToolKits(false);
             }
         })();
     }, [accessToken, logout]);
@@ -192,6 +202,7 @@ export default function EditJobPage() {
     useEffect(() => {
         (async () => {
             try {
+                setIsLoadingTools(true);
                 const res = await fetch("/api/loggedIn/tools", {
                     headers: { Authorization: `Bearer ${accessToken}` },
                 });
@@ -211,6 +222,8 @@ export default function EditJobPage() {
             } catch (err) {
                 setError(err.message);
                 setTools([]);
+            } finally {
+                setIsLoadingTools(false);
             }
         })();
     }, [accessToken, logout]);
@@ -527,7 +540,9 @@ export default function EditJobPage() {
                             </div>
 
                             <div className="tools-section__cards editJob-selectionCards">
-                                {employees.length === 0 ? (
+                                {isLoadingEmployees ? (
+                                    <LoadingSpinner message="Loading employees..." />
+                                ) : employees.length === 0 ? (
                                     <h6>No employees to display</h6>
                                 ) : (
                                     employees.map((employee) => {
@@ -563,7 +578,9 @@ export default function EditJobPage() {
                             </div>
 
                             <div className="tools-section__cards editJob-selectionCards">
-                                {toolKits.length === 0 ? (
+                                {isLoadingToolKits ? (
+                                    <LoadingSpinner message="Loading tool kits..." />
+                                ) : toolKits.length === 0 ? (
                                     <h6>No tool kits to display</h6>
                                 ) : (
                                     toolKits.map((toolKit) => {
@@ -599,7 +616,9 @@ export default function EditJobPage() {
                             </div>
 
                             <div className="addToolKitPage-toolsList">
-                                {tools.length === 0 ? (
+                                {isLoadingTools ? (
+                                    <LoadingSpinner message="Loading tools..." />
+                                ) : tools.length === 0 ? (
                                     <h6>No tools to display</h6>
                                 ) : (
                                     tools.map((tool) => {

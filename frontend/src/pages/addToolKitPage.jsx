@@ -4,18 +4,21 @@ import { AuthContext } from "../context/AuthContext";
 import "../styles/addToolKitPage.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 export default function AddToolKit() {
     const [error, setError] = useState("");
     const { accessToken, logout } = useContext(AuthContext);
     const [tools, setTools] = useState([]);
     const [selectedTools, setSelectedTools] = useState([]);
+    const [isLoadingTools, setIsLoadingTools] = useState(true);
 
     const navigate = useNavigate();
 
     useEffect(() => {
         (async () => {
             try {
+                setIsLoadingTools(true);
                 const res = await fetch("/api/loggedIn/tools", {
                     headers: { Authorization: `Bearer ${accessToken}` }
                 });
@@ -30,6 +33,8 @@ export default function AddToolKit() {
                 setTools(data.tools);
             } catch (err) {
                 setError(err.message);
+            } finally {
+                setIsLoadingTools(false);
             }
         })();
     }, [accessToken, logout]);
@@ -122,8 +127,10 @@ export default function AddToolKit() {
                         </div>
 
                         <div className="addToolKitPage-toolsList">
-                            {tools.length === 0 ? (
-                                <h1>No tools to display</h1>
+                            {isLoadingTools ? (
+                                <LoadingSpinner message="Loading tools..." />
+                            ) : tools.length === 0 ? (
+                                <h6>No tools to display</h6>
                             ) : (
                                 tools.map((tool) => {
                                     const firstLetter = tool.name ? tool.name.charAt(0).toUpperCase() : "";

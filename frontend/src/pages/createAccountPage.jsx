@@ -40,22 +40,10 @@ export default function CreateAccountPage() {
             <hr />
             {error ? <p className="error">{error}</p> : null}
             <form id="create-form" onSubmit={onSubmit}>
-                <div className="form-control">
-                    <label htmlFor="CompanyName">Company Name:</label>
-                    <input type="text" name="companyName" required />
-                </div>
-                <div className="form-control">
-                    <label htmlFor="email">Email:</label>
-                    <input type="text" name="email" required />
-                </div>
-                <div className="form-control">
-                    <label htmlFor="password">Password:</label>
-                    <input type="password" name="password" required />
-                </div>
-                <div className="form-control">
-                    <label htmlFor="ConfirmPassword">Confirm Password:</label>
-                    <input type="password" name="confirmPassword" required/>
-                </div>
+                <input type="text" name="companyName" placeholder="Company Name" required />
+                <input type="email" name="email" placeholder="Email" required />
+                <input type="password" name="password" placeholder="Password" required />
+                <input type="password" name="confirmPassword" placeholder="Confirm Password" required />
                 <button type="submit">Sign Up</button>
             </form>
             </div>

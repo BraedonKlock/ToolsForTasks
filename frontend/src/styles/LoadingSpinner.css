@@ -1,0 +1,32 @@
+/* MD3 Loading Spinner */
+.loading-spinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 48px 24px;
+  animation: fade-in 0.3s var(--md-motion-decelerate) both;
+}
+
+.loading-spinner__circle {
+  width: 48px;
+  height: 48px;
+  border: 4px solid var(--md-surface-container-highest);
+  border-top-color: var(--md-primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.loading-spinner__message {
+  color: var(--md-on-surface-variant);
+  font-size: 0.95rem;
+  font-family: var(--font-body);
+  margin: 0;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

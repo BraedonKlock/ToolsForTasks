@@ -5,6 +5,7 @@ import "../styles/editToolKitPage.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { io } from "socket.io-client"; // importing socket.io client
+import LoadingSpinner from "../components/LoadingSpinner";
 
 export default function EditToolKit() {
     const [error, setError] = useState("");
@@ -12,6 +13,7 @@ export default function EditToolKit() {
     const [tools, setTools] = useState([]);
     const [toolKit, setToolKit] = useState(null);
     const [selectedTools, setSelectedTools] = useState([]);
+    const [isLoadingTools, setIsLoadingTools] = useState(true);
     const { id } = useParams();
     const navigate = useNavigate();
     const [socket, setSocket] = useState(null); // holding socket instance
@@ -43,6 +45,7 @@ export default function EditToolKit() {
     useEffect(() => {
         (async () => {
             try {
+                setIsLoadingTools(true);
                 const res = await fetch("/api/loggedIn/tools", {
                     headers: { Authorization: `Bearer ${accessToken}` }
                 });
@@ -57,6 +60,8 @@ export default function EditToolKit() {
                 setTools(data.tools);
             } catch (err) {
                 setError(err.message);
+            } finally {
+                setIsLoadingTools(false);
             }
         })();
 
@@ -209,8 +214,10 @@ export default function EditToolKit() {
                         </div>
 
                         <div className="editToolKitPage-toolsList">
-                            {tools.length === 0 ? (
-                                <h1>No tools to display</h1>
+                            {isLoadingTools ? (
+                                <LoadingSpinner message="Loading tools..." />
+                            ) : tools.length === 0 ? (
+                                <h6>No tools to display</h6>
                             ) : (
                                 tools.map((tool) => {
                                     const firstLetter = tool.name ? tool.name.charAt(0).toUpperCase() : "";

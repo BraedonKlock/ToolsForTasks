@@ -3,11 +3,13 @@ import { Link } from "react-router-dom";
 import "../styles/manageEmployeesPage.css";
 import { AuthContext } from "../context/AuthContext";
 import EmployeeCard from "../components/employeeCard";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 export default function manageEmployeesPage() {
     const { accessToken, logout } = useContext(AuthContext);
     const [error, setError] = useState("");
     const [employees, setEmployees] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
     const [tabState, setTabState] = useState("all");
 
     const isAll = tabState === "all";
@@ -25,6 +27,7 @@ export default function manageEmployeesPage() {
     useEffect(() => {
         (async () => {
             try {
+                setIsLoading(true);
                 const res = await fetch("/api/loggedIn/employees", {
                 headers:{ Authorization: `Bearer ${accessToken}` },
             });
@@ -45,6 +48,8 @@ export default function manageEmployeesPage() {
 
             } catch(err) {
             setError(err.message)
+            } finally {
+                setIsLoading(false);
             }
         })();
     }, [accessToken, logout]);
@@ -101,12 +106,14 @@ export default function manageEmployeesPage() {
 
             {error && <p id="login-error" className="error">{error}</p>}
             <section id="employees-employeesContainer" className="employees-container">
-                    {filteredEmployees.length > 0 ? (
-                    filteredEmployees.map((employee) => (
-                        <EmployeeCard key={employee.id} employee={employee} onDeleteSuccess={handleDeleteSuccess}/>
-                    ))
+                    {isLoading ? (
+                        <LoadingSpinner message="Loading employees..." />
+                    ) : filteredEmployees.length > 0 ? (
+                        filteredEmployees.map((employee) => (
+                            <EmployeeCard key={employee.id} employee={employee} onDeleteSuccess={handleDeleteSuccess}/>
+                        ))
                     ) : (
-                    <h1>No Employees Found</h1>
+                        <h1>No Employees Found</h1>
                     )}
                 </section>
         </main>
