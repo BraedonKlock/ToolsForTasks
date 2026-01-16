@@ -836,18 +836,41 @@ exports.deleteToolKit = async(req,res) => {
 /**------------------------------------------------------------------------------------------------ */
 exports.addTool = async(req,res) => {
   try {
-    if(!req.user) res.status(401).json({ error: "Unauthenticated" });
+    if(!req.user) return res.status(401).json({ error: "Unauthenticated" });
     const { orgId, role } = req.user;
     if (role !== "owner" && role !== "manager") return res.status(403).json({error: "Do not have permission."});
 
-    const { name } = req.body;
+    const { name, tools } = req.body;
 
+    // Handle bulk tool creation
+    if (Array.isArray(tools)) {
+      const validTools = tools.filter(t => t.name && t.name.trim() !== "");
+      if (validTools.length === 0) {
+        return res.status(400).json({ error: "At least one tool name is required" });
+      }
+
+      const [result] = await Tools.addTools(validTools, orgId);
+
+      if (result.affectedRows === 0) {
+        return res.status(404).json({ error: "Could not add tools, please try again later." });
+      }
+
+      res.status(201).json({ ok: true, count: result.affectedRows });
+
+      const io = req.app.get("io");
+      if (io && orgId) {
+        io.to(`org:${orgId}`).emit("tools:changed");
+      }
+      return;
+    }
+
+    // Handle single tool creation (backward compatibility)
     if(name.trim() === "") return res.status(400).json({error: "Name field can not be empty"})
 
     const quantity = 1;
     const [result] = await Tools.addTool(name, quantity, orgId);
 
-    if (result.affectedRows === 0) res.status(404).json({error: "Could not add Tool, please try again later."});
+    if (result.affectedRows === 0) return res.status(404).json({error: "Could not add Tool, please try again later."});
 
     res.status(201).json({ok: true});
 

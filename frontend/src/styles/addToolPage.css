@@ -112,6 +112,79 @@
   outline: none;
 }
 
+/* Tools List Container */
+.addToolPage-toolsList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+/* Tool Row */
+.addToolPage-toolRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.addToolPage-toolRow .form-control {
+  flex: 1;
+}
+
+/* Remove Tool Button */
+.addToolPage-removeBtn {
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  border-radius: var(--md-radius-full);
+  border: none;
+  background: var(--md-error-container);
+  color: var(--md-on-error-container);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--md-duration-short) var(--md-motion-standard);
+}
+
+.addToolPage-removeBtn:hover {
+  background: var(--md-error);
+  color: var(--md-on-error);
+  transform: scale(1.05);
+}
+
+.addToolPage-removeBtn:active {
+  transform: scale(0.95);
+}
+
+/* Add Another Tool Button */
+.addToolPage-addMoreBtn {
+  width: 100%;
+  padding: 12px 20px;
+  border-radius: var(--md-radius-md);
+  border: 2px dashed var(--md-outline-variant);
+  background: transparent;
+  color: var(--md-primary);
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all var(--md-duration-short) var(--md-motion-standard);
+}
+
+.addToolPage-addMoreBtn:hover {
+  border-color: var(--md-primary);
+  background: var(--md-primary-container);
+  color: var(--md-on-primary-container);
+}
+
+.addToolPage-addMoreBtn:active {
+  transform: scale(0.98);
+}
+
 #addToolPage-hr {
   width: 100%;
   border: none;
@@ -165,18 +238,23 @@
   }
 
   #addToolPage-addToolContainer {
-    width: min(460px, 100%);
+    width: min(560px, 100%);
     padding: 40px 44px;
   }
 
   .addTool-page .form-control {
     display: grid;
-    grid-template-columns: 1fr minmax(320px, 1.2fr);
+    grid-template-columns: auto 1fr;
     align-items: center;
     gap: 20px;
   }
 
   .addTool-page .form-control input {
     width: 100%;
+  }
+
+  .addToolPage-addMoreBtn {
+    max-width: 280px;
+    margin: 0 auto;
   }
 }
