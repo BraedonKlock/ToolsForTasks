@@ -25,10 +25,25 @@ export default function ToolsPage() {
 
     // tabs: "all" | "tools" | "toolKits"
     const [tabState, setTabState] = useState("all");
+    const [searchQuery, setSearchQuery] = useState("");
 
     const isAll = tabState === "all";
     const isTools = tabState === "tools";
     const isToolKits = tabState === "toolKits";
+
+    const filteredToolKits = toolKits.filter((toolKit) => {
+        if (!searchQuery.trim()) return true;
+        const query = searchQuery.toLowerCase();
+        const name = (toolKit.name || "").toLowerCase();
+        return name.includes(query);
+    });
+
+    const filteredTools = tools.filter((tool) => {
+        if (!searchQuery.trim()) return true;
+        const query = searchQuery.toLowerCase();
+        const name = (tool.name || "").toLowerCase();
+        return name.includes(query);
+    });
 
     const loadToolKits = useCallback(async (signal) => {
         try {
@@ -191,6 +206,15 @@ async function handleDeleteTool(toolId) {
 
     return (
         <main id="toolsPage-main" className="tools-page">
+        <input
+            className="job-search"
+            type="search"
+            name="search"
+            placeholder="Search by name"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+        />
+
         <section className="tools-tabs">
             <div className="tools-tabs__group">
             <button
@@ -236,12 +260,14 @@ async function handleDeleteTool(toolId) {
                 <div className="tools-section__cards">
                     {isLoadingToolKits ? (
                         <LoadingSpinner message="Loading tool kits..." />
-                    ) : toolKits.length > 0 ? (
-                        toolKits.map((toolKit) => (
+                    ) : filteredToolKits.length > 0 ? (
+                        filteredToolKits.map((toolKit) => (
                             <ToolKitCard key={toolKit.id ?? toolKit.name} toolKit={toolKit} onToolKitDeleteSuccess={handleToolKitDeleteSuccess} setToolKitError={setToolKitError}/>
                         ))
-                    ) : (
+                    ) : searchQuery.trim() ? (
                         <h6>No Tool Kits found</h6>
+                    ) : (
+                        <h6>No Tool Kits created</h6>
                     )}
                 </div>
             </section>
@@ -264,12 +290,14 @@ async function handleDeleteTool(toolId) {
                 <div className="tools-section__cards">
                     {isLoadingTools ? (
                         <LoadingSpinner message="Loading tools..." />
-                    ) : tools.length === 0 ? (
-                        <h6>No tools to display</h6>
-                    ) : (
-                        tools.map((tool) => (
+                    ) : filteredTools.length > 0 ? (
+                        filteredTools.map((tool) => (
                             <ToolCard key={tool.id ?? tool.name} tool={tool} onDelete={handleDeleteTool} />
                         ))
+                    ) : searchQuery.trim() ? (
+                        <h6>No tools found</h6>
+                    ) : (
+                        <h6>No tools created</h6>
                     )}
                 </div>
             </section>

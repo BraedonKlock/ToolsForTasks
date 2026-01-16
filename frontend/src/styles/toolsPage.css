@@ -8,6 +8,11 @@
   animation: slideUp 0.5s var(--md-motion-decelerate) both;
 }
 
+.tools-page .job-search {
+  display: block;
+  margin: 0 auto;
+}
+
 /* MD3 Tabs Container */
 .tools-tabs {
   display: flex;
