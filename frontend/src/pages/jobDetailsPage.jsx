@@ -116,6 +116,7 @@ export default function JobDetailsPage() {
 
         const handleJobsChanged = () => {
             loadJobDetails();
+            loadJobTools();
         };
 
         socket.on("jobTools:changed", handleJobToolsChanged);
@@ -125,7 +126,7 @@ export default function JobDetailsPage() {
             socket.off("jobTools:changed", handleJobToolsChanged);
             socket.off("jobs:changed", handleJobsChanged);
         };
-    }, [socket, loadJobTools, id]);
+    }, [socket, loadJobTools, loadJobDetails, id]);
 
     async function toggleToolSelection(toolId) {
         const shouldSelect = !selectedToolIds.includes(toolId);
