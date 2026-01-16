@@ -1,30 +1,14 @@
-:root {
-  --tools-bg: #f6f0ec;
-  --tools-card: #fbf7f3;
-  --tools-cream: #f0e6dc;
-  --tools-ink: #3b3531;
-  --tools-muted: #7a6f68;
-  --tools-accent: #d3873d;
-  --tools-accent-deep: #b76a23;
-  --tools-stroke: #e0d6ce;
-  --tools-shadow: 0 14px 24px rgba(58, 42, 30, 0.08);
-  --tools-shadow-soft: 0 8px 14px rgba(58, 42, 30, 0.08);
-  --tools-radius-lg: 28px;
-  --tools-radius-md: 20px;
-  --tools-radius-sm: 14px;
-}
-
+/* MD3 Tools Page */
 .tools-page {
-
   min-height: 100vh;
-  background:
-    radial-gradient(circle at top, rgba(255, 255, 255, 0.85), transparent 60%),
-    linear-gradient(180deg, #f3ece6 0%, #efe7e1 40%, #f6f0ec 100%);
-  color: var(--tools-ink);
+  background: transparent;
+  color: var(--md-on-surface);
   padding: 24px 20px 60px;
-  font-family: "Cormorant Garamond", "Times New Roman", serif;
+  font-family: var(--font-body);
+  animation: slideUp 0.5s var(--md-motion-decelerate) both;
 }
 
+/* MD3 Tabs Container */
 .tools-tabs {
   display: flex;
   align-items: center;
@@ -32,69 +16,99 @@
   gap: 16px;
   margin: 22px 6px 10px;
   flex-wrap: wrap;
-  animation: fade-in 0.5s ease both;
+  animation: fade-in 0.4s var(--md-motion-decelerate) both;
 }
 
+/* MD3 Segmented Button Group */
 .tools-tabs__group {
   display: inline-flex;
   justify-content: center;
-  gap: 8px;
+  gap: 4px;
   padding: 4px;
-  background: #efe5dc;
-  border-radius: 999px;
-  box-shadow: inset 0 0 0 1px rgba(205, 187, 172, 0.6);
+  background: var(--md-surface-container);
+  border-radius: var(--md-radius-full);
+  border: 1px solid var(--md-outline-variant);
   width: fit-content;
   align-self: center;
 }
 
-.pill {
+/* MD3 Pill Buttons - override global button styles */
+.tools-tabs button.pill {
   border: none;
-  border-radius: 999px;
-  padding: 10px 18px;
-  font-family: "Montserrat", "Helvetica", sans-serif;
-  font-size: 0.9rem;
-  background: transparent;
-  color: var(--tools-ink);
+  border-radius: var(--md-radius-full);
+  padding: 10px 20px;
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  font-weight: 500;
+  background-color: transparent;
+  color: var(--md-on-surface);
   cursor: pointer;
+  box-shadow: none;
+  transform: none;
+  transition: all var(--md-duration-short) var(--md-motion-standard);
   -webkit-tap-highlight-color: transparent;
 }
 
-.tools-tabs .pill--active {
-  background-color: var(--color-surface);
-  box-shadow: var(--tools-shadow-soft);
-  border: 1px solid rgba(202, 185, 170, 0.6);
+.tools-tabs button.pill:hover {
+  background-color: var(--md-surface-container-high);
+  box-shadow: none;
+  transform: none;
+}
+
+.tools-tabs button.pill:active {
+  transform: none;
+  box-shadow: none;
+}
+
+.tools-tabs button.pill.pill--active {
+  background-color: var(--md-secondary-container);
+  color: var(--md-on-secondary-container);
+  box-shadow: none;
+  border: none;
+  transform: none;
   -webkit-tap-highlight-color: transparent;
 }
 
+/* MD3 FAB-style Button */
 .pill--cta {
-  background: linear-gradient(135deg, #e1964a 0%, #c76c26 100%);
-  color: #fff;
-  padding: 12px 22px;
+  background: var(--md-primary);
+  color: var(--md-on-primary);
+  padding: 12px 24px;
   font-weight: 600;
-  box-shadow: var(--tools-shadow);
+  box-shadow: var(--md-elevation-1);
+  border: none;
 }
 
-.pill--ghost {
-    background-color: var(--color-surface);
+.pill--cta:hover {
+  box-shadow: var(--md-elevation-2);
+  transform: translateY(-1px);
+}
 
-  border: 1px solid rgba(198, 181, 167, 0.6);
-  box-shadow: var(--tools-shadow-soft);
-  color: #5d4a3b;
-  -webkit-tap-highlight-color: transparent;
+/* MD3 Tonal Button */
+.pill--ghost {
+  background-color: var(--md-secondary-container);
+  border: none;
+  color: var(--md-on-secondary-container);
+}
+
+.pill--ghost:hover {
+  background-color: var(--md-surface-container-highest);
+  box-shadow: var(--md-elevation-1);
 }
 
 .pill__icon {
   display: inline-flex;
-  width: 18px;
-  height: 18px;
+  width: 20px;
+  height: 20px;
   align-items: center;
   justify-content: center;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.2);
-  margin-right: 6px;
-  font-weight: 700;
+  margin-right: 8px;
+  font-weight: 600;
 }
 
+/* Three Dot Menu */
 .threeDotMenu-container {
   display: flex;
   flex-direction: row;
@@ -108,14 +122,16 @@
   flex-direction: column;
   text-align: center;
   gap: 12px;
-  background: var(--color-surface);
-  border-radius: var(--radius-sm);
+  background: var(--md-surface);
+  border-radius: var(--md-radius-md);
   padding: 12px;
-  box-shadow: none;
+  box-shadow: var(--md-elevation-2);
 }
+
 .delete-btn {
   all: unset;
-  color: #b42318;
+  color: var(--md-error);
+  cursor: pointer;
 }
 
 .threeDotMenu-options.active {
@@ -129,35 +145,42 @@
   box-shadow: none;
   transform: none;
   -webkit-tap-highlight-color: transparent;
+  color: var(--md-on-surface-variant);
+  padding: 8px;
+  border-radius: var(--md-radius-full);
+  transition: background-color var(--md-duration-short) var(--md-motion-standard);
 }
 
 .three-dot-menu-icon:hover,
 .three-dot-menu-icon:active,
 .three-dot-menu-icon:focus {
-  background-color: transparent;
+  background-color: var(--md-surface-container);
   box-shadow: none;
   transform: none;
 }
 
+/* MD3 Section */
 .tools-section {
-  margin-top: 22px;
+  margin-top: 24px;
 }
 
 .tools-section__header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin: 0 4px 12px;
-  font-family: "Montserrat", "Helvetica", sans-serif;
-  color: #443a33;
-  animation: fade-in 0.5s ease both;
+  margin: 0 4px 16px;
+  font-family: var(--font-body);
+  color: var(--md-on-surface);
+  animation: fade-in 0.4s var(--md-motion-decelerate) both;
 }
 
 .tools-section__header h3 {
   margin: 0;
-  font-size: 1.05rem;
+  font-size: 1.1rem;
+  font-weight: 600;
 }
 
+/* Cards Container */
 .tools-section__cards {
   display: flex;
   flex-direction: column;
@@ -168,35 +191,50 @@
   -webkit-overflow-scrolling: touch;
 }
 
+/* MD3 List Item Cards */
 .kit-card,
 .tool-card {
   display: grid;
   grid-template-columns: auto 1fr auto;
   align-items: center;
   gap: 14px;
-  background: var(--tools-card);
-  border-radius: var(--tools-radius-md);
-  padding: 14px 16px;
-  border: 1px solid rgba(209, 194, 181, 0.7);
-  box-shadow: var(--tools-shadow);
-  animation: pop-in 0.5s ease both;
+  background: var(--md-surface);
+  border-radius: var(--md-radius-lg);
+  padding: 16px;
+  border: 1px solid var(--md-outline-variant);
+  box-shadow: var(--md-elevation-1);
+  animation: pop-in 0.4s var(--md-motion-decelerate) backwards;
+  transition: all var(--md-duration-medium) var(--md-motion-standard);
 }
 
+.kit-card:hover,
+.tool-card:hover {
+  box-shadow: var(--md-elevation-2);
+  transform: translateY(-2px);
+}
+
+.kit-card:nth-child(1), .tool-card:nth-child(1) { animation-delay: 0.05s; }
+.kit-card:nth-child(2), .tool-card:nth-child(2) { animation-delay: 0.1s; }
+.kit-card:nth-child(3), .tool-card:nth-child(3) { animation-delay: 0.15s; }
+.kit-card:nth-child(4), .tool-card:nth-child(4) { animation-delay: 0.2s; }
+
+/* MD3 Avatar */
 .kit-card__avatar,
 .tool-card__avatar {
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  border-radius: var(--md-radius-full);
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-family: "Montserrat", "Helvetica", sans-serif;
+  font-family: var(--font-body);
   font-weight: 600;
-  background: #f1d3b6;
-  color: #a2602b;
+  background: var(--md-primary-container);
+  color: var(--md-on-primary-container);
 }
+
 .kit-card__mainLink {
-  grid-column: 1 / 3;          /* span avatar + body columns */
+  grid-column: 1 / 3;
   display: grid;
   grid-template-columns: auto 1fr;
   align-items: center;
@@ -215,8 +253,8 @@
 
 .kit-card__avatar--muted,
 .tool-card__avatar--muted {
-  background: #e0d9d5;
-  color: #8c8681;
+  background: var(--md-surface-container-highest);
+  color: var(--md-on-surface-variant);
 }
 
 .kit-card__body,
@@ -230,14 +268,16 @@
 .tool-card__title {
   margin: 0;
   font-size: 1rem;
-  font-family: "Montserrat", "Helvetica", sans-serif;
+  font-family: var(--font-body);
+  font-weight: 600;
+  color: var(--md-on-surface);
 }
 
 .kit-card__meta {
   margin: 0;
   font-size: 0.85rem;
-  color: var(--tools-muted);
-  font-family: "Montserrat", "Helvetica", sans-serif;
+  color: var(--md-on-surface-variant);
+  font-family: var(--font-body);
 }
 
 @media (max-width: 640px) {
@@ -258,8 +298,7 @@
   .kit-card,
   .tool-card {
     grid-template-columns: auto 1fr auto;
-      background-color: var(--color-surface);
-
+    background-color: var(--md-surface);
   }
 }
 
@@ -293,7 +332,7 @@
 
   .kit-card,
   .tool-card {
-    padding: 18px 20px;
+    padding: 20px;
   }
 }
 

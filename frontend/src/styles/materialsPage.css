@@ -1,6 +1,19 @@
+/* MD3 Materials Page */
 #materialsPage-main {
-    min-height: 100vh;
-    width: 100%;
-    text-align: center;
-    margin-top: 16px;
+  min-height: 100vh;
+  width: 100%;
+  text-align: center;
+  margin-top: 16px;
+  padding: 24px 16px 64px;
+  animation: slideUp 0.5s var(--md-motion-decelerate) both;
+}
+
+#materialsPage-main h1 {
+  color: var(--md-on-surface);
+  font-weight: 600;
+}
+
+#materialsPage-main p {
+  color: var(--md-on-surface-variant);
+  margin-top: 12px;
 }

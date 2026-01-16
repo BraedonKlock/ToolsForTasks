@@ -1,41 +1,44 @@
+/* MD3 Not Logged In Home Page (Landing) */
 #notLoggedInHomePage-main {
   min-height: 100vh;
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 56px;
+  gap: 64px;
   padding: 32px 16px 64px;
   position: relative;
-  animation: rise-in 0.6s ease both;
+  animation: slideUp 0.5s var(--md-motion-decelerate) both;
 }
 
+/* Hero Section */
 .nl-hero {
   display: grid;
-  gap: 24px;
-  animation: fade-in 0.6s ease both;
+  gap: 28px;
+  animation: fade-in 0.5s var(--md-motion-decelerate) 0.1s both;
 }
 
 .nl-hero-content {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 20px;
 }
 
 .nl-eyebrow {
   text-transform: uppercase;
-  letter-spacing: 0.16em;
-  font-size: 0.75rem;
-  color: var(--color-muted);
+  letter-spacing: 0.12em;
+  font-size: 0.8rem;
+  color: var(--md-primary);
   font-weight: 600;
 }
 
 .nl-lead {
-  font-size: 1rem;
-  color: var(--color-muted);
+  font-size: 1.05rem;
+  color: var(--md-on-surface-variant);
   max-width: 560px;
-  line-height: 1.6;
+  line-height: 1.7;
 }
 
+/* MD3 Button Group */
 .nl-hero-cta {
   display: flex;
   flex-wrap: wrap;
@@ -43,76 +46,87 @@
   -webkit-tap-highlight-color: transparent;
 }
 
+/* MD3 Button Styles */
 .nl-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border-radius: 999px;
-  padding: 12px 22px;
+  border-radius: var(--md-radius-full);
+  padding: 14px 28px;
   font-weight: 600;
+  font-size: 0.9rem;
   letter-spacing: 0.02em;
   text-decoration: none;
-  border: 1px solid transparent;
-  transition: transform 0.2s ease, border-color 0.2s ease;
+  border: none;
+  transition: all var(--md-duration-short) var(--md-motion-standard);
 }
 
+/* MD3 Filled Button */
 .nl-btn.primary {
-  background: var(--color-accent);
-  color: #fffaf4;
-  box-shadow: var(--shadow-1);
+  background: var(--md-primary);
+  color: var(--md-on-primary);
+  box-shadow: var(--md-elevation-1);
   -webkit-tap-highlight-color: transparent;
 }
 
 .nl-btn.primary:hover {
-  background: var(--color-accent-strong);
+  box-shadow: var(--md-elevation-2);
   transform: translateY(-1px);
 }
 
+.nl-btn.primary:active {
+  transform: scale(0.98);
+}
+
+/* MD3 Outlined Button */
 .nl-btn.ghost {
   background: transparent;
-  color: var(--color-ink);
-  border-color: var(--color-border);
+  color: var(--md-on-surface);
+  border: 1px solid var(--md-outline);
 }
 
 .nl-btn.ghost:hover {
-  border-color: var(--color-accent);
-  color: var(--color-accent-strong);
+  background-color: var(--md-surface-container);
+  border-color: var(--md-primary);
+  color: var(--md-primary);
 }
 
+/* Meta Chips */
 .nl-hero-meta {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: 10px;
   font-size: 0.85rem;
-  color: var(--color-muted);
+  color: var(--md-on-surface-variant);
 }
 
 .nl-hero-meta span {
-  padding: 6px 12px;
-  border-radius: 999px;
-  background: var(--color-surface-alt);
-  border: 1px solid var(--color-border);
+  padding: 8px 14px;
+  border-radius: var(--md-radius-full);
+  background: var(--md-surface-container-low);
+  border: 1px solid var(--md-outline-variant);
 }
 
+/* MD3 Hero Card */
 .nl-hero-card {
-  background: var(--color-surface);
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--color-border);
-  box-shadow: var(--shadow-2);
-  padding: 20px;
+  background: var(--md-surface);
+  border-radius: var(--md-radius-xl);
+  border: 1px solid var(--md-outline-variant);
+  box-shadow: var(--md-elevation-2);
+  padding: 24px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 20px;
   position: relative;
   overflow: hidden;
-  animation: pop-in 0.6s ease both;
+  animation: pop-in 0.5s var(--md-motion-decelerate) 0.2s both;
 }
 
 .nl-hero-card::after {
   content: "";
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at top right, rgba(196, 104, 30, 0.12), transparent 45%);
+  background: radial-gradient(circle at top right, rgba(181, 84, 59, 0.08), transparent 50%);
   pointer-events: none;
 }
 
@@ -124,177 +138,233 @@
 .nl-hero-card-body {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 14px;
 }
 
 .nl-hero-card-body h3 {
-  font-size: 1.2rem;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
+  font-size: 1.25rem;
+  font-weight: 600;
+  letter-spacing: 0;
+  color: var(--md-on-surface);
 }
 
 .nl-hero-card-body ul {
   margin: 0;
-  padding: 0 0 0 18px;
-  color: var(--color-muted);
-  line-height: 1.6;
+  padding: 0 0 0 20px;
+  color: var(--md-on-surface-variant);
+  line-height: 1.7;
 }
 
 .nl-hero-note {
-  color: var(--color-muted);
+  color: var(--md-on-surface-variant);
   font-size: 0.9rem;
 }
 
+/* MD3 Metrics Section */
 .nl-metrics {
   display: grid;
   gap: 16px;
 }
 
+/* MD3 Metric Card */
 .nl-metric-card {
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  padding: 20px;
+  background: var(--md-surface);
+  border: 1px solid var(--md-outline-variant);
+  border-radius: var(--md-radius-lg);
+  padding: 24px;
   text-align: center;
-  box-shadow: var(--shadow-1);
-  animation: pop-in 0.6s ease both;
+  box-shadow: var(--md-elevation-1);
+  animation: pop-in 0.5s var(--md-motion-decelerate) backwards;
+  transition: all var(--md-duration-medium) var(--md-motion-standard);
+}
+
+.nl-metric-card:hover {
+  box-shadow: var(--md-elevation-2);
+  transform: translateY(-2px);
 }
 
 .nl-metric-card h2 {
-  font-size: 2rem;
+  font-size: 2.25rem;
+  font-weight: 600;
+  color: var(--md-primary);
 }
 
+.nl-metric-card p {
+  color: var(--md-on-surface-variant);
+  margin-top: 8px;
+}
+
+/* Sections */
 .nl-features,
 .nl-workflow {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 24px;
 }
 
 .nl-section-header {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
   max-width: 640px;
 }
 
-.nl-section-header p {
-  color: var(--color-muted);
-  line-height: 1.6;
+.nl-section-header h2 {
+  font-weight: 600;
+  color: var(--md-on-surface);
 }
 
+.nl-section-header p {
+  color: var(--md-on-surface-variant);
+  line-height: 1.7;
+}
+
+/* MD3 Feature Cards */
 .nl-feature-grid {
   display: grid;
   gap: 16px;
 }
 
 .nl-feature-card {
-  background: var(--color-surface);
-  border-radius: var(--radius-md);
-  border: 1px solid var(--color-border);
-  padding: 20px;
-  box-shadow: var(--shadow-1);
+  background: var(--md-surface);
+  border-radius: var(--md-radius-lg);
+  border: 1px solid var(--md-outline-variant);
+  padding: 24px;
+  box-shadow: var(--md-elevation-1);
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  animation: pop-in 0.6s ease both;
+  gap: 12px;
+  animation: pop-in 0.5s var(--md-motion-decelerate) backwards;
+  transition: all var(--md-duration-medium) var(--md-motion-standard);
+}
+
+.nl-feature-card:hover {
+  box-shadow: var(--md-elevation-2);
+  transform: translateY(-2px);
+}
+
+.nl-feature-card h4 {
+  font-weight: 600;
+  color: var(--md-on-surface);
 }
 
 .nl-feature-card p {
-  color: var(--color-muted);
-  line-height: 1.6;
+  color: var(--md-on-surface-variant);
+  line-height: 1.7;
 }
 
+/* MD3 Workflow Steps */
 .nl-workflow-steps {
   display: grid;
   gap: 16px;
 }
 
 .nl-step {
-  background: var(--color-surface-alt);
-  border-radius: var(--radius-md);
-  border: 1px solid var(--color-border);
-  padding: 20px;
+  background: var(--md-surface-container-low);
+  border-radius: var(--md-radius-lg);
+  border: 1px solid var(--md-outline-variant);
+  padding: 24px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  animation: pop-in 0.6s ease both;
+  gap: 12px;
+  animation: pop-in 0.5s var(--md-motion-decelerate) backwards;
+  transition: all var(--md-duration-medium) var(--md-motion-standard);
+}
+
+.nl-step:hover {
+  background: var(--md-surface-container);
+  box-shadow: var(--md-elevation-1);
 }
 
 .nl-step span {
-  font-size: 0.9rem;
-  letter-spacing: 0.12em;
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--color-accent);
+  color: var(--md-primary);
+  font-weight: 600;
+}
+
+.nl-step h4 {
+  font-weight: 600;
+  color: var(--md-on-surface);
 }
 
 .nl-step p {
-  color: var(--color-muted);
-  line-height: 1.6;
+  color: var(--md-on-surface-variant);
+  line-height: 1.7;
 }
 
+/* Proof/Testimonial Section */
 .nl-proof {
   display: flex;
   justify-content: center;
 }
 
 .nl-proof-card {
-  background: var(--color-surface);
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--color-border);
-  box-shadow: var(--shadow-2);
-  padding: 28px;
+  background: var(--md-surface);
+  border-radius: var(--md-radius-xl);
+  border: 1px solid var(--md-outline-variant);
+  box-shadow: var(--md-elevation-2);
+  padding: 32px;
   max-width: 760px;
   text-align: center;
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  animation: pop-in 0.6s ease both;
+  gap: 16px;
+  animation: pop-in 0.5s var(--md-motion-decelerate) backwards;
 }
 
 .nl-proof-card p {
-  color: var(--color-muted);
-  line-height: 1.6;
+  color: var(--md-on-surface-variant);
+  line-height: 1.7;
+  font-size: 1.05rem;
+  font-style: italic;
 }
 
 .nl-proof-card span {
   font-size: 0.9rem;
-  color: var(--color-muted);
+  color: var(--md-on-surface-variant);
+  font-weight: 500;
 }
 
+/* MD3 CTA Banner */
 .nl-cta {
-  background: linear-gradient(120deg, #f5ede2, #f0e4d6);
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--color-border);
-  padding: 28px;
+  background: var(--md-primary-container);
+  border-radius: var(--md-radius-xl);
+  border: 1px solid var(--md-outline-variant);
+  padding: 32px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 20px;
   align-items: flex-start;
-  box-shadow: var(--shadow-2);
-  animation: pop-in 0.6s ease both;
+  box-shadow: var(--md-elevation-2);
+  animation: pop-in 0.5s var(--md-motion-decelerate) backwards;
 }
 
-.nl-metric-card:nth-child(2) {
-  animation-delay: 0.08s;
-}
-
-.nl-metric-card:nth-child(3) {
-  animation-delay: 0.16s;
-}
-
-.nl-feature-card:nth-child(2n) {
-  animation-delay: 0.08s;
-}
-
-.nl-step:nth-child(2n) {
-  animation-delay: 0.1s;
+.nl-cta h3 {
+  color: var(--md-on-primary-container);
+  font-weight: 600;
 }
 
 .nl-cta p {
-  color: var(--color-muted);
-  line-height: 1.6;
+  color: var(--md-on-primary-container);
+  line-height: 1.7;
+  opacity: 0.9;
 }
+
+/* Staggered Animations */
+.nl-metric-card:nth-child(1) { animation-delay: 0.1s; }
+.nl-metric-card:nth-child(2) { animation-delay: 0.15s; }
+.nl-metric-card:nth-child(3) { animation-delay: 0.2s; }
+
+.nl-feature-card:nth-child(1) { animation-delay: 0.1s; }
+.nl-feature-card:nth-child(2) { animation-delay: 0.15s; }
+.nl-feature-card:nth-child(3) { animation-delay: 0.2s; }
+.nl-feature-card:nth-child(4) { animation-delay: 0.25s; }
+
+.nl-step:nth-child(1) { animation-delay: 0.1s; }
+.nl-step:nth-child(2) { animation-delay: 0.15s; }
+.nl-step:nth-child(3) { animation-delay: 0.2s; }
 
 @media (min-width: 768px) {
   #notLoggedInHomePage-main {
@@ -304,6 +374,7 @@
   .nl-hero {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     align-items: center;
+    gap: 40px;
   }
 
   .nl-metrics {
@@ -328,10 +399,12 @@
 @media (min-width: 1024px) {
   #notLoggedInHomePage-main {
     padding: 64px 64px 96px;
+    max-width: 1400px;
+    margin: 0 auto;
   }
 
   .nl-hero {
-    gap: 40px;
+    gap: 48px;
   }
 
   .nl-feature-grid {
@@ -339,6 +412,6 @@
   }
 
   .nl-hero-card {
-    padding: 28px 32px;
+    padding: 32px 36px;
   }
 }

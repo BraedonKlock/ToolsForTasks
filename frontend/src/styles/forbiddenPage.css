@@ -1,37 +1,89 @@
+/* MD3 Forbidden Page */
 .forbidden-page {
   min-height: 75vh;
   display: flex;
   justify-content: center;
+  align-items: center;
   padding: 24px;
-  background: linear-gradient(135deg, rgba(246, 244, 239, 0.9), rgba(236, 242, 249, 0.9));
+  animation: slideUp 0.5s var(--md-motion-decelerate) both;
 }
 
+/* MD3 Card */
 .forbidden-card {
   width: min(520px, 100%);
-  background-color: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-2);
-  padding: 32px;
+  background-color: var(--md-surface);
+  border: 1px solid var(--md-outline-variant);
+  border-radius: var(--md-radius-xl);
+  box-shadow: var(--md-elevation-2);
+  padding: 40px 32px;
   text-align: center;
   height: fit-content;
+  animation: pop-in 0.5s var(--md-motion-decelerate) 0.1s both;
+  position: relative;
+  overflow: hidden;
+}
+
+.forbidden-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--md-error), var(--md-tertiary));
 }
 
 .forbidden-eyebrow {
   font-size: 0.85rem;
-  letter-spacing: 0.28em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--color-muted);
+  color: var(--md-error);
   margin-bottom: 12px;
+  font-weight: 600;
 }
 
 .forbidden-card h1 {
-  margin: 0 0 12px;
+  margin: 0 0 16px;
   font-family: var(--font-display);
-  font-size: 2.2rem;
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--md-on-surface);
+  letter-spacing: 0;
 }
 
 .forbidden-copy {
-  color: var(--color-muted);
+  color: var(--md-on-surface-variant);
   margin: 0 0 24px;
+  line-height: 1.6;
+}
+
+/* MD3 Button for returning home */
+.forbidden-card a,
+.forbidden-card button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 28px;
+  border-radius: var(--md-radius-full);
+  font-weight: 600;
+  font-size: 0.95rem;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  border: none;
+  background: var(--md-primary);
+  color: var(--md-on-primary);
+  box-shadow: var(--md-elevation-1);
+  -webkit-tap-highlight-color: transparent;
+  transition: all var(--md-duration-short) var(--md-motion-standard);
+}
+
+.forbidden-card a:hover,
+.forbidden-card button:hover {
+  box-shadow: var(--md-elevation-2);
+  transform: translateY(-1px);
+}
+
+.forbidden-card a:active,
+.forbidden-card button:active {
+  transform: scale(0.98);
 }

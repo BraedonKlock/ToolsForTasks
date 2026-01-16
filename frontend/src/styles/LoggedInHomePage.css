@@ -1,4 +1,5 @@
-﻿.loggedinHomePage {
+/* MD3 Logged In Home Page */
+.loggedinHomePage {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -6,58 +7,62 @@
   width: 100%;
   padding: 16px;
   min-height: 100vh;
-  animation: rise-in 0.6s ease both;
+  animation: slideUp 0.5s var(--md-motion-decelerate) both;
 }
 
+/* Cards Container */
 .jobs-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   width: min(900px, 100%);
-  gap: 50px;
+  gap: 20px;
   margin-top: 16px;
   box-sizing: border-box;
   padding: 0 0 24px 0;
 }
 
+/* MD3 Card */
 .job-card {
   display: flex;
   flex-direction: row;
   align-items: center;
   gap: 16px;
   width: 100%;
-  border-radius: var(--radius-md);
-  border: 1px solid var(--color-border);
-  box-shadow: var(--shadow-1);
-  padding: 12px 16px;
-  background-color: var(--color-surface);
-  animation: fade-in 0.6s ease both;
+  border-radius: var(--md-radius-lg);
+  border: 1px solid var(--md-outline-variant);
+  box-shadow: var(--md-elevation-1);
+  padding: 16px;
+  background-color: var(--md-surface);
+  transition: all var(--md-duration-medium) var(--md-motion-standard);
+}
+
+.job-card:hover {
+  box-shadow: var(--md-elevation-2);
+  transform: translateY(-2px);
 }
 
 .job-card-wrapper {
   width: 100%;
-  animation: pop-in 0.5s ease both;
+  animation: pop-in 0.4s var(--md-motion-decelerate) backwards;
 }
+
+.job-card-wrapper:nth-child(1) { animation-delay: 0.05s; }
+.job-card-wrapper:nth-child(2) { animation-delay: 0.1s; }
+.job-card-wrapper:nth-child(3) { animation-delay: 0.15s; }
+.job-card-wrapper:nth-child(4) { animation-delay: 0.2s; }
+.job-card-wrapper:nth-child(5) { animation-delay: 0.25s; }
+.job-card-wrapper:nth-child(6) { animation-delay: 0.3s; }
 
 .job-card-link {
   display: block;
   width: 100%;
-}
-
-.job-card-wrapper:nth-child(2) {
-  animation-delay: 0.05s;
-}
-
-.job-card-wrapper:nth-child(3) {
-  animation-delay: 0.1s;
-}
-
-.job-card-wrapper:nth-child(4) {
-  animation-delay: 0.15s;
+  text-decoration: none;
 }
 
 .job-image {
   width: clamp(56px, 18vw, 96px);
+  border-radius: var(--md-radius-md);
 }
 
 .job-text {
@@ -67,18 +72,34 @@
   gap: 6px;
 }
 
+.job-text h4 {
+  font-weight: 600;
+  color: var(--md-on-surface);
+}
+
+.job-text p {
+  font-size: 0.875rem;
+  color: var(--md-on-surface-variant);
+}
+
+/* MD3 FAB */
 #addJob-image {
   position: fixed;
   z-index: 1000;
-  bottom: 16px;
-  right: 16px;
-  width: clamp(56px, 14vw, 88px);
-  filter: drop-shadow(0 6px 10px rgba(20, 20, 20, 0.3));
+  bottom: 20px;
+  right: 20px;
+  width: clamp(56px, 14vw, 72px);
+  filter: drop-shadow(0 4px 8px rgba(35, 25, 23, 0.25));
+  transition: all var(--md-duration-short) var(--md-motion-standard);
 }
 
-.job-card-link {
-  text-decoration: none;
-  width: 100%;
+#addJob-image:hover {
+  filter: drop-shadow(0 6px 12px rgba(35, 25, 23, 0.3));
+  transform: scale(1.05);
+}
+
+#addJob-image:active {
+  transform: scale(0.95);
 }
 
 @media (min-width: 900px) {
@@ -103,13 +124,13 @@
 
   .job-card {
     align-items: flex-start;
-    padding: 18px 20px;
+    padding: 20px;
   }
 
   #addJob-image {
     bottom: 32px;
     right: 32px;
-    width: clamp(64px, 6vw, 96px);
+    width: clamp(64px, 6vw, 80px);
   }
 }
 
