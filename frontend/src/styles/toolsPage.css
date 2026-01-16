@@ -59,9 +59,8 @@
   -webkit-tap-highlight-color: transparent;
 }
 
-.pill--active {
-    background-color: var(--color-surface);
-
+.tools-tabs .pill--active {
+  background-color: var(--color-surface);
   box-shadow: var(--tools-shadow-soft);
   border: 1px solid rgba(202, 185, 170, 0.6);
   -webkit-tap-highlight-color: transparent;
