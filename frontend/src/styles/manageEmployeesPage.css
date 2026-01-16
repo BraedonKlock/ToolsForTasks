@@ -35,7 +35,35 @@
   width: min(900px, 100%);
   padding: 0 5px 0 5px;
   animation: fade-in 0.5s ease both;
+}
 
+.employees-tabs {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin: 22px 6px 10px;
+  flex-wrap: wrap;
+  animation: fade-in 0.5s ease both;
+}
+
+.employees-tabs__group {
+  display: inline-flex;
+  justify-content: center;
+  gap: 8px;
+  padding: 4px;
+  background: #efe5dc;
+  border-radius: 999px;
+  box-shadow: inset 0 0 0 1px rgba(205, 187, 172, 0.6);
+  width: fit-content;
+  align-self: center;
+}
+
+.employees-tabs .pill--active {
+  background-color: var(--color-surface);
+  box-shadow: var(--tools-shadow-soft);
+  border: 1px solid rgba(202, 185, 170, 0.6);
+  -webkit-tap-highlight-color: transparent;
 }
 
 .jobs-section__header h3 {
@@ -141,12 +169,24 @@
   margin-top: 16px;
 }
 
+@media (max-width: 600px) {
+  .employees-tabs {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
 @media (min-width: 900px) {
   #manageEmployeesPage-main {
     padding: 32px 48px 72px;
     align-items: stretch;
     width: min(1200px, 100%);
     margin: 24px auto 0;
+  }
+
+  .employees-tabs {
+    width: min(1100px, 100%);
+    margin: 32px 0 16px;
   }
 
   .jobs-section__header {

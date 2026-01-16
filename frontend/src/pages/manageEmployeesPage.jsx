@@ -8,6 +8,19 @@ export default function manageEmployeesPage() {
     const { accessToken, logout } = useContext(AuthContext);
     const [error, setError] = useState("");
     const [employees, setEmployees] = useState([]);
+    const [tabState, setTabState] = useState("all");
+
+    const isAll = tabState === "all";
+    const isManagers = tabState === "managers";
+    const isCrew = tabState === "crew";
+
+    const filteredEmployees = employees.filter((employee) => {
+        if (isAll) return true;
+        const role = (employee.role || "").trim().toLowerCase();
+        if (isManagers) return role === "manager";
+        if (isCrew) return role === "crew";
+        return true;
+    });
 
     useEffect(() => {
         (async () => {
@@ -49,6 +62,33 @@ export default function manageEmployeesPage() {
                 name="search"
                 placeholder="Search"
             />
+
+            <section className="employees-tabs">
+                <div className="employees-tabs__group">
+                    <button
+                        className={`pill ${isAll ? "pill--active" : ""}`}
+                        type="button"
+                        onClick={() => setTabState("all")}
+                    >
+                        All
+                    </button>
+                    <button
+                        className={`pill ${isManagers ? "pill--active" : ""}`}
+                        type="button"
+                        onClick={() => setTabState("managers")}
+                    >
+                        Managers
+                    </button>
+                    <button
+                        className={`pill ${isCrew ? "pill--active" : ""}`}
+                        type="button"
+                        onClick={() => setTabState("crew")}
+                    >
+                        Crew
+                    </button>
+                </div>
+            </section>
+            
             <div className="jobs-section__header jobs-section__header--split">
                 <h3>Employees</h3>
                 <Link className="pill pill--ghost" to="/loggedIn/add-employee">
@@ -58,10 +98,11 @@ export default function manageEmployeesPage() {
                     Add Employee
                 </Link>
             </div>
+
             {error && <p id="login-error" className="error">{error}</p>}
             <section id="employees-employeesContainer" className="employees-container">
-                    {employees.length > 0 ? (
-                    employees.map((employee) => (
+                    {filteredEmployees.length > 0 ? (
+                    filteredEmployees.map((employee) => (
                         <EmployeeCard key={employee.id} employee={employee} onDeleteSuccess={handleDeleteSuccess}/>
                     ))
                     ) : (
