@@ -448,10 +448,12 @@ export default function EditJobPage() {
         formData.append("phoneNumber", htmlForm.phoneNumber.value);
         formData.append("notes", htmlForm.notes.value);
 
-        // Add image if new file selected, otherwise keep existing
+        // Add image if new file selected
         if (imageFile) {
             formData.append("image", imageFile);
-        } else if (job?.image) {
+        }
+        // Always send currentImage if job has an existing image (so backend can delete old one)
+        if (job?.image) {
             formData.append("currentImage", job.image);
         }
 

@@ -1,6 +1,8 @@
 /**
  * This file is responsible for handling post and get requests
  */
+const fs = require('fs');
+const path = require('path');
 const User = require('../models/user');
 const Jobs = require('../models/jobs'); // importing jobs object from models
 const Employees = require('../models/employee');
@@ -8,6 +10,19 @@ const Tools = require('../models/tools');
 const ToolKits = require('../models/toolKits');
 const db = require('../util/database');
 const bcrypt = require('bcryptjs'); // importing encryption for user passwords
+
+// Helper function to delete uploaded images
+function deleteImageFile(folder, filename) {
+  // Don't delete if no filename, or if it's a default image
+  if (!filename || filename === 'default.png') return;
+
+  const filePath = path.join(__dirname, '..', 'uploads', folder, filename);
+  fs.unlink(filePath, (err) => {
+    if (err && err.code !== 'ENOENT') {
+      console.error(`Failed to delete image: ${filePath}`, err);
+    }
+  });
+}
 
 /**-------------------------------------------------------------------------------------------------*/
 exports.getAllJobs = async (req, res) => {
@@ -45,10 +60,26 @@ exports.deleteJob = async (req, res) => {
     const { id } = req.params;
     const { orgId } = req.user;
 
+    // Get job first to retrieve image filename before deletion
+    let jobImage = null;
+    try {
+      const jobRows = await Jobs.getJob(orgId, id);
+      if (jobRows && jobRows[0]) {
+        jobImage = jobRows[0].image;
+      }
+    } catch (e) {
+      // Job not found, continue with deletion attempt
+    }
+
     const [result] = await Jobs.deleteJobById(orgId, id);
 
     if (!result || result.affectedRows === 0) {
       return res.status(404).json({ error: "Job not found" });
+    }
+
+    // Delete job image file if it exists
+    if (jobImage) {
+      deleteImageFile('jobs', jobImage);
     }
 
     res.status(200).json({ ok: true });
@@ -343,6 +374,11 @@ exports.updateJob = async (req,res) => {
     // Use new uploaded file if present, otherwise keep existing image
     const image = req.file ? req.file.filename : (currentImage || null);
 
+    // Delete old image if a new one is uploaded
+    if (req.file && currentImage) {
+      deleteImageFile('jobs', currentImage);
+    }
+
     const cleanDate = (date && String(date).trim() !== "") ? date : null;
     const jobIdInt = Number.parseInt(jobid, 10);
     if (!Number.isInteger(jobIdInt)) {
@@ -492,10 +528,26 @@ exports.deleteEmployeeFromOrg = async (req, res) => {
     const { id } = req.params;
     const orgId = req.user.orgId;
 
+    // Get employee first to retrieve avatar filename before deletion
+    let employeeAvatar = null;
+    try {
+      const rows = await Employees.findEmployeeById(orgId, id);
+      if (rows && rows[0]) {
+        employeeAvatar = rows[0].avatar;
+      }
+    } catch (e) {
+      // Employee not found, continue with deletion attempt
+    }
+
     const [result] = await Employees.deleteEmployeeFromOrg(orgId, id);
 
     if(!result || result.affectedRows === 0) {
       return res.status(404).json({error: "Could not delete employee, please try again later."})
+    }
+
+    // Delete employee avatar file if it exists
+    if (employeeAvatar) {
+      deleteImageFile('employees', employeeAvatar);
     }
 
     res.status(200).json({ok: true});
@@ -593,6 +645,11 @@ exports.updateEmployee = async (req,res) => {
 
     // Use new uploaded file if present, otherwise keep existing avatar
     const avatar = req.file ? req.file.filename : currentAvatar;
+
+    // Delete old avatar if a new one is uploaded
+    if (req.file && currentAvatar) {
+      deleteImageFile('employees', currentAvatar);
+    }
 
     const employeeIdInt = Number.parseInt(employeeid, 10);
     if (!Number.isInteger(employeeIdInt)) {
