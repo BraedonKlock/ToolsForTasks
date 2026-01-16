@@ -150,6 +150,21 @@
   object-fit: cover;
 }
 
+.job-avatar-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.job-avatar-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--md-on-surface-variant);
+  font-family: var(--font-body);
+}
+
 .job-text {
   display: flex;
   flex-direction: column;

@@ -170,12 +170,15 @@ export default function JobDetailsPage() {
                 {job && (
                     <>
                     <article className="jobDetails-subContainer">
-                        <div className={`jobDetails-avatar ${job.image ? 'has-image' : ''}`}>
-                            {job.image ? (
-                                <img src={`/uploads/jobs/${job.image}`} alt={job.title || 'Job'} className="jobDetails-avatar-image" />
-                            ) : (
-                                job.jobid
-                            )}
+                        <div className="jobDetails-avatar-wrapper">
+                            <div className={`jobDetails-avatar ${job.image ? 'has-image' : ''}`}>
+                                {job.image ? (
+                                    <img src={`/uploads/jobs/${job.image}`} alt={job.title || 'Job'} className="jobDetails-avatar-image" />
+                                ) : (
+                                    job.jobid
+                                )}
+                            </div>
+                            {job.image && <span className="jobDetails-avatar-label">{job.jobid}</span>}
                         </div>
                         <div className="jobDetails-text">
                         <h6>{job.title}</h6>

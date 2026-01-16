@@ -55,12 +55,15 @@ export default function JobCard({ job, isJobsPage, onDeleteSuccess }) {
 
                 <Link to={`/loggedIn/job-details/${job.id}`} className="job-card-link">
                     <div className="job-card" data-job-id={job.jobid}>
-                    <div className={`job-avatar ${job.image ? 'has-image' : ''}`}>
-                        {job.image ? (
-                            <img src={`/uploads/jobs/${job.image}`} alt={job.title || 'Job'} className="job-avatar-image" />
-                        ) : (
-                            job.jobid
-                        )}
+                    <div className="job-avatar-wrapper">
+                        <div className={`job-avatar ${job.image ? 'has-image' : ''}`}>
+                            {job.image ? (
+                                <img src={`/uploads/jobs/${job.image}`} alt={job.title || 'Job'} className="job-avatar-image" />
+                            ) : (
+                                job.jobid
+                            )}
+                        </div>
+                        {job.image && <span className="job-avatar-label">{job.jobid}</span>}
                     </div>
                     <div className="job-text">
                         <h6>{job.title}</h6>
@@ -74,12 +77,15 @@ export default function JobCard({ job, isJobsPage, onDeleteSuccess }) {
             {isJobsPage && (
                 <>
                     <div className="job-card" data-job-id={job.id}>
-                        <div className={`job-avatar ${job.image ? 'has-image' : ''}`}>
-                            {job.image ? (
-                                <img src={`/uploads/jobs/${job.image}`} alt={job.title || 'Job'} className="job-avatar-image" />
-                            ) : (
-                                job.jobid
-                            )}
+                        <div className="job-avatar-wrapper">
+                            <div className={`job-avatar ${job.image ? 'has-image' : ''}`}>
+                                {job.image ? (
+                                    <img src={`/uploads/jobs/${job.image}`} alt={job.title || 'Job'} className="job-avatar-image" />
+                                ) : (
+                                    job.jobid
+                                )}
+                            </div>
+                            {job.image && <span className="job-avatar-label">{job.jobid}</span>}
                         </div>
                         <div className="job-text">
                             <h6>{job.title}</h6>

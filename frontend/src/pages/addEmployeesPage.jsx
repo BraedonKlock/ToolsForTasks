@@ -13,8 +13,6 @@ export default function AddEmployees() {
     const fileInputRef = useRef(null);
     const navigate = useNavigate();
 
-    const defaultAvatarSrc = "/images/user0.png";
-
     function handleFileChange(e) {
         const file = e.target.files[0];
         if (file) {
@@ -97,11 +95,18 @@ export default function AddEmployees() {
             {/* AVATAR UPLOAD */}
             <div className="form-control" id="avatarDiv">
                 <div className="avatar-upload-container" onClick={handleAvatarClick}>
-                    <img
-                        src={avatarPreview || defaultAvatarSrc}
-                        alt="Employee avatar"
-                        className="avatar-preview"
-                    />
+                    {avatarPreview ? (
+                        <img
+                            src={avatarPreview}
+                            alt="Employee avatar"
+                            className="avatar-preview"
+                        />
+                    ) : (
+                        <div className="avatar-placeholder">
+                            <FontAwesomeIcon icon={faCamera} className="camera-icon" />
+                            <span>Add Photo</span>
+                        </div>
+                    )}
                     <div className="avatar-upload-overlay">
                         <FontAwesomeIcon icon={faCamera} className="camera-icon" />
                     </div>
@@ -116,7 +121,7 @@ export default function AddEmployees() {
                 />
 
                 <span className="avatar-upload-hint">
-                    {avatarFile ? avatarFile.name : "Click to upload photo"}
+                    {avatarFile ? avatarFile.name : "Optional: Upload a photo"}
                 </span>
             </div>
 

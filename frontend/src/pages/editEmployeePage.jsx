@@ -21,14 +21,12 @@ export default function EditEmployee() {
     // Get avatar source based on current or new avatar
     const getAvatarSrc = () => {
         if (avatarPreview) return avatarPreview;
-        if (!currentAvatar) return "/images/user0.png";
-        // If it's a number, use old format
-        if (!isNaN(currentAvatar) && currentAvatar !== '') {
-            return `/images/user${currentAvatar}.png`;
-        }
+        if (!currentAvatar) return null;
         // If it's a filename, use uploads path
-        return `http://${window.location.hostname}:3000/uploads/employees/${currentAvatar}`;
+        return `/uploads/employees/${currentAvatar}`;
     };
+
+    const hasAvatar = avatarPreview || currentAvatar;
 
     function handleFileChange(e) {
         const file = e.target.files[0];
@@ -140,11 +138,18 @@ export default function EditEmployee() {
             {/* AVATAR UPLOAD */}
             <div className="form-control" id="avatarDiv">
                 <div className="avatar-upload-container" onClick={handleAvatarClick}>
-                    <img
-                        src={getAvatarSrc()}
-                        alt="Employee avatar"
-                        className="avatar-preview"
-                    />
+                    {hasAvatar ? (
+                        <img
+                            src={getAvatarSrc()}
+                            alt="Employee avatar"
+                            className="avatar-preview"
+                        />
+                    ) : (
+                        <div className="avatar-placeholder">
+                            <FontAwesomeIcon icon={faCamera} className="camera-icon" />
+                            <span>Add Photo</span>
+                        </div>
+                    )}
                     <div className="avatar-upload-overlay">
                         <FontAwesomeIcon icon={faCamera} className="camera-icon" />
                     </div>
@@ -159,7 +164,7 @@ export default function EditEmployee() {
                 />
 
                 <span className="avatar-upload-hint">
-                    {avatarFile ? avatarFile.name : "Click to change photo"}
+                    {avatarFile ? avatarFile.name : (hasAvatar ? "Click to change photo" : "Optional: Upload a photo")}
                 </span>
             </div>
 
