@@ -11,6 +11,17 @@ export default function LoggedInHomePage() {
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [socket, setSocket] = useState(null); // holding socket instance
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const filteredJobs = jobs.filter((job) => {
+    if (!searchQuery.trim()) return true;
+    const query = searchQuery.toLowerCase();
+    const jobId = (job.jobid || "").toString().toLowerCase();
+    const title = (job.title || "").toLowerCase();
+    const address = (job.address || "").toLowerCase();
+    const date = (job.date || "").toLowerCase();
+    return jobId.includes(query) || title.includes(query) || address.includes(query) || date.includes(query);
+  });
 
   /** fetching jobs from the backend so the page can be updated when the db changes
    * useCallback is implemented because useEffect has loadJobs in its dependency array,
@@ -95,7 +106,9 @@ export default function LoggedInHomePage() {
         className="job-search"
         type="search"
         name="search"
-        placeholder="Search"
+        placeholder="Search by ID, title, address, or date"
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
       />
 
       <section id="jobs-jobsContainer" className="jobs-container">
@@ -104,10 +117,12 @@ export default function LoggedInHomePage() {
         )}
         {isLoading ? (
           <LoadingSpinner message="Loading jobs..." />
-        ) : jobs && jobs.length > 0 ? (
-          jobs.map((job) => (
+        ) : filteredJobs.length > 0 ? (
+          filteredJobs.map((job) => (
             <JobCard key={job.jobid} job={job} isJobsPage={false} />
           ))
+        ) : searchQuery.trim() ? (
+          <h1>No Jobs Found</h1>
         ) : (
           <h1>No Jobs Created</h1>
         )}

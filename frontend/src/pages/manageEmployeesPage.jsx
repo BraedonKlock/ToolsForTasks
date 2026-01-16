@@ -11,16 +11,26 @@ export default function manageEmployeesPage() {
     const [employees, setEmployees] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [tabState, setTabState] = useState("all");
+    const [searchQuery, setSearchQuery] = useState("");
 
     const isAll = tabState === "all";
     const isManagers = tabState === "managers";
     const isCrew = tabState === "crew";
 
     const filteredEmployees = employees.filter((employee) => {
-        if (isAll) return true;
+        // Filter by role (tab)
         const role = (employee.role || "").trim().toLowerCase();
-        if (isManagers) return role === "manager";
-        if (isCrew) return role === "crew";
+        if (!isAll) {
+            if (isManagers && role !== "manager") return false;
+            if (isCrew && role !== "crew") return false;
+        }
+        // Filter by search query
+        if (searchQuery.trim()) {
+            const query = searchQuery.toLowerCase();
+            const employeeId = (employee.employeeid || "").toString().toLowerCase();
+            const name = (employee.name || "").toLowerCase();
+            return employeeId.includes(query) || name.includes(query);
+        }
         return true;
     });
 
@@ -65,7 +75,9 @@ export default function manageEmployeesPage() {
                 className="job-search"
                 type="search"
                 name="search"
-                placeholder="Search"
+                placeholder="Search by ID or name"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
             />
 
             <section className="employees-tabs">
@@ -112,8 +124,10 @@ export default function manageEmployeesPage() {
                         filteredEmployees.map((employee) => (
                             <EmployeeCard key={employee.id} employee={employee} onDeleteSuccess={handleDeleteSuccess}/>
                         ))
-                    ) : (
+                    ) : searchQuery.trim() ? (
                         <h1>No Employees Found</h1>
+                    ) : (
+                        <h1>No Employees Created</h1>
                     )}
                 </section>
         </main>
