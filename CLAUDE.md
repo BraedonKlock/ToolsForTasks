@@ -218,7 +218,7 @@ res.status(403).json({ error: "Do not have permission." });
 
 ```javascript
 class Jobs {
-  constructor(jobID, jobType, title, date, description, status, org_id) {
+  constructor(jobID, title, date, address, phoneNumber, notes, org_id) {
     this.jobID = jobID;
     // ...
   }
@@ -227,7 +227,7 @@ class Jobs {
   async addJob() {
     return db.execute(
       'INSERT INTO jobs (...) VALUES (?, ?, ?, ?, ?, ?, ?)',
-      [this.jobID, this.jobType, ...]
+      [this.jobID, this.title, ...]
     );
   }
 
@@ -287,7 +287,7 @@ fetch("/api/loggedIn/jobs", {
     "Content-Type": "application/json",
     Authorization: `Bearer ${accessToken}`
   },
-  body: JSON.stringify({ jobType, jobid, title, date, description })
+  body: JSON.stringify({ jobid, title, date, address, phoneNumber, notes })
 });
 ```
 

@@ -60,9 +60,20 @@
   text-decoration: none;
 }
 
-.job-image {
-  width: clamp(56px, 18vw, 96px);
-  border-radius: var(--md-radius-md);
+/* MD3 Avatar */
+.job-avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--md-radius-full);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.9rem;
+  background: var(--md-primary-container);
+  color: var(--md-on-primary-container);
+  flex-shrink: 0;
 }
 
 .job-text {

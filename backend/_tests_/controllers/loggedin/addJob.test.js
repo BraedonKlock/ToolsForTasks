@@ -64,7 +64,7 @@ jest.mock("../../../models/jobs", () => {
 
         const req = {
         user: { orgId: 1 },
-        body: { jobType: "roofing", jobid: "123", employeeIds: [] },
+        body: { jobid: "123", employeeIds: [] },
         app: { get: jest.fn() },
         };
         const res = makeRes();
@@ -85,7 +85,7 @@ jest.mock("../../../models/jobs", () => {
         const io = makeIo();
         const req = {
         user: { orgId: 5 },
-        body: { jobType: "roofing", jobid: "123", employeeIds: [] },
+        body: { jobid: "123", employeeIds: [] },
         app: { get: jest.fn().mockReturnValue(io) },
         };
         const res = makeRes();
@@ -112,7 +112,6 @@ jest.mock("../../../models/jobs", () => {
         const req = {
         user: { orgId: 9 },
         body: {
-            jobType: "roofing",
             jobid: "123",
             employeeIds: [2, 3],
         },
@@ -135,7 +134,7 @@ jest.mock("../../../models/jobs", () => {
 
         const req = {
         user: { orgId: 1 },
-        body: { jobType: "roofing", jobid: "123", employeeIds: [7] },
+        body: { jobid: "123", employeeIds: [7] },
         app: { get: jest.fn() },
         };
         const res = makeRes();
@@ -158,7 +157,7 @@ jest.mock("../../../models/jobs", () => {
 
         const req = {
         user: { orgId: 1 },
-        body: { jobType: "roofing", jobid: "123", employeeIds: [] },
+        body: { jobid: "123", employeeIds: [] },
         app: { get: jest.fn() },
         };
         const res = makeRes();
@@ -178,7 +177,7 @@ jest.mock("../../../models/jobs", () => {
 
         const req = {
         user: { orgId: 1 },
-        body: { jobType: "roofing", jobid: "123", employeeIds: [] },
+        body: { jobid: "123", employeeIds: [] },
         app: { get: jest.fn() },
         };
         const res = makeRes();

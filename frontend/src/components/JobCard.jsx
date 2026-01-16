@@ -55,13 +55,8 @@ export default function JobCard({ job, isJobsPage, onDeleteSuccess }) {
 
                 <Link to={`/loggedIn/job-details/${job.id}`} className="job-card-link">
                     <div className="job-card" data-job-id={job.jobid}>
-                    <img
-                        className="job-image"
-                        src={`/images/${String(job.jobType).toLowerCase()}.png`}
-                        alt={job.jobType}
-                    />
+                    <div className="job-avatar">{job.jobid}</div>
                     <div className="job-text">
-                        <h6>ID: {job.jobid}</h6>
                         <h6>{job.title}</h6>
                         <h6>{job.date}</h6>
                         <h6>{job.address}</h6>
@@ -73,13 +68,8 @@ export default function JobCard({ job, isJobsPage, onDeleteSuccess }) {
             {isJobsPage && (
                 <>
                     <div className="job-card" data-job-id={job.id}>
-                        <img
-                            className="job-image"
-                            src={`/images/${String(job.jobType).toLowerCase()}.png`}
-                            alt={job.jobType}
-                        />
+                        <div className="job-avatar">{job.jobid}</div>
                         <div className="job-text">
-                            <h6>ID: {job.jobid}</h6>
                             <h6>{job.title}</h6>
                             <h6>{job.date}</h6>
                             <h6>{job.address}</h6>

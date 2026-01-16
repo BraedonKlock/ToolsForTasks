@@ -314,16 +314,6 @@ export default function AddJob() {
 
             <form className="forms" onSubmit={onSubmit}>
                 <div className="form-control">
-                    <label htmlFor="jobType">Job Type:</label>
-                    <select name="jobType" id="addJobForm-jobType" required defaultValue="">
-                        <option value="" disabled hidden>Select a job type</option>
-                        <option value="roofing">Roofing</option>
-                        <option value="carpentry">Carpentry</option>
-                        <option value="siding">Siding</option>
-                    </select>
-                </div>
-
-                <div className="form-control">
                     <label htmlFor="jobid">Job ID:</label>
                     <input type="text" name="jobid" />
                 </div>

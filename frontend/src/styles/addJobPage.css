@@ -132,10 +132,6 @@
   text-align: center;
 }
 
-#addJobForm-jobType {
-  width: 70%;
-}
-
 #addJob-employeeSelect {
   width: 70%;
   text-align: center;
@@ -423,7 +419,6 @@
   .addJob-page .form-control input,
   .addJob-page .form-control select,
   #addJobForm-date,
-  #addJobForm-jobType,
   #addJob-employeeSelect,
   #addJob-addEmployeeBtn,
   #addJob-notes {

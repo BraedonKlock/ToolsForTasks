@@ -16,7 +16,6 @@ describe("Jobs page (mobile)", () => {
         cy.get('a[href="/loggedIn/add-job"]').should("be.visible").click();
         cy.url().should("include", "/loggedIn/add-job");
 
-        cy.get("#addJobForm-jobType").select("roofing");
         cy.get('input[name="jobid"]').type("123");
         cy.get('input[name="title"]').type("Test Job");
         cy.get('input[name="date"]').type("2026-01-03");
@@ -43,7 +42,6 @@ describe("Jobs page (mobile)", () => {
         cy.get('a[href="/loggedIn/add-job"]').should("be.visible").click();
         cy.url().should("include", "/loggedIn/add-job");
 
-        cy.get("#addJobForm-jobType").select("roofing");
         cy.get('input[name="jobid"]').type("JOB123");
         cy.get('input[name="title"]').type("Test Job");
         cy.get('input[name="date"]').type("2026-01-03");
@@ -69,7 +67,6 @@ describe("Jobs page (mobile)", () => {
         cy.get('a[href="/loggedIn/add-job"]').should("be.visible").click();
         cy.url().should("include", "/loggedIn/add-job");
 
-        cy.get("#addJobForm-jobType").select("roofing");
         cy.get('input[name="jobid"]').type("123");
         cy.get('input[name="title"]').type("Test Job");
         cy.get('input[name="date"]').type("2026-01-03");
@@ -96,7 +93,8 @@ describe("Jobs page (mobile)", () => {
     it("fails to edit job when giving the job a jobid that already exists and displays the proper error message", () => {
         cy.visit("/loggedIn/jobs");
 
-        cy.contains(".job-card", "ID: 123", { timeout: 10000 })
+        cy.contains(".job-avatar", "123", { timeout: 10000 })
+            .closest(".job-card")
             .should("exist")
             .as("jobCard");
 
@@ -117,7 +115,8 @@ describe("Jobs page (mobile)", () => {
     it("fails to edit job when there is no jobid and displays the proper error message", () => {
         cy.visit("/loggedIn/jobs");
 
-        cy.contains(".job-card", "ID: 123", { timeout: 10000 })
+        cy.contains(".job-avatar", "123", { timeout: 10000 })
+            .closest(".job-card")
             .should("exist")
             .as("jobCard");
 
@@ -138,7 +137,8 @@ describe("Jobs page (mobile)", () => {
     it("edits jobid from 123 to 12", () => {
         cy.visit("/loggedIn/jobs");
 
-        cy.contains(".job-card", "ID: 123", { timeout: 10000 })
+        cy.contains(".job-avatar", "123", { timeout: 10000 })
+            .closest(".job-card")
             .should("exist")
             .as("jobCard");
 
@@ -154,16 +154,17 @@ describe("Jobs page (mobile)", () => {
 
         cy.contains("button", /update/i).click();
 
-        // 6) Confirm we’re back on jobs page and the card shows ID: 12 (and not 123)
+        // Confirm we're back on jobs page and the card shows 12 (and not 123)
         cy.url({ timeout: 10000 }).should("include", "/loggedIn/jobs");
-        cy.contains(".job-card", "ID: 12", { timeout: 10000 }).should("exist");
-        cy.contains(".job-card", "ID: 123").should("not.exist");
+        cy.contains(".job-avatar", "12", { timeout: 10000 }).should("exist");
+        cy.contains(".job-avatar", "123").should("not.exist");
     });
 
     it("deletes the job with jobid 12", () => {
         cy.visit("/loggedIn/jobs");
 
-        cy.contains(".job-card", "ID: 12", { timeout: 10000 })
+        cy.contains(".job-avatar", "12", { timeout: 10000 })
+            .closest(".job-card")
             .should("exist")
             .invoke("attr", "data-job-id")
             .then((jobDbId) => {

@@ -464,16 +464,6 @@ export default function EditJobPage() {
 
             <form className="forms" onSubmit={onSubmit}>
                 <div className="form-control">
-                <label htmlFor="jobType">Job Type:</label>
-                <select name="jobType" id="editJobForm-jobType" required>
-                    <option value={job?.jobType?? ""} disabled hidden>{job?.jobType?? ""}</option>
-                    <option value="roofing">Roofing</option>
-                    <option value="carpentry">Carpentry</option>
-                    <option value="siding">Siding</option>
-                </select>
-                </div>
-
-                <div className="form-control">
                 <label htmlFor="jobid">Job ID:</label>
                 <input type="text" name="jobid" defaultValue={job?.jobid?? ""}/>
                 </div>
