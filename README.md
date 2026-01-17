@@ -30,4 +30,4 @@ Testing: Cypress (E2E)
 
 ## 🎥 Watch Demo
 
-[▶️ To view the video: Click here! ](https://drive.google.com/file/d/1aKAmlgKzaM8NPBLDvokbz_rbpDQtip_X/view?usp=drivesdk)
+[▶️ Click here to view the demo!](https://drive.google.com/file/d/1aKAmlgKzaM8NPBLDvokbz_rbpDQtip_X/view?usp=drivesdk)
