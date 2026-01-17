@@ -315,6 +315,10 @@
     align-items: center;
   }
 
+  .tools-page .job-search {
+    width: min(420px, 100%);
+  }
+
   .tools-tabs {
     width: min(1100px, 100%);
     margin: 32px 0 16px;

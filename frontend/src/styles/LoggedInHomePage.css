@@ -147,10 +147,6 @@
     margin: 24px auto 0;
   }
 
-  .loggedinHomePage .job-search {
-    align-self: flex-start;
-    width: min(420px, 100%);
-  }
 
   .jobs-container {
     width: 100%;
