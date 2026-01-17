@@ -532,33 +532,27 @@ export default function EditJobPage() {
                 </div>
 
                 <div className="form-control">
-                <label htmlFor="jobid">Job ID:</label>
-                <input type="text" name="jobid" defaultValue={job?.jobid?? ""}/>
+                <input type="text" name="jobid" placeholder="Job ID" defaultValue={job?.jobid?? ""}/>
                 </div>
 
                 <div className="form-control">
-                <label htmlFor="title">Title:</label>
-                <input type="text" name="title" defaultValue={job?.title?? ""} />
+                <input type="text" name="title" placeholder="Title" defaultValue={job?.title?? ""} />
                 </div>
 
                 <div className="form-control">
-                <label htmlFor="date">Date:</label>
-                <input id="editJobForm-date" type="date" name="date" defaultValue={job?.date?? ""} />
+                <input id="editJobForm-date" type="date" name="date" placeholder="Date" defaultValue={job?.date?? ""} />
                 </div>
 
                 <div className="form-control">
-                <label htmlFor="address">Address:</label>
-                <input type="text" name="address" defaultValue={job?.address?? ""} />
+                <input type="text" name="address" placeholder="Address" defaultValue={job?.address?? ""} />
                 </div>
 
                 <div className="form-control">
-                <label htmlFor="phoneNumber">Phone #:</label>
-                <input type="text" name="phoneNumber" defaultValue={job?.phoneNumber?? ""} />
+                <input type="text" name="phoneNumber" placeholder="Phone #" defaultValue={job?.phoneNumber?? ""} />
                 </div>
 
                 <div className="form-control">
-                <label htmlFor="notes">Notes:</label>
-                <textarea id="editJob-notes" name="notes" defaultValue={job?.notes?? ""}></textarea>
+                <textarea id="editJob-notes" name="notes" placeholder="Notes" defaultValue={job?.notes?? ""}></textarea>
                 </div>
 
                 {error && <p id="error" className="error">{error}</p>}

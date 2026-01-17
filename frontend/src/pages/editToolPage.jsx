@@ -82,8 +82,7 @@ export default function EditTool() {
                 <form className="forms" onSubmit={onSubmit}>
 
                 <div className="form-control">
-                    <label htmlFor="name">Name:</label>
-                    <input id="name" type="text" name="name" defaultValue={tool?.name?? ""} required />
+                    <input id="name" type="text" name="name" placeholder="Tool Name" defaultValue={tool?.name?? ""} required />
                 </div>
 
                 <hr id="editToolPage-hr" />

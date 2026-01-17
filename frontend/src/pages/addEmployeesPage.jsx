@@ -126,32 +126,27 @@ export default function AddEmployees() {
             </div>
 
             <div className="form-control">
-                <label htmlFor="employeeid">ID:</label>
-                <input id="employeeid" type="text" name="employeeid" required />
+                <input id="employeeid" type="text" name="employeeid" placeholder="Employee ID" required />
             </div>
 
             <div className="form-control">
-                <label htmlFor="name">Name:</label>
-                <input id="name" type="text" name="name" required />
+                <input id="name" type="text" name="name" placeholder="Name" required />
             </div>
 
             <div className="form-control">
-                <label htmlFor="role">Role:</label>
                 <select name="role" id="addEmployeePage-roleSelect" required defaultValue="">
-                <option value="" disabled hidden>Select</option>
-                <option value="manager">manager</option>
+                <option value="" disabled hidden>Select Role</option>
+                <option value="manager">Manager</option>
                 <option value="crew">Crew</option>
                 </select>
             </div>
 
             <div className="form-control">
-                <label htmlFor="email">Email:</label>
-                <input id="email" type="text" name="email" required />
+                <input id="email" type="text" name="email" placeholder="Email" required />
             </div>
 
             <div className="form-control">
-                <label htmlFor="password">Password:</label>
-                <input id="password" type="password" name="password" required />
+                <input id="password" type="password" name="password" placeholder="Password" required />
             </div>
 
             <hr id="addEmployeePage-hr" />

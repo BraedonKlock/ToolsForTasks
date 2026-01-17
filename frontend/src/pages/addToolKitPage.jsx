@@ -111,12 +111,11 @@ export default function AddToolKit() {
 
                 <form className="addToolKitPage-form" onSubmit={onSubmit}>
                     <div className="addToolKitPage-field">
-                        <label className="addToolKitPage-label" htmlFor="name">Name</label>
                         <input
                             id="name"
                             type="text"
                             name="name"
-                            placeholder="Enter the tool kit name"
+                            placeholder="Tool Kit Name"
                             required
                         />
                     </div>

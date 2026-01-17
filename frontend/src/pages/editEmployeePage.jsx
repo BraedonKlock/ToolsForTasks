@@ -169,32 +169,27 @@ export default function EditEmployee() {
             </div>
 
             <div className="form-control">
-                <label htmlFor="employeeid">ID:</label>
-                <input id="employeeid" type="text" name="employeeid" defaultValue={employee?.employeeid?? ""} required />
+                <input id="employeeid" type="text" name="employeeid" placeholder="Employee ID" defaultValue={employee?.employeeid?? ""} required />
             </div>
 
             <div className="form-control">
-                <label htmlFor="name">Name:</label>
-                <input id="name" type="text" name="name" defaultValue={employee?.name?? ""} required />
+                <input id="name" type="text" name="name" placeholder="Name" defaultValue={employee?.name?? ""} required />
             </div>
 
             <div className="form-control">
-                <label htmlFor="role">Role:</label>
-                <select name="role" id="addEmployeePage-roleSelect" required defaultValue={employee?.role ?? ""}>
-                <option value={employee?.role?? ""} hidden>{employee?.role?? ""}</option>
-                <option value="manager">manager</option>
-                <option value="crew">crew</option>
+                <select name="role" id="editEmployeePage-roleSelect" required defaultValue={employee?.role ?? ""}>
+                <option value={employee?.role?? ""} hidden>{employee?.role || "Select Role"}</option>
+                <option value="manager">Manager</option>
+                <option value="crew">Crew</option>
                 </select>
             </div>
 
             <div className="form-control">
-                <label htmlFor="email">Email:</label>
-                <input id="email" type="text" name="email" defaultValue={employee?.email?? ""} required />
+                <input id="email" type="text" name="email" placeholder="Email" defaultValue={employee?.email?? ""} required />
             </div>
 
             <div className="form-control">
-                <label htmlFor="password">Password:</label>
-                <input id="password" type="password" name="password" placeholder="Leave blank to keep current password" autoComplete="new-password" />
+                <input id="password" type="password" name="password" placeholder="Leave blank to keep current" autoComplete="new-password" />
             </div>
 
             <hr id="editEmployeePage-hr" />

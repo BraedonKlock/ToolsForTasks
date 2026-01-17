@@ -368,33 +368,27 @@ export default function AddJob() {
                 </div>
 
                 <div className="form-control">
-                    <label htmlFor="jobid">Job ID:</label>
-                    <input type="text" name="jobid" />
+                    <input type="text" name="jobid" placeholder="Job ID" />
                 </div>
 
                 <div className="form-control">
-                    <label htmlFor="title">Title:</label>
-                    <input type="text" name="title" />
+                    <input type="text" name="title" placeholder="Title" />
                 </div>
 
                 <div className="form-control">
-                    <label htmlFor="date">Date:</label>
-                    <input id="addJobForm-date" type="date" name="date" />
+                    <input id="addJobForm-date" type="date" name="date" placeholder="Date" />
                 </div>
 
                 <div className="form-control">
-                    <label htmlFor="address">Address:</label>
-                    <input type="text" name="address" />
+                    <input type="text" name="address" placeholder="Address" />
                 </div>
 
                 <div className="form-control">
-                    <label htmlFor="phoneNumber">Phone #:</label>
-                    <input type="text" name="phoneNumber" />
+                    <input type="text" name="phoneNumber" placeholder="Phone #" />
                 </div>
 
                 <div className="form-control">
-                    <label htmlFor="notes">Notes:</label>
-                    <textarea id="addJob-notes" name="notes"></textarea>
+                    <textarea id="addJob-notes" name="notes" placeholder="Notes"></textarea>
                 </div>
 
                 {error && <p id="error" className="error">{error}</p>}

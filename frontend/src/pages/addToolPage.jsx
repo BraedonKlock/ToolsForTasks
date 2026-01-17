@@ -59,32 +59,31 @@ export default function AddTool() {
     }
 
     return (
-        <main className="addTool-page">
+        <main className="addToolPage">
             <Link
-                id="addTool-form-closeBtn"
+                id="addToolPage-backBtn"
                 className="addToolPage-backBtn"
                 to="/loggedIn/tools"
             >
                 <FontAwesomeIcon icon={faArrowLeft} className="icon" />
             </Link>
 
-            <div id="addToolPage-addToolContainer">
-                <h1>Add Tools</h1>
+            <div className="addToolPage-card">
+                <h1 className="addToolPage-title">Add Tools</h1>
 
                 {error && <p id="error" className="error">{error}</p>}
 
-                <form className="forms" onSubmit={onSubmit}>
+                <form className="addToolPage-form" onSubmit={onSubmit}>
                     <div className="addToolPage-toolsList">
                         {tools.map((tool, index) => (
                             <div key={tool.id} className="addToolPage-toolRow">
-                                <div className="form-control">
-                                    <label htmlFor={`tool-${tool.id}`}>Tool {index + 1}:</label>
+                                <div className="addToolPage-field">
                                     <input
                                         id={`tool-${tool.id}`}
                                         type="text"
                                         value={tool.name}
                                         onChange={(e) => updateToolName(tool.id, e.target.value)}
-                                        placeholder="Enter tool name"
+                                        placeholder={`Tool ${index + 1} Name`}
                                     />
                                 </div>
                                 {tools.length > 1 && (
@@ -109,8 +108,8 @@ export default function AddTool() {
                         <FontAwesomeIcon icon={faPlus} /> Add Another Tool
                     </button>
 
-                    <hr id="addToolPage-hr" />
-                    <button type="submit" id="addToolPage-addBtn">
+                    <hr className="addToolPage-hr" />
+                    <button type="submit" className="addToolPage-submitBtn">
                         Add {tools.filter(t => t.name.trim() !== "").length || ""} Tool{tools.filter(t => t.name.trim() !== "").length !== 1 ? "s" : ""}
                     </button>
                 </form>

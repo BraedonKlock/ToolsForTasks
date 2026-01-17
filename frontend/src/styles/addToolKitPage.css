@@ -108,7 +108,7 @@
 
 /* MD3 Filled Text Field */
 .addToolKitPage-field input {
-  width: 70%;
+  width: 100%;
   height: auto;
   box-sizing: border-box;
   background-color: var(--md-surface-container-low);
@@ -280,13 +280,12 @@
   }
 
   .addToolKitPage-field {
-    display: grid;
-    grid-template-columns: 1fr minmax(320px, 1.2fr);
+    display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 20px;
   }
 
   .addToolKitPage-field input {
-    width: 100%;
+    width: 80%;
   }
 }

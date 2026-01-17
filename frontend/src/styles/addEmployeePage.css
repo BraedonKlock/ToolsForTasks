@@ -81,15 +81,9 @@
 
 .form-control {
   display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
+  flex-direction: column;
+  align-items: center;
   gap: 16px;
-}
-
-.form-control label {
-  color: var(--md-on-surface-variant);
-  font-size: 0.9rem;
-  font-weight: 500;
 }
 
 /* Avatar Upload */
@@ -192,7 +186,7 @@
 /* MD3 Filled Text Fields */
 .addEmployee-page .form-control input,
 .addEmployee-page .form-control select {
-  width: 70%;
+  width: 100%;
   height: auto;
   box-sizing: border-box;
   background-color: var(--md-surface-container-low);
@@ -212,7 +206,7 @@
 }
 
 #addEmployeePage-roleSelect {
-  width: 70%;
+  width: 100%;
   text-align: center;
 }
 
@@ -269,26 +263,30 @@
   }
 
   #addEmployeePage-addEmployeeContainer {
-    width: min(860px, 100%);
+    width: min(460px, 100%);
     padding: 40px 44px;
   }
 
   .addEmployee-page .form-control {
-    display: grid;
-    grid-template-columns: 1fr minmax(320px, 1.2fr);
+    display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 20px;
   }
 
   .addEmployee-page .form-control input,
   .addEmployee-page .form-control select,
   #addEmployeePage-roleSelect {
-    width: 100%;
+    width: 80%;
   }
 
   #avatarDiv {
-    flex-direction: row;
-    justify-content: center;
-    gap: 20px;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+
+  #addEmployeePage-addBtn {
+    display: block;
+    margin: 20px auto 0;
   }
 }

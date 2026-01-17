@@ -1,5 +1,5 @@
 /* MD3 Add Tool Page */
-.addTool-page {
+.addToolPage {
   background-color: transparent;
   margin-top: 24px;
   width: 100%;
@@ -37,18 +37,8 @@
   transform: scale(0.95);
 }
 
-.addTool-page #addToolPage-addToolContainer h1 {
-  text-align: center;
-  font-family: var(--font-display);
-  font-size: 1.75rem;
-  font-weight: 600;
-  margin-bottom: 20px;
-  letter-spacing: 0;
-  color: var(--md-on-surface);
-}
-
 /* MD3 Card Container */
-#addToolPage-addToolContainer {
+.addToolPage-card {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -65,7 +55,7 @@
   overflow: hidden;
 }
 
-#addToolPage-addToolContainer::before {
+.addToolPage-card::before {
   content: "";
   position: absolute;
   top: 0;
@@ -75,26 +65,31 @@
   background: linear-gradient(90deg, var(--md-primary), var(--md-tertiary));
 }
 
-#addToolPage-addToolContainer .forms {
+.addToolPage-title {
+  text-align: center;
+  font-family: var(--font-display);
+  font-size: 1.75rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+  letter-spacing: 0;
+  color: var(--md-on-surface);
+}
+
+.addToolPage-form {
   width: 100%;
 }
 
-.form-control {
+.addToolPage-field {
   display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
+  flex-direction: column;
+  align-items: center;
   gap: 16px;
-}
-
-.form-control label {
-  color: var(--md-on-surface-variant);
-  font-size: 0.9rem;
-  font-weight: 500;
+  flex: 1;
 }
 
 /* MD3 Filled Text Fields */
-.addTool-page .form-control input {
-  width: 70%;
+.addToolPage-field input {
+  width: 100%;
   height: auto;
   box-sizing: border-box;
   background-color: var(--md-surface-container-low);
@@ -106,7 +101,7 @@
   transition: all var(--md-duration-short) var(--md-motion-standard);
 }
 
-.addTool-page .form-control input:focus {
+.addToolPage-field input:focus {
   background-color: var(--md-surface-container);
   border-bottom-color: var(--md-primary);
   outline: none;
@@ -125,10 +120,6 @@
   display: flex;
   align-items: center;
   gap: 12px;
-}
-
-.addToolPage-toolRow .form-control {
-  flex: 1;
 }
 
 /* Remove Tool Button */
@@ -185,7 +176,7 @@
   transform: scale(0.98);
 }
 
-#addToolPage-hr {
+.addToolPage-hr {
   width: 100%;
   border: none;
   height: 1px;
@@ -194,7 +185,7 @@
 }
 
 /* MD3 Filled Button */
-#addToolPage-addBtn {
+.addToolPage-submitBtn {
   margin-top: 20px;
   width: min(280px, 100%);
   box-sizing: border-box;
@@ -213,48 +204,43 @@
   transition: all var(--md-duration-short) var(--md-motion-standard);
 }
 
-#addToolPage-addBtn:hover {
+.addToolPage-submitBtn:hover {
   box-shadow: var(--md-elevation-2);
   transform: translateY(-1px);
 }
 
-#addToolPage-addBtn:active {
+.addToolPage-submitBtn:active {
   transform: scale(0.98);
 }
 
-.error {
-  text-align: center;
-  color: var(--md-error);
-  font-size: 0.9rem;
-  margin: 0 0 16px 0;
-  padding: 12px 16px;
-  background-color: var(--md-error-container);
-  border-radius: var(--md-radius-sm);
-}
-
 @media (min-width: 900px) {
-  .addTool-page {
+  .addToolPage {
     padding: 0 48px 60px;
   }
 
-  #addToolPage-addToolContainer {
+  .addToolPage-card {
     width: min(560px, 100%);
     padding: 40px 44px;
   }
 
-  .addTool-page .form-control {
-    display: grid;
-    grid-template-columns: auto 1fr;
+  .addToolPage-field {
+    display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 20px;
   }
 
-  .addTool-page .form-control input {
+  .addToolPage-field input {
     width: 100%;
   }
 
   .addToolPage-addMoreBtn {
     max-width: 280px;
     margin: 0 auto;
+    display: flex;
+  }
+
+  .addToolPage-submitBtn {
+    display: block;
+    margin: 20px auto 0;
   }
 }

@@ -71,19 +71,15 @@ export default function ManageAccount() {
 
             <form className="forms" onSubmit={onSubmit}>
             <div className="form-control">
-                <label htmlFor="name">Company Name:</label>
-                <input id="name" type="text" name="name" defaultValue={accountDetails?.companyName?? ""} required />
-            </div>
-
-
-            <div className="form-control">
-                <label htmlFor="email">Email:</label>
-                <input id="email" type="text" name="email" defaultValue={accountDetails?.email?? ""} required />
+                <input id="name" type="text" name="name" placeholder="Company Name" defaultValue={accountDetails?.companyName?? ""} required />
             </div>
 
             <div className="form-control">
-                <label htmlFor="password">Password:</label>
-                <input id="password" type="password" name="password" placeholder="Leave blank to keep current password" autoComplete="new-password" />
+                <input id="email" type="text" name="email" placeholder="Email" defaultValue={accountDetails?.email?? ""} required />
+            </div>
+
+            <div className="form-control">
+                <input id="password" type="password" name="password" placeholder="Leave blank to keep current" autoComplete="new-password" />
             </div>
 
             <hr id="manageAccountPage-hr" />

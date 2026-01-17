@@ -198,11 +198,11 @@ export default function EditToolKit() {
 
                 <form className="editToolKitPage-form" onSubmit={onSubmit}>
                     <div className="editToolKitPage-field">
-                        <label className="editToolKitPage-label" htmlFor="name">Name</label>
                         <input
                             id="name"
                             type="text"
                             name="name"
+                            placeholder="Tool Kit Name"
                             defaultValue={toolKit?.name?? ""}
                             required
                         />

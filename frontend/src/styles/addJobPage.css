@@ -93,15 +93,9 @@
 
 .form-control {
   display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
+  flex-direction: column;
+  align-items: center;
   gap: 16px;
-}
-
-.form-control label {
-  color: var(--md-on-surface-variant);
-  font-size: 0.9rem;
-  font-weight: 500;
 }
 
 /* Job Image Upload */
@@ -199,7 +193,7 @@
 /* MD3 Filled Text Fields */
 .addJob-page .form-control input,
 .addJob-page .form-control select {
-  width: 70%;
+  width: 100%;
   height: auto;
   box-sizing: border-box;
   background-color: var(--md-surface-container-low);
@@ -218,22 +212,28 @@
   outline: none;
 }
 
+.addJob-page .form-control input::placeholder,
+.addJob-page .form-control textarea::placeholder {
+  color: var(--md-on-surface-variant);
+  opacity: 0.7;
+}
+
 #addJobForm-date {
-  width: 70%;
+  width: 100%;
   box-sizing: border-box;
   text-align: center;
 }
 
 #addJob-employeeSelect {
-  width: 70%;
+  width: 100%;
   text-align: center;
 }
 
 /* MD3 Tonal Button */
 #addJob-addEmployeeBtn {
-  width: 70%;
+  width: 100%;
   height: auto;
-  align-self: flex-end;
+  align-self: center;
   background-color: var(--md-secondary-container);
   color: var(--md-on-secondary-container);
   border: none;
@@ -251,7 +251,7 @@
 }
 
 #addJob-notes {
-  width: 70%;
+  width: 100%;
   height: 25vh;
   box-sizing: border-box;
   white-space: pre-wrap;
@@ -502,10 +502,9 @@
   }
 
   .addJob-page .form-control {
-    display: grid;
-    grid-template-columns: 1fr minmax(320px, 1.2fr);
+    display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 20px;
   }
 
   .addJob-page .form-control input,
@@ -514,7 +513,7 @@
   #addJob-employeeSelect,
   #addJob-addEmployeeBtn,
   #addJob-notes {
-    width: 100%;
+    width: 70%;
   }
 
   #addJob-employeeDisplay {
