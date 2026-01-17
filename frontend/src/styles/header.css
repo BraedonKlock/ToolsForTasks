@@ -77,6 +77,8 @@ header nav {
   font-weight: 500;
   font-size: 0.8rem;
   color: var(--md-on-surface-variant);
+  border-top: 1px solid var(--md-outline-variant);
+  padding-top: 4px;
 }
 
 /* MD3 Icon Button - Hamburger */
