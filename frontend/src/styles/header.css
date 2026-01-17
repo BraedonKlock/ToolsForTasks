@@ -230,6 +230,8 @@ header nav {
 
   #company-h1 h6 {
     font-size: 0.9rem;
+    border-top: 1px solid var(--md-outline-variant);
+    padding-top: 4px;
   }
 
   .hamburger {
