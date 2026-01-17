@@ -494,6 +494,127 @@
   line-height: 1.7;
 }
 
+/* Speed Section */
+.nl-speed {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.nl-speed-grid {
+  display: grid;
+  gap: 24px;
+}
+
+.nl-speed-card {
+  background: linear-gradient(135deg, var(--md-primary-container) 0%, var(--md-surface) 100%);
+  border-radius: var(--md-radius-xl);
+  border: 1px solid var(--md-outline-variant);
+  padding: 32px;
+  box-shadow: var(--md-elevation-2);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  animation: pop-in 0.5s var(--md-motion-decelerate) backwards;
+  transition: all var(--md-duration-medium) var(--md-motion-standard);
+}
+
+.nl-speed-card:nth-child(1) { animation-delay: 0.1s; }
+.nl-speed-card:nth-child(2) { animation-delay: 0.15s; }
+
+.nl-speed-card:hover {
+  box-shadow: var(--md-elevation-3);
+  transform: translateY(-3px);
+}
+
+.nl-speed-icon {
+  display: flex;
+  gap: 4px;
+  color: var(--md-primary);
+}
+
+.nl-speed-icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.nl-speed-card h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--md-on-surface);
+}
+
+.nl-speed-tagline {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--md-primary);
+  margin: 0;
+}
+
+.nl-speed-card > p:not(.nl-speed-tagline) {
+  color: var(--md-on-surface-variant);
+  line-height: 1.8;
+  font-size: 1rem;
+}
+
+.nl-speed-benefits {
+  margin: 8px 0 0 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.nl-speed-benefits li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--md-on-surface);
+  font-weight: 500;
+}
+
+.nl-speed-benefits li::before {
+  content: "";
+  width: 20px;
+  height: 20px;
+  background: var(--md-primary);
+  border-radius: 50%;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.nl-speed-benefits li::after {
+  content: "";
+  position: absolute;
+  width: 6px;
+  height: 10px;
+  border: solid var(--md-on-primary);
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+  margin-left: 7px;
+  margin-top: -2px;
+}
+
+.nl-speed-summary {
+  background: var(--md-surface-container);
+  border-radius: var(--md-radius-lg);
+  padding: 20px 24px;
+  text-align: center;
+  animation: pop-in 0.5s var(--md-motion-decelerate) 0.2s backwards;
+}
+
+.nl-speed-summary p {
+  color: var(--md-on-surface);
+  font-size: 1.05rem;
+  line-height: 1.7;
+  margin: 0;
+}
+
+.nl-speed-summary strong {
+  color: var(--md-primary);
+}
+
 /* Visual Features Section */
 .nl-visual-grid {
   display: grid;
@@ -796,6 +917,10 @@
 
   .nl-visual-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .nl-speed-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .nl-cta {

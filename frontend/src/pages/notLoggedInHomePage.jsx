@@ -270,6 +270,75 @@ export default function notLoggedInHomePage() {
         </div>
       </section>
 
+      {/* Speed Section */}
+      <section className="nl-speed">
+        <div className="nl-section-header">
+          <h2>Set up in minutes, not hours</h2>
+          <p>
+            We built Tools for Tasks to respect your time. No clunky data entry,
+            no repetitive busywork. Get your entire operation configured fast
+            and keep it running even faster.
+          </p>
+        </div>
+        <div className="nl-speed-grid">
+          <div className="nl-speed-card">
+            <div className="nl-speed-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <line x1="12" y1="5" x2="12" y2="19"/>
+                <polyline points="19 12 12 19 5 12"/>
+              </svg>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <line x1="12" y1="5" x2="12" y2="19"/>
+                <polyline points="19 12 12 19 5 12"/>
+              </svg>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <line x1="12" y1="5" x2="12" y2="19"/>
+                <polyline points="19 12 12 19 5 12"/>
+              </svg>
+            </div>
+            <h3>Bulk Tool Import</h3>
+            <p className="nl-speed-tagline">Add your entire inventory in one shot</p>
+            <p>
+              Forget adding tools one at a time. Drop in 10, 50, or 100 tools
+              at once and watch your inventory populate instantly. What used to
+              take an afternoon now takes seconds.
+            </p>
+            <ul className="nl-speed-benefits">
+              <li>Add multiple tools in a single action</li>
+              <li>No repetitive form filling</li>
+              <li>Get operational on day one</li>
+            </ul>
+          </div>
+          <div className="nl-speed-card">
+            <div className="nl-speed-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/>
+                <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+              </svg>
+            </div>
+            <h3>Reusable Toolkits</h3>
+            <p className="nl-speed-tagline">Build once, assign forever</p>
+            <p>
+              Running the same type of job over and over? Create a toolkit once
+              with every tool that job type needs. Next time you create a job,
+              one click adds the entire kit. No more rebuilding the same list
+              from scratch every single time.
+            </p>
+            <ul className="nl-speed-benefits">
+              <li>Pre-built kits for every job type</li>
+              <li>Assign 20 tools with one click</li>
+              <li>Eliminate repetitive list building</li>
+            </ul>
+          </div>
+        </div>
+        <div className="nl-speed-summary">
+          <p>
+            <strong>The bottom line:</strong> Less time managing tools means more
+            time doing the work that actually makes you money.
+          </p>
+        </div>
+      </section>
+
       {/* Visual Features */}
       <section className="nl-visual-features">
         <div className="nl-section-header">
