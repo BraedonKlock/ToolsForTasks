@@ -97,4 +97,61 @@ module.exports = class user {
         return result;
         }
     }
+
+    /**
+     * Store password reset token for an account
+     * @param {string} email - account email
+     * @param {string} token - reset token
+     * @param {Date} expiry - token expiration time
+     */
+    static async storeResetToken(email, token, expiry) {
+        const [result] = await db.execute(
+            `UPDATE accounts
+            SET password_reset_token = ?, password_reset_expiry = ?
+            WHERE email = ?`,
+            [token, expiry, email]
+        );
+        return result;
+    }
+
+    /**
+     * Find account by reset token
+     * @param {string} token - reset token
+     */
+    static findByResetToken(token) {
+        return db.execute(
+            `SELECT id, email, password_reset_expiry
+            FROM accounts
+            WHERE password_reset_token = ?
+            LIMIT 1`,
+            [token]
+        );
+    }
+
+    /**
+     * Update password and clear reset token
+     * @param {string} email - account email
+     * @param {string} passwordHash - new hashed password
+     */
+    static async updatePasswordAndClearToken(email, passwordHash) {
+        const [result] = await db.execute(
+            `UPDATE accounts
+            SET password = ?, password_reset_token = NULL, password_reset_expiry = NULL
+            WHERE email = ?`,
+            [passwordHash, email]
+        );
+        return result;
+    }
+
+    /**
+     * Clear expired reset tokens (cleanup utility)
+     */
+    static async clearExpiredTokens() {
+        const [result] = await db.execute(
+            `UPDATE accounts
+            SET password_reset_token = NULL, password_reset_expiry = NULL
+            WHERE password_reset_expiry < NOW()`
+        );
+        return result;
+    }
 };

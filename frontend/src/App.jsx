@@ -8,6 +8,7 @@ import NotLoggedInHomePage from "./pages/notLoggedInHomePage.jsx";
 import LoginPage from "./pages/loginPage.jsx";
 import CreateAccountPage from "./pages/createAccountPage.jsx";
 import ForgetPasswordPage from "./pages/forgetPasswordPage.jsx";
+import ResetPasswordPage from "./pages/resetPasswordPage.jsx";
 
 import LoggedInHomePage from "./pages/loggedInHomePage.jsx";
 import JobsPage from "./pages/JobsPage.jsx";
@@ -42,6 +43,7 @@ export default function App() {
         <Route path="/" element={<NotLoggedInHomePage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/forget-password" element={<ForgetPasswordPage />} />
+        <Route path="/reset-password" element={<ResetPasswordPage />} />
         <Route path="/create-account" element={<CreateAccountPage />} />
         <Route path="/forbidden" element={<ForbiddenPage />} />
 

@@ -4,14 +4,36 @@ import "../styles/LoginPage.css";
 
 export default function ForgetPasswordPage() {
   const [email, setEmail] = useState("");
-  const [confirmation, setConfirmation] = useState("");
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
-    setConfirmation(
-      "If an account exists with that email, we'll send a link to reset your password."
-    );
-    setEmail("");
+    setError("");
+    setSuccess("");
+    setIsLoading(true);
+
+    try {
+      const res = await fetch("/api/forgot-password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: email.trim().toLowerCase() }),
+      });
+
+      const data = await res.json().catch(() => ({}));
+
+      if (!res.ok) {
+        throw new Error(data.error || "Something went wrong. Please try again.");
+      }
+
+      setSuccess("If an account exists with that email, we'll send a link to reset your password.");
+      setEmail("");
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   return (
@@ -20,7 +42,8 @@ export default function ForgetPasswordPage() {
       <h6>Enter your email to receive a password reset link</h6>
 
       <div id="loginForm-container">
-        {confirmation && <p className="success">{confirmation}</p>}
+        {error && <p className="error">{error}</p>}
+        {success && <p className="success">{success}</p>}
 
         <form id="login-form" onSubmit={handleSubmit}>
           <input
@@ -30,9 +53,12 @@ export default function ForgetPasswordPage() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
+            disabled={isLoading}
           />
 
-          <button type="submit">Send Reset Link</button>
+          <button type="submit" disabled={isLoading}>
+            {isLoading ? "Sending..." : "Send Reset Link"}
+          </button>
           <Link to="/login">Back to Login</Link>
         </form>
       </div>

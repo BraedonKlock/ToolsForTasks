@@ -19,15 +19,15 @@ describe("Tools page (mobile)", () => {
 
         // Add tool 1
         cy.get('a[href="/loggedIn/add-tool"]').should("be.visible").click();
-        cy.get('input[name="name"]').type(toolName1);
-        cy.get("#addToolPage-addBtn").click();
+        cy.get('.addToolPage-field input').first().type(toolName1);
+        cy.get(".addToolPage-submitBtn").click();
         cy.url({ timeout: 10000 }).should("include", "/loggedIn/tools");
         cy.contains(".tool-card__title", toolName1, { timeout: 10000 }).should("exist");
 
         // Add tool 2
         cy.get('a[href="/loggedIn/add-tool"]').should("be.visible").click();
-        cy.get('input[name="name"]').type(toolName2);
-        cy.get("#addToolPage-addBtn").click();
+        cy.get('.addToolPage-field input').first().type(toolName2);
+        cy.get(".addToolPage-submitBtn").click();
         cy.url({ timeout: 10000 }).should("include", "/loggedIn/tools");
         cy.contains(".tool-card__title", toolName2, { timeout: 10000 }).should("exist");
 
@@ -105,8 +105,8 @@ describe("Tools page (mobile)", () => {
 
         // Add tool
         cy.get('a[href="/loggedIn/add-tool"]').should("be.visible").click();
-        cy.get('input[name="name"]').type(toolName);
-        cy.get("#addToolPage-addBtn").click();
+        cy.get('.addToolPage-field input').first().type(toolName);
+        cy.get(".addToolPage-submitBtn").click();
         cy.url({ timeout: 10000 }).should("include", "/loggedIn/tools");
         cy.contains(".tool-card__title", toolName, { timeout: 10000 }).should("exist");
 

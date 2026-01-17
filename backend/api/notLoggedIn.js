@@ -13,6 +13,8 @@ const router = express.Router(); // creating a mini express router
 //REACT ROUTES
 router.post("/login", notLoggedInController.login);
 router.post("/account", notLoggedInController.createAccount);
+router.post("/forgot-password", notLoggedInController.forgotPassword);
+router.post("/reset-password", notLoggedInController.resetPassword);
 
 
 module.exports = router;
