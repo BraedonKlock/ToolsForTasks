@@ -45,9 +45,10 @@ header nav {
 }
 
 #logo {
-  height: auto;
-  max-height: 100px;
+  height: 100px;
   width: auto;
+  object-fit: contain;                                                                                                        
+  flex-shrink: 0;  
   transition: transform var(--md-duration-short) var(--md-motion-standard);
 }
 
@@ -196,7 +197,8 @@ header nav {
   }
 
   header nav #logoContainer img {
-    width: 180px;
+    width: 80px;
+    width: auto;
   }
 
   .hamburger {

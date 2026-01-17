@@ -30,7 +30,7 @@ export default function notLoggedInHomePage() {
         </div>
         <div className="nl-hero-card">
           <img
-            src="/images/lg.png"
+            src="/images/Logo.png"
             alt="Tools for Tasks logo"
             className="nl-hero-logo"
           />

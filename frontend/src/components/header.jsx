@@ -56,7 +56,7 @@ export default function Header() {
         {showNotLoggedIn && (
           <div id="logoContainer">
             <Link to="/" onClick={() => setIsOpen(false)}>
-              <img id="logo" src="/images/lg.png" alt="Tools for Tasks logo" />
+              <img id="logo" src="/images/Logo.png" alt="Tools for Tasks logo" />
             </Link>
           </div>
         )}
@@ -65,7 +65,7 @@ export default function Header() {
           <>
             <div id="logoContainer">
               <Link to="/loggedIn" onClick={() => setIsOpen(false)}>
-                <img id="logo" src="/images/lg.png" alt="Tools for Tasks logo" />
+                <img id="logo" src="/images/Logo.png" alt="Tools for Tasks logo" />
               </Link>
             </div>
             <div id="company-h1">
