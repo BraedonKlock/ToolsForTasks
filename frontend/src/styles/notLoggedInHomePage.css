@@ -14,13 +14,17 @@
 .nl-hero {
   display: grid;
   gap: 28px;
-  animation: fade-in 0.5s var(--md-motion-decelerate) 0.1s both;
 }
 
 .nl-hero-content {
   display: flex;
   flex-direction: column;
   gap: 20px;
+  animation: slide-in-left 0.7s var(--md-motion-decelerate) 0.1s both;
+}
+
+.nl-hero-content h1 {
+  animation: fade-in-up 0.8s var(--md-motion-decelerate) 0.3s both;
 }
 
 .nl-eyebrow {
@@ -29,6 +33,29 @@
   font-size: 0.8rem;
   color: var(--md-primary);
   font-weight: 600;
+  animation: fade-in-up 0.6s var(--md-motion-decelerate) 0.2s both;
+  position: relative;
+  display: inline-block;
+  width: fit-content;
+}
+
+.nl-eyebrow::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(181, 84, 59, 0.3),
+    transparent
+  );
+  background-size: 200% 100%;
+  animation: shimmer 3s ease-in-out infinite;
+  animation-delay: 1.5s;
+  border-radius: 4px;
 }
 
 .nl-lead {
@@ -36,6 +63,7 @@
   color: var(--md-on-surface-variant);
   max-width: 560px;
   line-height: 1.7;
+  animation: fade-in-up 0.8s var(--md-motion-decelerate) 0.4s both;
 }
 
 /* MD3 Button Group */
@@ -44,6 +72,7 @@
   flex-wrap: wrap;
   gap: 12px;
   -webkit-tap-highlight-color: transparent;
+  animation: fade-in-up 0.8s var(--md-motion-decelerate) 0.5s both;
 }
 
 /* MD3 Button Styles */
@@ -70,12 +99,14 @@
 }
 
 .nl-btn.primary:hover {
-  box-shadow: var(--md-elevation-2);
-  transform: translateY(-1px);
+  box-shadow: var(--md-elevation-2), 0 0 20px rgba(181, 84, 59, 0.3);
+  transform: translateY(-2px) scale(1.02);
+  animation: pulse-glow 2s ease-in-out infinite;
 }
 
 .nl-btn.primary:active {
   transform: scale(0.98);
+  animation: none;
 }
 
 /* MD3 Outlined Button */
@@ -98,6 +129,7 @@
   gap: 10px;
   font-size: 0.85rem;
   color: var(--md-on-surface-variant);
+  animation: fade-in-up 0.8s var(--md-motion-decelerate) 0.6s both;
 }
 
 .nl-hero-meta span {
@@ -105,6 +137,19 @@
   border-radius: var(--md-radius-full);
   background: var(--md-surface-container-low);
   border: 1px solid var(--md-outline-variant);
+  animation: bounce-in 0.5s var(--md-motion-decelerate) backwards;
+  transition: all 0.3s ease;
+}
+
+.nl-hero-meta span:nth-child(1) { animation-delay: 0.7s; }
+.nl-hero-meta span:nth-child(2) { animation-delay: 0.8s; }
+.nl-hero-meta span:nth-child(3) { animation-delay: 0.9s; }
+
+.nl-hero-meta span:hover {
+  transform: translateY(-2px);
+  background: var(--md-primary-container);
+  border-color: var(--md-primary);
+  color: var(--md-on-primary-container);
 }
 
 /* MD3 Hero Card */
@@ -119,7 +164,15 @@
   gap: 20px;
   position: relative;
   overflow: hidden;
-  animation: pop-in 0.5s var(--md-motion-decelerate) 0.2s both;
+  animation: slide-in-right 0.8s var(--md-motion-decelerate) 0.3s both,
+             float 6s ease-in-out 1.5s infinite;
+  transition: all 0.4s ease;
+}
+
+.nl-hero-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--md-elevation-3), 0 10px 40px rgba(0, 0, 0, 0.1);
+  animation: slide-in-right 0.8s var(--md-motion-decelerate) 0.3s both;
 }
 
 .nl-hero-card::after {
@@ -174,7 +227,13 @@
 .nl-hero-card-body ul li {
   padding: 6px 0 6px 28px;
   position: relative;
+  animation: fade-in-up 0.5s var(--md-motion-decelerate) backwards;
 }
+
+.nl-hero-card-body ul li:nth-child(1) { animation-delay: 0.6s; }
+.nl-hero-card-body ul li:nth-child(2) { animation-delay: 0.7s; }
+.nl-hero-card-body ul li:nth-child(3) { animation-delay: 0.8s; }
+.nl-hero-card-body ul li:nth-child(4) { animation-delay: 0.9s; }
 
 .nl-hero-card-body ul li::before {
   content: "";
@@ -244,6 +303,22 @@
   padding: 12px 16px;
   background: rgba(255, 255, 255, 0.5);
   border-radius: var(--md-radius-md);
+  animation: slide-in-right 0.5s var(--md-motion-decelerate) backwards;
+  transition: all 0.3s ease;
+}
+
+.nl-problem-item:nth-child(1) { animation-delay: 0.1s; }
+.nl-problem-item:nth-child(2) { animation-delay: 0.2s; }
+.nl-problem-item:nth-child(3) { animation-delay: 0.3s; }
+.nl-problem-item:nth-child(4) { animation-delay: 0.4s; }
+
+.nl-problem-item:hover {
+  transform: translateX(5px);
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.nl-problem-item:hover .nl-problem-icon {
+  animation: shake 0.5s ease-in-out;
 }
 
 .nl-problem-icon {
@@ -280,19 +355,24 @@
   padding: 24px;
   text-align: center;
   box-shadow: var(--md-elevation-1);
-  animation: pop-in 0.5s var(--md-motion-decelerate) backwards;
+  animation: bounce-in 0.6s var(--md-motion-decelerate) backwards;
   transition: all var(--md-duration-medium) var(--md-motion-standard);
 }
 
 .nl-metric-card:hover {
-  box-shadow: var(--md-elevation-2);
-  transform: translateY(-2px);
+  box-shadow: var(--md-elevation-2), 0 0 30px rgba(181, 84, 59, 0.15);
+  transform: translateY(-5px) scale(1.02);
+}
+
+.nl-metric-card:hover h2 {
+  animation: pulse 0.5s ease-in-out;
 }
 
 .nl-metric-card h2 {
   font-size: 2.25rem;
   font-weight: 600;
   color: var(--md-primary);
+  animation: count-up 0.8s var(--md-motion-decelerate) backwards;
 }
 
 .nl-metric-card p {
@@ -342,13 +422,27 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
-  animation: pop-in 0.5s var(--md-motion-decelerate) backwards;
-  transition: all var(--md-duration-medium) var(--md-motion-standard);
+  animation: scale-up 0.6s var(--md-motion-decelerate) backwards;
+  transition: all 0.3s ease;
+}
+
+.nl-feature-card:nth-child(odd) {
+  animation-name: slide-in-left;
+}
+
+.nl-feature-card:nth-child(even) {
+  animation-name: slide-in-right;
 }
 
 .nl-feature-card:hover {
-  box-shadow: var(--md-elevation-2);
-  transform: translateY(-2px);
+  box-shadow: var(--md-elevation-2), 0 8px 30px rgba(0, 0, 0, 0.12);
+  transform: translateY(-5px);
+}
+
+.nl-feature-card:hover .nl-feature-icon {
+  animation: wiggle 0.5s ease-in-out;
+  background: var(--md-primary);
+  color: var(--md-on-primary);
 }
 
 .nl-feature-icon {
@@ -360,6 +454,7 @@
   background: var(--md-primary-container);
   border-radius: var(--md-radius-md);
   color: var(--md-on-primary-container);
+  transition: all 0.3s ease;
 }
 
 .nl-feature-icon svg {
@@ -397,13 +492,17 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
-  animation: pop-in 0.5s var(--md-motion-decelerate) backwards;
-  transition: all var(--md-duration-medium) var(--md-motion-standard);
+  animation: fade-in-up 0.6s var(--md-motion-decelerate) backwards;
+  transition: all 0.3s ease;
 }
 
 .nl-role-card:hover {
-  box-shadow: var(--md-elevation-2);
-  transform: translateY(-2px);
+  box-shadow: var(--md-elevation-2), 0 8px 30px rgba(0, 0, 0, 0.1);
+  transform: translateY(-5px) scale(1.02);
+}
+
+.nl-role-card:hover .nl-role-badge {
+  animation: pulse 0.5s ease-in-out;
 }
 
 .nl-role-badge {
@@ -462,13 +561,31 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
-  animation: pop-in 0.5s var(--md-motion-decelerate) backwards;
-  transition: all var(--md-duration-medium) var(--md-motion-standard);
+  animation: fade-in-up 0.6s var(--md-motion-decelerate) backwards;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.nl-step::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 0;
+  background: var(--md-primary);
+  transition: height 0.4s ease;
 }
 
 .nl-step:hover {
   background: var(--md-surface-container);
   box-shadow: var(--md-elevation-1);
+  transform: translateY(-3px);
+}
+
+.nl-step:hover::before {
+  height: 100%;
 }
 
 .nl-step span {
@@ -477,6 +594,11 @@
   text-transform: uppercase;
   color: var(--md-primary);
   font-weight: 600;
+  transition: transform 0.3s ease;
+}
+
+.nl-step:hover span {
+  transform: scale(1.1);
 }
 
 .nl-step h3 {
@@ -507,7 +629,8 @@
 }
 
 .nl-speed-card {
-  background: linear-gradient(135deg, var(--md-primary-container) 0%, var(--md-surface) 100%);
+  background: linear-gradient(135deg, var(--md-primary-container) 0%, var(--md-surface) 50%, var(--md-primary-container) 100%);
+  background-size: 200% 200%;
   border-radius: var(--md-radius-xl);
   border: 1px solid var(--md-outline-variant);
   padding: 32px;
@@ -515,16 +638,27 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
-  animation: pop-in 0.5s var(--md-motion-decelerate) backwards;
-  transition: all var(--md-duration-medium) var(--md-motion-standard);
+  animation: scale-up 0.7s var(--md-motion-decelerate) backwards;
+  transition: all 0.4s ease;
 }
 
-.nl-speed-card:nth-child(1) { animation-delay: 0.1s; }
-.nl-speed-card:nth-child(2) { animation-delay: 0.15s; }
+.nl-speed-card:nth-child(1) {
+  animation-delay: 0.1s;
+  animation-name: slide-in-left;
+}
+.nl-speed-card:nth-child(2) {
+  animation-delay: 0.2s;
+  animation-name: slide-in-right;
+}
 
 .nl-speed-card:hover {
-  box-shadow: var(--md-elevation-3);
-  transform: translateY(-3px);
+  box-shadow: var(--md-elevation-3), 0 15px 40px rgba(181, 84, 59, 0.15);
+  transform: translateY(-8px) scale(1.01);
+  animation: gradient-shift 3s ease infinite;
+}
+
+.nl-speed-card:hover .nl-speed-icon {
+  animation: wiggle 0.6s ease-in-out;
 }
 
 .nl-speed-icon {
@@ -630,13 +764,25 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
-  animation: pop-in 0.5s var(--md-motion-decelerate) backwards;
-  transition: all var(--md-duration-medium) var(--md-motion-standard);
+  animation: bounce-in 0.6s var(--md-motion-decelerate) backwards;
+  transition: all 0.3s ease;
 }
 
 .nl-visual-card:hover {
-  box-shadow: var(--md-elevation-2);
-  transform: translateY(-2px);
+  box-shadow: var(--md-elevation-2), 0 8px 25px rgba(0, 0, 0, 0.1);
+  transform: translateY(-5px);
+}
+
+.nl-visual-card:hover .nl-visual-preview {
+  transform: scale(1.05);
+}
+
+.nl-visual-card:hover .nl-mock-avatar {
+  animation: float 2s ease-in-out infinite;
+}
+
+.nl-visual-card:hover .nl-mock-check.checked::before {
+  animation: pulse 0.8s ease-in-out infinite;
 }
 
 .nl-visual-preview {
@@ -648,6 +794,7 @@
   background: var(--md-surface-container-low);
   border-radius: var(--md-radius-md);
   min-height: 80px;
+  transition: all 0.3s ease;
 }
 
 .nl-mock-image {
@@ -748,8 +895,14 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
-  animation: pop-in 0.5s var(--md-motion-decelerate) backwards;
+  animation: scale-up 0.8s var(--md-motion-decelerate) backwards;
   position: relative;
+  transition: all 0.4s ease;
+}
+
+.nl-proof-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--md-elevation-3), 0 15px 50px rgba(0, 0, 0, 0.1);
 }
 
 .nl-quote-mark {
@@ -794,7 +947,8 @@
 
 /* MD3 CTA Banner */
 .nl-cta {
-  background: var(--md-primary-container);
+  background: linear-gradient(135deg, var(--md-primary-container) 0%, var(--md-surface) 50%, var(--md-primary-container) 100%);
+  background-size: 200% 200%;
   border-radius: var(--md-radius-xl);
   border: 1px solid var(--md-outline-variant);
   padding: 32px;
@@ -803,7 +957,15 @@
   gap: 20px;
   align-items: flex-start;
   box-shadow: var(--md-elevation-2);
-  animation: pop-in 0.5s var(--md-motion-decelerate) backwards;
+  animation: fade-in-up 0.8s var(--md-motion-decelerate) backwards,
+             gradient-shift 8s ease-in-out infinite;
+  animation-delay: 0s, 1s;
+  transition: all 0.4s ease;
+}
+
+.nl-cta:hover {
+  box-shadow: var(--md-elevation-3), 0 10px 40px rgba(181, 84, 59, 0.2);
+  transform: translateY(-3px);
 }
 
 .nl-cta h2 {
@@ -834,12 +996,18 @@
   padding: 32px 16px;
   border-top: 1px solid var(--md-outline-variant);
   margin-top: 32px;
+  animation: fade-in 1s var(--md-motion-decelerate) backwards;
 }
 
 .nl-footer p {
   color: var(--md-on-surface);
   font-weight: 600;
   margin: 0;
+  transition: color 0.3s ease;
+}
+
+.nl-footer:hover p {
+  color: var(--md-primary);
 }
 
 .nl-footer-tagline {
@@ -851,27 +1019,42 @@
 
 /* Staggered Animations */
 .nl-metric-card:nth-child(1) { animation-delay: 0.1s; }
-.nl-metric-card:nth-child(2) { animation-delay: 0.15s; }
-.nl-metric-card:nth-child(3) { animation-delay: 0.2s; }
+.nl-metric-card:nth-child(2) { animation-delay: 0.2s; }
+.nl-metric-card:nth-child(3) { animation-delay: 0.3s; }
+
+.nl-metric-card:nth-child(1) h2 { animation-delay: 0.3s; }
+.nl-metric-card:nth-child(2) h2 { animation-delay: 0.4s; }
+.nl-metric-card:nth-child(3) h2 { animation-delay: 0.5s; }
 
 .nl-feature-card:nth-child(1) { animation-delay: 0.1s; }
-.nl-feature-card:nth-child(2) { animation-delay: 0.15s; }
-.nl-feature-card:nth-child(3) { animation-delay: 0.2s; }
-.nl-feature-card:nth-child(4) { animation-delay: 0.25s; }
-.nl-feature-card:nth-child(5) { animation-delay: 0.3s; }
-.nl-feature-card:nth-child(6) { animation-delay: 0.35s; }
+.nl-feature-card:nth-child(2) { animation-delay: 0.2s; }
+.nl-feature-card:nth-child(3) { animation-delay: 0.3s; }
+.nl-feature-card:nth-child(4) { animation-delay: 0.4s; }
+.nl-feature-card:nth-child(5) { animation-delay: 0.5s; }
+.nl-feature-card:nth-child(6) { animation-delay: 0.6s; }
 
 .nl-step:nth-child(1) { animation-delay: 0.1s; }
-.nl-step:nth-child(2) { animation-delay: 0.15s; }
-.nl-step:nth-child(3) { animation-delay: 0.2s; }
+.nl-step:nth-child(2) { animation-delay: 0.25s; }
+.nl-step:nth-child(3) { animation-delay: 0.4s; }
 
 .nl-role-card:nth-child(1) { animation-delay: 0.1s; }
-.nl-role-card:nth-child(2) { animation-delay: 0.15s; }
-.nl-role-card:nth-child(3) { animation-delay: 0.2s; }
+.nl-role-card:nth-child(2) { animation-delay: 0.25s; }
+.nl-role-card:nth-child(3) { animation-delay: 0.4s; }
 
 .nl-visual-card:nth-child(1) { animation-delay: 0.1s; }
-.nl-visual-card:nth-child(2) { animation-delay: 0.15s; }
-.nl-visual-card:nth-child(3) { animation-delay: 0.2s; }
+.nl-visual-card:nth-child(2) { animation-delay: 0.25s; }
+.nl-visual-card:nth-child(3) { animation-delay: 0.4s; }
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
 
 @media (min-width: 768px) {
   #notLoggedInHomePage-main {
