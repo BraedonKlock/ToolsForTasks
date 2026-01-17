@@ -148,16 +148,122 @@
   color: var(--md-on-surface);
 }
 
+.nl-hero-job-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.nl-job-badge {
+  font-size: 0.75rem;
+  padding: 4px 10px;
+  border-radius: var(--md-radius-full);
+  background: var(--md-primary-container);
+  color: var(--md-on-primary-container);
+  font-weight: 500;
+}
+
 .nl-hero-card-body ul {
   margin: 0;
-  padding: 0 0 0 20px;
+  padding: 0;
+  list-style: none;
   color: var(--md-on-surface-variant);
   line-height: 1.7;
+}
+
+.nl-hero-card-body ul li {
+  padding: 6px 0 6px 28px;
+  position: relative;
+}
+
+.nl-hero-card-body ul li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--md-outline);
+  border-radius: 4px;
+}
+
+.nl-hero-card-body ul li.nl-checked::before {
+  background: var(--md-primary);
+  border-color: var(--md-primary);
+}
+
+.nl-hero-card-body ul li.nl-checked::after {
+  content: "";
+  position: absolute;
+  left: 4px;
+  top: 50%;
+  transform: translateY(-60%) rotate(45deg);
+  width: 5px;
+  height: 10px;
+  border: solid var(--md-on-primary);
+  border-width: 0 2px 2px 0;
 }
 
 .nl-hero-note {
   color: var(--md-on-surface-variant);
   font-size: 0.9rem;
+}
+
+/* Problem Section */
+.nl-problem {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 32px 24px;
+  background: var(--md-error-container);
+  border-radius: var(--md-radius-xl);
+  animation: pop-in 0.5s var(--md-motion-decelerate) 0.15s both;
+}
+
+.nl-problem-content h2 {
+  color: var(--md-on-error-container);
+  margin-bottom: 12px;
+}
+
+.nl-problem-content p {
+  color: var(--md-on-error-container);
+  opacity: 0.9;
+  line-height: 1.7;
+}
+
+.nl-problem-list {
+  display: grid;
+  gap: 12px;
+}
+
+.nl-problem-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: var(--md-radius-md);
+}
+
+.nl-problem-icon {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--md-error);
+  color: var(--md-on-error);
+  border-radius: 50%;
+  font-size: 0.75rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.nl-problem-item p {
+  color: var(--md-on-error-container);
+  margin: 0;
+  font-weight: 500;
 }
 
 /* MD3 Metrics Section */
@@ -196,7 +302,9 @@
 
 /* Sections */
 .nl-features,
-.nl-workflow {
+.nl-workflow,
+.nl-roles,
+.nl-visual-features {
   display: flex;
   flex-direction: column;
   gap: 24px;
@@ -243,6 +351,27 @@
   transform: translateY(-2px);
 }
 
+.nl-feature-icon {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--md-primary-container);
+  border-radius: var(--md-radius-md);
+  color: var(--md-on-primary-container);
+}
+
+.nl-feature-icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.nl-feature-card h3 {
+  font-weight: 600;
+  color: var(--md-on-surface);
+}
+
 .nl-feature-card h4 {
   font-weight: 600;
   color: var(--md-on-surface);
@@ -251,6 +380,72 @@
 .nl-feature-card p {
   color: var(--md-on-surface-variant);
   line-height: 1.7;
+}
+
+/* User Roles Section */
+.nl-roles-grid {
+  display: grid;
+  gap: 16px;
+}
+
+.nl-role-card {
+  background: var(--md-surface);
+  border-radius: var(--md-radius-lg);
+  border: 1px solid var(--md-outline-variant);
+  padding: 24px;
+  box-shadow: var(--md-elevation-1);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  animation: pop-in 0.5s var(--md-motion-decelerate) backwards;
+  transition: all var(--md-duration-medium) var(--md-motion-standard);
+}
+
+.nl-role-card:hover {
+  box-shadow: var(--md-elevation-2);
+  transform: translateY(-2px);
+}
+
+.nl-role-badge {
+  display: inline-block;
+  padding: 6px 14px;
+  border-radius: var(--md-radius-full);
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  width: fit-content;
+}
+
+.nl-role-owner .nl-role-badge {
+  background: var(--md-primary);
+  color: var(--md-on-primary);
+}
+
+.nl-role-manager .nl-role-badge {
+  background: var(--md-tertiary, #7c5800);
+  color: var(--md-on-tertiary, #ffffff);
+}
+
+.nl-role-crew .nl-role-badge {
+  background: var(--md-secondary);
+  color: var(--md-on-secondary);
+}
+
+.nl-role-card h3 {
+  font-weight: 600;
+  color: var(--md-on-surface);
+}
+
+.nl-role-card ul {
+  margin: 0;
+  padding: 0 0 0 20px;
+  color: var(--md-on-surface-variant);
+  line-height: 2;
+}
+
+.nl-role-card ul li::marker {
+  color: var(--md-primary);
 }
 
 /* MD3 Workflow Steps */
@@ -284,12 +479,133 @@
   font-weight: 600;
 }
 
+.nl-step h3 {
+  font-weight: 600;
+  color: var(--md-on-surface);
+}
+
 .nl-step h4 {
   font-weight: 600;
   color: var(--md-on-surface);
 }
 
 .nl-step p {
+  color: var(--md-on-surface-variant);
+  line-height: 1.7;
+}
+
+/* Visual Features Section */
+.nl-visual-grid {
+  display: grid;
+  gap: 16px;
+}
+
+.nl-visual-card {
+  background: var(--md-surface);
+  border-radius: var(--md-radius-lg);
+  border: 1px solid var(--md-outline-variant);
+  padding: 24px;
+  box-shadow: var(--md-elevation-1);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  animation: pop-in 0.5s var(--md-motion-decelerate) backwards;
+  transition: all var(--md-duration-medium) var(--md-motion-standard);
+}
+
+.nl-visual-card:hover {
+  box-shadow: var(--md-elevation-2);
+  transform: translateY(-2px);
+}
+
+.nl-visual-preview {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 24px;
+  background: var(--md-surface-container-low);
+  border-radius: var(--md-radius-md);
+  min-height: 80px;
+}
+
+.nl-mock-image {
+  width: 80px;
+  height: 60px;
+  background: linear-gradient(135deg, var(--md-primary-container) 0%, var(--md-surface-container) 100%);
+  border-radius: var(--md-radius-sm);
+  border: 2px dashed var(--md-outline);
+}
+
+.nl-mock-avatar {
+  width: 40px;
+  height: 40px;
+  background: var(--md-primary-container);
+  border-radius: 50%;
+  border: 2px solid var(--md-surface);
+  box-shadow: var(--md-elevation-1);
+}
+
+.nl-mock-avatar:nth-child(2) {
+  margin-left: -12px;
+  background: var(--md-secondary-container, var(--md-primary-container));
+}
+
+.nl-mock-avatar:nth-child(3) {
+  margin-left: -12px;
+  background: var(--md-tertiary-container, var(--md-primary-container));
+}
+
+.nl-mock-checklist {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.nl-mock-check {
+  width: 100px;
+  height: 20px;
+  background: var(--md-surface-container);
+  border-radius: var(--md-radius-sm);
+  position: relative;
+  padding-left: 28px;
+}
+
+.nl-mock-check::before {
+  content: "";
+  position: absolute;
+  left: 4px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 14px;
+  height: 14px;
+  border: 2px solid var(--md-outline);
+  border-radius: 3px;
+}
+
+.nl-mock-check.checked::before {
+  background: var(--md-primary);
+  border-color: var(--md-primary);
+}
+
+.nl-mock-check.checked::after {
+  content: "";
+  position: absolute;
+  left: 8px;
+  top: 50%;
+  transform: translateY(-60%) rotate(45deg);
+  width: 4px;
+  height: 8px;
+  border: solid var(--md-on-primary);
+  border-width: 0 2px 2px 0;
+}
+
+.nl-visual-card h3 {
+  font-weight: 600;
+  color: var(--md-on-surface);
+}
+
+.nl-visual-card p {
   color: var(--md-on-surface-variant);
   line-height: 1.7;
 }
@@ -312,6 +628,23 @@
   flex-direction: column;
   gap: 16px;
   animation: pop-in 0.5s var(--md-motion-decelerate) backwards;
+  position: relative;
+}
+
+.nl-quote-mark {
+  font-size: 4rem;
+  line-height: 1;
+  color: var(--md-primary);
+  opacity: 0.3;
+  font-family: Georgia, serif;
+  position: absolute;
+  top: 16px;
+  left: 24px;
+}
+
+.nl-proof-card h2 {
+  color: var(--md-on-surface);
+  font-size: 1.5rem;
 }
 
 .nl-proof-card p {
@@ -321,10 +654,21 @@
   font-style: italic;
 }
 
-.nl-proof-card span {
+.nl-testimonial-author {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 8px;
+}
+
+.nl-author-name {
+  font-weight: 600;
+  color: var(--md-on-surface);
+}
+
+.nl-author-company {
   font-size: 0.9rem;
   color: var(--md-on-surface-variant);
-  font-weight: 500;
 }
 
 /* MD3 CTA Banner */
@@ -341,6 +685,11 @@
   animation: pop-in 0.5s var(--md-motion-decelerate) backwards;
 }
 
+.nl-cta h2 {
+  color: var(--md-on-primary-container);
+  font-weight: 600;
+}
+
 .nl-cta h3 {
   color: var(--md-on-primary-container);
   font-weight: 600;
@@ -352,6 +701,33 @@
   opacity: 0.9;
 }
 
+.nl-cta-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+/* Footer */
+.nl-footer {
+  text-align: center;
+  padding: 32px 16px;
+  border-top: 1px solid var(--md-outline-variant);
+  margin-top: 32px;
+}
+
+.nl-footer p {
+  color: var(--md-on-surface);
+  font-weight: 600;
+  margin: 0;
+}
+
+.nl-footer-tagline {
+  color: var(--md-on-surface-variant) !important;
+  font-weight: 400 !important;
+  font-size: 0.9rem;
+  margin-top: 4px !important;
+}
+
 /* Staggered Animations */
 .nl-metric-card:nth-child(1) { animation-delay: 0.1s; }
 .nl-metric-card:nth-child(2) { animation-delay: 0.15s; }
@@ -361,10 +737,20 @@
 .nl-feature-card:nth-child(2) { animation-delay: 0.15s; }
 .nl-feature-card:nth-child(3) { animation-delay: 0.2s; }
 .nl-feature-card:nth-child(4) { animation-delay: 0.25s; }
+.nl-feature-card:nth-child(5) { animation-delay: 0.3s; }
+.nl-feature-card:nth-child(6) { animation-delay: 0.35s; }
 
 .nl-step:nth-child(1) { animation-delay: 0.1s; }
 .nl-step:nth-child(2) { animation-delay: 0.15s; }
 .nl-step:nth-child(3) { animation-delay: 0.2s; }
+
+.nl-role-card:nth-child(1) { animation-delay: 0.1s; }
+.nl-role-card:nth-child(2) { animation-delay: 0.15s; }
+.nl-role-card:nth-child(3) { animation-delay: 0.2s; }
+
+.nl-visual-card:nth-child(1) { animation-delay: 0.1s; }
+.nl-visual-card:nth-child(2) { animation-delay: 0.15s; }
+.nl-visual-card:nth-child(3) { animation-delay: 0.2s; }
 
 @media (min-width: 768px) {
   #notLoggedInHomePage-main {
@@ -377,6 +763,21 @@
     gap: 40px;
   }
 
+  .nl-problem {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 40px;
+  }
+
+  .nl-problem-content {
+    flex: 1;
+  }
+
+  .nl-problem-list {
+    flex: 1;
+    grid-template-columns: 1fr;
+  }
+
   .nl-metrics {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
@@ -385,7 +786,15 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .nl-roles-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
   .nl-workflow-steps {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .nl-visual-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
@@ -408,7 +817,7 @@
   }
 
   .nl-feature-grid {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
   .nl-hero-card {
