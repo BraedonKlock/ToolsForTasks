@@ -94,14 +94,15 @@
 
 /* MD3 Tonal Button */
 .pill--ghost {
-  background-color: var(--md-secondary-container);
+  background-color: var(--md-primary);
   border: none;
-  color: var(--md-on-secondary-container);
+  color: var(--md-on-primary);
+  box-shadow: var(--md-elevation-1);
 }
 
 .pill--ghost:hover {
-  background-color: var(--md-surface-container-highest);
-  box-shadow: var(--md-elevation-1);
+  background-color: var(--md-tertiary);
+  box-shadow: var(--md-elevation-2);
 }
 
 .pill__icon {
