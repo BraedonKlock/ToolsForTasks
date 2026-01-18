@@ -7,7 +7,7 @@ footer {
   justify-content: center;
   align-items: center;
   padding: 20px 16px;
-  background: var(--md-surface-container-low);
+  background: var(--md-background);
   border-top: 1px solid var(--md-outline-variant);
   color: var(--md-on-surface-variant);
   font-size: 0.85rem;
