@@ -10,7 +10,7 @@ export default function notLoggedInHomePage() {
           <p className="nl-eyebrow">Job Site Management for Trade Teams</p>
           <h1>Every tool. Every job. Every crew member. In sync.</h1>
           <p className="nl-lead">
-            Tools for Tasks eliminates the chaos of job site prep. Know exactly
+            Loadout eliminates the chaos of job site prep. Know exactly
             what each job needs, who is assigned, and what is loaded on the truck
             before anyone leaves the shop.
           </p>
@@ -384,7 +384,7 @@ export default function notLoggedInHomePage() {
           <div className="nl-quote-mark">"</div>
           <h2>We stopped losing hours to forgotten equipment.</h2>
           <p>
-            "Before Tools for Tasks, we had no system. Guys would get to a job
+            "Before Loadout, we had no system. Guys would get to a job
             and realize they left the concrete saw back at the shop. Now everyone
             checks their list, confirms the loadout, and we roll. No more guessing,
             no more wasted trips."
@@ -417,7 +417,7 @@ export default function notLoggedInHomePage() {
 
       {/* Footer */}
       <footer className="nl-footer">
-        <p>Tools for Tasks</p>
+        <p>Loadout</p>
         <p className="nl-footer-tagline">Job site management for trade teams</p>
       </footer>
     </main>
