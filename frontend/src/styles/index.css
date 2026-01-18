@@ -1,46 +1,46 @@
 @import url("https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&display=swap");
 
 :root {
-  /* Material Design 3 - Modern Construction Palette */
+  /* Material Design 3 - Modern Orange Palette (matches logo) */
 
-  /* Primary - Industrial Blue (professional, trustworthy) */
-  --md-primary: #1D4ED8;
+  /* Primary - Vibrant Orange (from logo) */
+  --md-primary: #EA580C;
   --md-on-primary: #FFFFFF;
-  --md-primary-container: #DBEAFE;
-  --md-on-primary-container: #1E3A8A;
+  --md-primary-container: #FFEDD5;
+  --md-on-primary-container: #7C2D12;
 
-  /* Secondary - Warm Slate (industrial, neutral) */
-  --md-secondary: #475569;
+  /* Secondary - Charcoal (from logo outlines) */
+  --md-secondary: #44403C;
   --md-on-secondary: #FFFFFF;
-  --md-secondary-container: #E2E8F0;
-  --md-on-secondary-container: #1E293B;
+  --md-secondary-container: #E7E5E4;
+  --md-on-secondary-container: #1C1917;
 
-  /* Tertiary - Safety Orange (high visibility accents) */
-  --md-tertiary: #EA580C;
+  /* Tertiary - Deep Rust (accent) */
+  --md-tertiary: #C2410C;
   --md-on-tertiary: #FFFFFF;
   --md-tertiary-container: #FED7AA;
-  --md-on-tertiary-container: #9A3412;
+  --md-on-tertiary-container: #7C2D12;
 
-  /* Surface colors - Soft off-white (easy on eyes) */
-  --md-surface: #F8FAFC;
-  --md-surface-dim: #E2E8F0;
+  /* Surface colors - Warm cream (easy on eyes) */
+  --md-surface: #FEFCF9;
+  --md-surface-dim: #E7E5E4;
   --md-surface-bright: #FFFFFF;
   --md-surface-container-lowest: #FFFFFF;
-  --md-surface-container-low: #F1F5F9;
-  --md-surface-container: #E2E8F0;
-  --md-surface-container-high: #CBD5E1;
-  --md-surface-container-highest: #94A3B8;
-  --md-surface-variant: #F1F5F9;
-  --md-on-surface: #1E293B;
-  --md-on-surface-variant: #64748B;
+  --md-surface-container-low: #FAF8F5;
+  --md-surface-container: #F5F3F0;
+  --md-surface-container-high: #E7E5E4;
+  --md-surface-container-highest: #D6D3D1;
+  --md-surface-variant: #FAF8F5;
+  --md-on-surface: #1C1917;
+  --md-on-surface-variant: #57534E;
 
-  /* Background - Soft cool gray (reduces eye strain) */
-  --md-background: #F8FAFC;
-  --md-on-background: #1E293B;
+  /* Background - Warm off-white (reduces eye strain) */
+  --md-background: #FEFCF9;
+  --md-on-background: #1C1917;
 
   /* Outline */
-  --md-outline: #94A3B8;
-  --md-outline-variant: #E2E8F0;
+  --md-outline: #A8A29E;
+  --md-outline-variant: #E7E5E4;
 
   /* Status colors */
   --md-error: #DC2626;
@@ -87,7 +87,7 @@
   --color-ink: var(--md-on-surface);
   --color-muted: var(--md-on-surface-variant);
   --color-accent: var(--md-primary);
-  --color-accent-strong: #1E40AF;
+  --color-accent-strong: #C2410C;
   --color-border: var(--md-outline-variant);
   --color-text: var(--md-on-surface);
   --shadow-1: var(--md-elevation-1);
@@ -97,11 +97,10 @@
   --radius-sm: var(--md-radius-sm);
 
   /* Palette colors */
-  --industrial-blue: #1D4ED8;
-  --industrial-blue-dark: #1E40AF;
-  --industrial-blue-light: #DBEAFE;
-  --slate: #1E293B;
-  --safety-orange: #EA580C;
+  --orange: #EA580C;
+  --orange-dark: #C2410C;
+  --orange-light: #FFEDD5;
+  --charcoal: #1C1917;
 }
 
 *,
@@ -131,9 +130,9 @@ body::before {
   position: fixed;
   inset: 0;
   background-image:
-    radial-gradient(circle at 10% 10%, rgba(29, 78, 216, 0.04), transparent 40%),
-    radial-gradient(circle at 80% 0%, rgba(30, 41, 59, 0.03), transparent 45%),
-    radial-gradient(circle at 60% 90%, rgba(148, 163, 184, 0.05), transparent 40%);
+    radial-gradient(circle at 10% 10%, rgba(234, 88, 12, 0.04), transparent 40%),
+    radial-gradient(circle at 80% 0%, rgba(28, 25, 23, 0.03), transparent 45%),
+    radial-gradient(circle at 60% 90%, rgba(254, 215, 170, 0.06), transparent 40%);
   opacity: 0.8;
   pointer-events: none;
   z-index: -1;
@@ -506,10 +505,10 @@ button:focus-visible {
 
 @keyframes pulse-glow {
   0%, 100% {
-    box-shadow: 0 0 5px rgba(29, 78, 216, 0.2);
+    box-shadow: 0 0 5px rgba(234, 88, 12, 0.2);
   }
   50% {
-    box-shadow: 0 0 20px rgba(29, 78, 216, 0.4), 0 0 30px rgba(29, 78, 216, 0.2);
+    box-shadow: 0 0 20px rgba(234, 88, 12, 0.4), 0 0 30px rgba(234, 88, 12, 0.2);
   }
 }
 
