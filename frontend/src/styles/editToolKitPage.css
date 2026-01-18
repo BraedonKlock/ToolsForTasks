@@ -62,7 +62,7 @@
   left: 0;
   right: 0;
   height: 4px;
-  background: linear-gradient(90deg, var(--md-primary), var(--md-tertiary));
+  background: linear-gradient(90deg, var(--md-primary), var(--md-primary-container));
 }
 
 .editToolKitPage-title {
