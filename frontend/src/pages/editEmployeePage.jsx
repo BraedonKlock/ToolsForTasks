@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faCamera } from "@fortawesome/free-solid-svg-icons";
 
 import "../styles/editEmployeePage.css";
+import { API_URL } from "../config/api";
 
 export default function EditEmployee() {
     const [error, setError] = useState("");
@@ -23,7 +24,7 @@ export default function EditEmployee() {
         if (avatarPreview) return avatarPreview;
         if (!currentAvatar) return null;
         // If it's a filename, use uploads path
-        return `/uploads/employees/${currentAvatar}`;
+        return `${API_URL}/uploads/employees/${currentAvatar}`;
     };
 
     const hasAvatar = avatarPreview || currentAvatar;
@@ -56,7 +57,7 @@ export default function EditEmployee() {
     useEffect(() => {
         (async () => {
             try {
-                const res = await fetch(`/api/loggedIn/employees/${encodeURIComponent(id)}`, {
+                const res = await fetch(`${API_URL}/api/loggedIn/employees/${encodeURIComponent(id)}`, {
                     headers: {Authorization: `Bearer ${accessToken}`}
                 });
 
@@ -97,7 +98,7 @@ export default function EditEmployee() {
         }
 
         try {
-            const res = await fetch(`/api/loggedIn/employees/${encodeURIComponent(id)}`, {
+            const res = await fetch(`${API_URL}/api/loggedIn/employees/${encodeURIComponent(id)}`, {
                 method: "PATCH",
                 headers: {
                     Authorization: `Bearer ${accessToken}`

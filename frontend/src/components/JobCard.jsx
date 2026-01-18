@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import { faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
+import { API_URL } from "../config/api";
 
 export default function JobCard({ job, isJobsPage, onDeleteSuccess }) {
 
@@ -31,7 +32,7 @@ export default function JobCard({ job, isJobsPage, onDeleteSuccess }) {
 
     async function handleDelete() {
         try {
-            const res = await fetch(`/api/loggedIn/jobs/${job.id}`, {
+            const res = await fetch(`${API_URL}/api/loggedIn/jobs/${job.id}`, {
                 method: "DELETE",
                 headers: { Authorization: `Bearer ${accessToken}` },
             });
@@ -58,7 +59,7 @@ export default function JobCard({ job, isJobsPage, onDeleteSuccess }) {
                     <div className="job-avatar-wrapper">
                         <div className={`job-avatar ${job.image ? 'has-image' : ''}`}>
                             {job.image ? (
-                                <img src={`/uploads/jobs/${job.image}`} alt={job.title || 'Job'} className="job-avatar-image" />
+                                <img src={`${API_URL}/uploads/jobs/${job.image}`} alt={job.title || 'Job'} className="job-avatar-image" />
                             ) : (
                                 job.jobid
                             )}
@@ -80,7 +81,7 @@ export default function JobCard({ job, isJobsPage, onDeleteSuccess }) {
                         <div className="job-avatar-wrapper">
                             <div className={`job-avatar ${job.image ? 'has-image' : ''}`}>
                                 {job.image ? (
-                                    <img src={`/uploads/jobs/${job.image}`} alt={job.title || 'Job'} className="job-avatar-image" />
+                                    <img src={`${API_URL}/uploads/jobs/${job.image}`} alt={job.title || 'Job'} className="job-avatar-image" />
                                 ) : (
                                     job.jobid
                                 )}

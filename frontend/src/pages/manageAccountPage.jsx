@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useState, useContext, useEffect } from "react";
 import { AuthContext } from "../context/AuthContext";
 import "../styles/manageAccountPage.css";
+import { API_URL } from "../config/api";
 
 export default function ManageAccount() {
     const [error, setError] = useState("");
@@ -12,7 +13,7 @@ export default function ManageAccount() {
     useEffect(() => {
         (async() => {
             try {
-                const res = await fetch(`/api/loggedIn/accounts/${encodeURIComponent(user.orgId)}`, {
+                const res = await fetch(`${API_URL}/api/loggedIn/accounts/${encodeURIComponent(user.orgId)}`, {
                     headers: {Authorization: `Bearer ${accessToken}`}
                 });
 
@@ -44,7 +45,7 @@ export default function ManageAccount() {
         }
 
         try {
-            const res = await fetch(`/api/loggedIn/accounts/${encodeURIComponent(user.orgId)}`, {
+            const res = await fetch(`${API_URL}/api/loggedIn/accounts/${encodeURIComponent(user.orgId)}`, {
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json",

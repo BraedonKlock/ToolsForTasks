@@ -4,6 +4,7 @@ import { AuthContext } from "../context/AuthContext";
 import "../styles/editToolPage.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { API_URL } from "../config/api";
 
 export default function EditTool() {
     const [error, setError] = useState("");
@@ -15,7 +16,7 @@ export default function EditTool() {
     useEffect(() => {
         (async () => {
             try {
-                const res = await fetch(`/api/loggedIn/tools/${encodeURIComponent(id)}`, {
+                const res = await fetch(`${API_URL}/api/loggedIn/tools/${encodeURIComponent(id)}`, {
                     headers: {Authorization: `Bearer ${accessToken}`}
                 })
                 if(res.status === 401) {
@@ -41,7 +42,7 @@ export default function EditTool() {
         const payload = Object.fromEntries(form.entries());
 
         try {
-            const res = await fetch(`/api/loggedIn/tools/${encodeURIComponent(id)}`, {
+            const res = await fetch(`${API_URL}/api/loggedIn/tools/${encodeURIComponent(id)}`, {
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json",

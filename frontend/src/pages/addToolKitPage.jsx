@@ -5,6 +5,7 @@ import "../styles/addToolKitPage.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import LoadingSpinner from "../components/LoadingSpinner";
+import { API_URL } from "../config/api";
 
 export default function AddToolKit() {
     const [error, setError] = useState("");
@@ -19,7 +20,7 @@ export default function AddToolKit() {
         (async () => {
             try {
                 setIsLoadingTools(true);
-                const res = await fetch("/api/loggedIn/tools", {
+                const res = await fetch(`${API_URL}/api/loggedIn/tools`, {
                     headers: { Authorization: `Bearer ${accessToken}` }
                 });
                 if (res.status === 401) {
@@ -71,7 +72,7 @@ export default function AddToolKit() {
         const finalPayload = { ...payload, tools: toolsForKit };
 
         try {
-            const res = await fetch("/api/loggedIn/tool-kit", {
+            const res = await fetch(`${API_URL}/api/loggedIn/tool-kit`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

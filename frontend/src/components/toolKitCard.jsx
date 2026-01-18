@@ -4,6 +4,7 @@ import { AuthContext } from "../context/AuthContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash, faPenToSquare, faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
 import { io } from "socket.io-client"; // importing socket.io client
+import { API_URL } from "../config/api";
 
 export default function ToolKitCard({ toolKit, onToolKitDeleteSuccess, setToolKitError }) {
     const [menuOpen, setMenuOpen] = useState(false);
@@ -30,7 +31,7 @@ export default function ToolKitCard({ toolKit, onToolKitDeleteSuccess, setToolKi
 
     const loadToolKitTools = useCallback(async () => {
         try {
-            const res = await fetch(`/api/loggedIn/tool-kits/${toolKit.id}/tools`, {
+            const res = await fetch(`${API_URL}/api/loggedIn/tool-kits/${toolKit.id}/tools`, {
                 headers: { Authorization: `Bearer ${accessToken}` },
             });
 
@@ -57,9 +58,11 @@ export default function ToolKitCard({ toolKit, onToolKitDeleteSuccess, setToolKi
     useEffect(() => {
         if (!accessToken) return;
 
-        const socketUrl = `http://${window.location.hostname}:3000`;
+        const socketUrl = import.meta.env.VITE_API_URL || `http://${window.location.hostname}:3000`;
         const s = io(socketUrl, {
             auth: { token: accessToken },
+            withCredentials: true,
+            transports: ["websocket", "polling"],
         });
 
         s.on("connect", () => {
@@ -99,7 +102,7 @@ export default function ToolKitCard({ toolKit, onToolKitDeleteSuccess, setToolKi
         try {
             setToolKitError("");
 
-            const res = await fetch(`/api/loggedIn/tool-kits/${toolKit.id}`, {
+            const res = await fetch(`${API_URL}/api/loggedIn/tool-kits/${toolKit.id}`, {
                 method: "DELETE",
                 headers: { Authorization: `Bearer ${accessToken}` },
             });

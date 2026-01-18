@@ -5,6 +5,7 @@ import { io } from "socket.io-client";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import "../styles/jobDetailsPage.css";
+import { API_URL } from "../config/api";
 
 export default function JobDetailsPage() {
     const { accessToken, logout } = useContext(AuthContext);
@@ -18,7 +19,7 @@ export default function JobDetailsPage() {
 
     const loadJobDetails = useCallback(async (signal) => {
         try {
-            const res = await fetch(`/api/loggedIn/jobs/${encodeURIComponent(id)}`, {
+            const res = await fetch(`${API_URL}/api/loggedIn/jobs/${encodeURIComponent(id)}`, {
                 headers: { Authorization: `Bearer ${accessToken}` },
                 signal,
             });
@@ -41,7 +42,7 @@ export default function JobDetailsPage() {
 
     const loadJobTools = useCallback(async (signal) => {
         try {
-            const res = await fetch(`/api/loggedIn/jobs/${encodeURIComponent(id)}/tools`, {
+            const res = await fetch(`${API_URL}/api/loggedIn/jobs/${encodeURIComponent(id)}/tools`, {
                 headers: { Authorization: `Bearer ${accessToken}` },
                 signal,
             });
@@ -86,9 +87,11 @@ export default function JobDetailsPage() {
     useEffect(() => {
         if (!accessToken) return;
 
-        const socketUrl = `http://${window.location.hostname}:3000`;
+        const socketUrl = import.meta.env.VITE_API_URL || `http://${window.location.hostname}:3000`;
         const s = io(socketUrl, {
             auth: { token: accessToken },
+            withCredentials: true,
+            transports: ["websocket", "polling"],
         });
 
         s.on("connect", () => {
@@ -135,7 +138,7 @@ export default function JobDetailsPage() {
         );
 
         try {
-            const res = await fetch(`/api/loggedIn/jobs/${encodeURIComponent(id)}/tools/${toolId}`, {
+            const res = await fetch(`${API_URL}/api/loggedIn/jobs/${encodeURIComponent(id)}/tools/${toolId}`, {
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json",
@@ -173,7 +176,7 @@ export default function JobDetailsPage() {
                         <div className="jobDetails-avatar-wrapper">
                             <div className={`jobDetails-avatar ${job.image ? 'has-image' : ''}`}>
                                 {job.image ? (
-                                    <img src={`/uploads/jobs/${job.image}`} alt={job.title || 'Job'} className="jobDetails-avatar-image" />
+                                    <img src={`${API_URL}/uploads/jobs/${job.image}`} alt={job.title || 'Job'} className="jobDetails-avatar-image" />
                                 ) : (
                                     job.jobid
                                 )}

@@ -7,6 +7,7 @@ import "../styles/toolsPage.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faCamera } from "@fortawesome/free-solid-svg-icons";
 import LoadingSpinner from "../components/LoadingSpinner";
+import { API_URL } from "../config/api";
 
 export default function EditJobPage() {
     const {accessToken, logout} = useContext(AuthContext);
@@ -39,7 +40,7 @@ export default function EditJobPage() {
     useEffect(() => {
         (async () => {
             try {
-                const res = await fetch(`/api/loggedIn/jobs/${encodeURIComponent(id)}/employees`, {
+                const res = await fetch(`${API_URL}/api/loggedIn/jobs/${encodeURIComponent(id)}/employees`, {
                     headers: {Authorization: `Bearer ${accessToken}`}
                 });
 
@@ -63,7 +64,7 @@ export default function EditJobPage() {
         (async () => {
             try {
             setIsLoadingEmployees(true);
-            const res = await fetch("/api/loggedIn/employees", {
+            const res = await fetch(`${API_URL}/api/loggedIn/employees`, {
                 headers: { Authorization: `Bearer ${accessToken}` },
             });
 
@@ -87,7 +88,7 @@ export default function EditJobPage() {
 
         (async () => {
             try {
-            const res = await fetch(`/api/loggedIn/jobs/${encodeURIComponent(id)}`, {
+            const res = await fetch(`${API_URL}/api/loggedIn/jobs/${encodeURIComponent(id)}`, {
                 headers: { Authorization: `Bearer ${accessToken}` },
             });
 
@@ -114,7 +115,7 @@ export default function EditJobPage() {
     useEffect(() => {
         (async () => {
             try {
-                const res = await fetch(`/api/loggedIn/jobs/${encodeURIComponent(id)}/tool-kits`, {
+                const res = await fetch(`${API_URL}/api/loggedIn/jobs/${encodeURIComponent(id)}/tool-kits`, {
                     headers: { Authorization: `Bearer ${accessToken}` },
                 });
 
@@ -142,7 +143,7 @@ export default function EditJobPage() {
     useEffect(() => {
         (async () => {
             try {
-                const res = await fetch(`/api/loggedIn/jobs/${encodeURIComponent(id)}/tools`, {
+                const res = await fetch(`${API_URL}/api/loggedIn/jobs/${encodeURIComponent(id)}/tools`, {
                     headers: { Authorization: `Bearer ${accessToken}` },
                 });
 
@@ -177,7 +178,7 @@ export default function EditJobPage() {
         (async () => {
             try {
                 setIsLoadingToolKits(true);
-                const res = await fetch("/api/loggedIn/tool-kits", {
+                const res = await fetch(`${API_URL}/api/loggedIn/tool-kits`, {
                     headers: { Authorization: `Bearer ${accessToken}` },
                 });
 
@@ -206,7 +207,7 @@ export default function EditJobPage() {
         (async () => {
             try {
                 setIsLoadingTools(true);
-                const res = await fetch("/api/loggedIn/tools", {
+                const res = await fetch(`${API_URL}/api/loggedIn/tools`, {
                     headers: { Authorization: `Bearer ${accessToken}` },
                 });
 
@@ -328,7 +329,7 @@ export default function EditJobPage() {
     async function addToolsFromToolKit(toolKit) {
         try {
             if (!toolKitToolsCache.current[toolKit.id]) {
-                const res = await fetch(`/api/loggedIn/tool-kits/${toolKit.id}/tools`, {
+                const res = await fetch(`${API_URL}/api/loggedIn/tool-kits/${toolKit.id}/tools`, {
                     headers: { Authorization: `Bearer ${accessToken}` },
                 });
 
@@ -395,7 +396,7 @@ export default function EditJobPage() {
     // Set image preview when job loads (if it has an existing image)
     useEffect(() => {
         if (job?.image) {
-            setImagePreview(`/uploads/jobs/${job.image}`);
+            setImagePreview(`${API_URL}/uploads/jobs/${job.image}`);
         }
     }, [job]);
 
@@ -413,7 +414,7 @@ export default function EditJobPage() {
 
     async function handleRemoveEmployeeFromJob(employeeId) {
         try {
-            const res = await fetch(`/api/loggedIn/jobs/${encodeURIComponent(id)}/employees/${encodeURIComponent(employeeId)}`, {
+            const res = await fetch(`${API_URL}/api/loggedIn/jobs/${encodeURIComponent(id)}/employees/${encodeURIComponent(employeeId)}`, {
                 method: "DELETE",
                 headers: {
                     Authorization: `Bearer ${accessToken}`
@@ -470,7 +471,7 @@ export default function EditJobPage() {
         formData.append("toolSelections", JSON.stringify(toolSelections));
 
         try {
-            const res = await fetch(`/api/loggedIn/jobs/${encodeURIComponent(id)}`, {
+            const res = await fetch(`${API_URL}/api/loggedIn/jobs/${encodeURIComponent(id)}`, {
                 method: "PATCH",
                 headers: {
                     Authorization: `Bearer ${accessToken}`

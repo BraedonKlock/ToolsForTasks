@@ -23,14 +23,22 @@ if (!ACCESS_SECRET) {
 const notLoggedInRoutes = require("./api/notLoggedIn");
 const loggedInRoutes = require("./api/loggedIn");
 
+// ---- CORS origin configuration ----
+// In production, FRONTEND_URL should be set to the deployed frontend URL
+// In development, fall back to common local dev URLs
+const allowedOrigins = process.env.FRONTEND_URL
+  ? [process.env.FRONTEND_URL]
+  : ["http://localhost:5173", "http://localhost:3000", "http://127.0.0.1:5173"];
+
 // ---- App/Server/Socket.IO setup ----
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: true,
-    credentials: false,
+    origin: allowedOrigins,
+    credentials: true,
   },
+  transports: ["websocket", "polling"],
 });
 
 // storing io on the app object so controllers can emit socket events
@@ -42,8 +50,8 @@ app.use(express.json());
 
 app.use(
   cors({
-    origin: true,
-    credentials: false,
+    origin: allowedOrigins,
+    credentials: true,
   })
 );
 

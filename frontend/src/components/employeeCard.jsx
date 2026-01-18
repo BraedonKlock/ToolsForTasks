@@ -5,6 +5,7 @@ import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import { faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
 import { AuthContext } from "../context/AuthContext";
+import { API_URL } from "../config/api";
 
 export default function employeeCard({employee, onDeleteSuccess}) {
     const [menuOpen, setMenuOpen] = useState(false);
@@ -21,7 +22,7 @@ export default function employeeCard({employee, onDeleteSuccess}) {
         }
         // If avatar is a filename, use uploads path
         if (avatar && typeof avatar === 'string') {
-            return `http://${window.location.hostname}:3000/uploads/employees/${avatar}`;
+            return `${API_URL}/uploads/employees/${avatar}`;
         }
         // Default fallback
         return `/images/user0.png`;
@@ -44,7 +45,7 @@ export default function employeeCard({employee, onDeleteSuccess}) {
 
     async function handleDelete() {
         try {
-            const res = await fetch(`/api/loggedIn/employees/${employee.id}`, {
+            const res = await fetch(`${API_URL}/api/loggedIn/employees/${employee.id}`, {
                 method: "DELETE",
                 headers: { Authorization: `Bearer ${accessToken}` },
             });

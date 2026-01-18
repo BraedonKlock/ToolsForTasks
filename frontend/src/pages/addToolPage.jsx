@@ -4,6 +4,7 @@ import { AuthContext } from "../context/AuthContext";
 import "../styles/addToolPage.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { API_URL } from "../config/api";
 
 export default function AddTool() {
     const [error, setError] = useState("");
@@ -34,7 +35,7 @@ export default function AddTool() {
         }
 
         try {
-            const res = await fetch("/api/loggedIn/tools", {
+            const res = await fetch(`${API_URL}/api/loggedIn/tools`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

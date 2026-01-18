@@ -4,6 +4,7 @@ import { AuthContext } from "../context/AuthContext";
 import "../styles/addEmployeePage.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faCamera } from "@fortawesome/free-solid-svg-icons";
+import { API_URL } from "../config/api";
 
 export default function AddEmployees() {
     const [error, setError] = useState("");
@@ -52,7 +53,7 @@ export default function AddEmployees() {
         }
 
         try {
-        const result = await fetch("/api/loggedIn/employees", {
+        const result = await fetch(`${API_URL}/api/loggedIn/employees`, {
             method: "POST",
             headers: {
             Authorization: `Bearer ${accessToken}`,

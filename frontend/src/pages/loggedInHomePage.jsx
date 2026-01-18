@@ -4,6 +4,7 @@ import { AuthContext } from "../context/AuthContext";
 import JobCard from "../components/JobCard"
 import { io } from "socket.io-client"; // importing socket.io client
 import LoadingSpinner from "../components/LoadingSpinner";
+import { API_URL } from "../config/api";
 
 export default function LoggedInHomePage() {
   const [jobs, setJobs] = useState([]);
@@ -32,7 +33,7 @@ export default function LoggedInHomePage() {
   const loadJobs = useCallback(async () => {
     try {
       setIsLoading(true);
-      const res = await fetch("/api/loggedIn/jobs", {
+      const res = await fetch(`${API_URL}/api/loggedIn/jobs`, {
         headers: { Authorization: `Bearer ${accessToken}` },
       });
 
@@ -65,9 +66,11 @@ export default function LoggedInHomePage() {
   useEffect(() => {
     if (!accessToken) return;
 
-    const socketUrl = `http://${window.location.hostname}:3000`;
+    const socketUrl = import.meta.env.VITE_API_URL || `http://${window.location.hostname}:3000`;
     const s = io(socketUrl, {
       auth: { token: accessToken },
+      withCredentials: true,
+      transports: ["websocket", "polling"],
     });
 
     s.on("connect", () => {

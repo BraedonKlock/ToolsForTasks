@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import "../styles/createAccountPage.css";
+import { API_URL } from "../config/api";
 
 export default function CreateAccountPage() {
     const [error, setError] = useState("");
@@ -14,7 +15,7 @@ export default function CreateAccountPage() {
         try {
             e.preventDefault();
 
-            const res = await fetch("/api/account", {
+            const res = await fetch(`${API_URL}/api/account`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(payload),

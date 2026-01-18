@@ -4,6 +4,7 @@ import "../styles/manageEmployeesPage.css";
 import { AuthContext } from "../context/AuthContext";
 import EmployeeCard from "../components/employeeCard";
 import LoadingSpinner from "../components/LoadingSpinner";
+import { API_URL } from "../config/api";
 
 export default function manageEmployeesPage() {
     const { accessToken, logout } = useContext(AuthContext);
@@ -38,7 +39,7 @@ export default function manageEmployeesPage() {
         (async () => {
             try {
                 setIsLoading(true);
-                const res = await fetch("/api/loggedIn/employees", {
+                const res = await fetch(`${API_URL}/api/loggedIn/employees`, {
                 headers:{ Authorization: `Bearer ${accessToken}` },
             });
 

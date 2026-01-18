@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { io } from "socket.io-client"; // importing socket.io client
 import LoadingSpinner from "../components/LoadingSpinner";
+import { API_URL } from "../config/api";
 
 export default function EditToolKit() {
     const [error, setError] = useState("");
@@ -20,7 +21,7 @@ export default function EditToolKit() {
 
     const loadToolKitTools = useCallback(async () => {
         try {
-            const res = await fetch(`/api/loggedIn/tool-kits/${encodeURIComponent(id)}/tools`, {
+            const res = await fetch(`${API_URL}/api/loggedIn/tool-kits/${encodeURIComponent(id)}/tools`, {
                 headers: { Authorization: `Bearer ${accessToken}` }
             });
             if (res.status === 401) {
@@ -46,7 +47,7 @@ export default function EditToolKit() {
         (async () => {
             try {
                 setIsLoadingTools(true);
-                const res = await fetch("/api/loggedIn/tools", {
+                const res = await fetch(`${API_URL}/api/loggedIn/tools`, {
                     headers: { Authorization: `Bearer ${accessToken}` }
                 });
                 if (res.status === 401) {
@@ -67,7 +68,7 @@ export default function EditToolKit() {
 
         (async () => {
             try {
-                const res = await fetch(`/api/loggedIn/tool-kit/${encodeURIComponent(id)}`, {
+                const res = await fetch(`${API_URL}/api/loggedIn/tool-kit/${encodeURIComponent(id)}`, {
                     headers: { Authorization: `Bearer ${accessToken}` }
                 });
                 if (res.status === 401) {
@@ -91,9 +92,11 @@ export default function EditToolKit() {
     useEffect(() => {
         if (!accessToken) return;
 
-        const socketUrl = `http://${window.location.hostname}:3000`;
+        const socketUrl = import.meta.env.VITE_API_URL || `http://${window.location.hostname}:3000`;
         const s = io(socketUrl, {
             auth: { token: accessToken },
+            withCredentials: true,
+            transports: ["websocket", "polling"],
         });
 
         s.on("connect", () => {
@@ -158,7 +161,7 @@ export default function EditToolKit() {
         const finalPayload = { ...payload, tools: toolsForKit };
 
         try {
-            const res = await fetch(`/api/loggedIn/tool-kit/${encodeURIComponent(id)}`, {
+            const res = await fetch(`${API_URL}/api/loggedIn/tool-kit/${encodeURIComponent(id)}`, {
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json",

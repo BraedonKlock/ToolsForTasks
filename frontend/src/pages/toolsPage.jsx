@@ -10,6 +10,7 @@ import { faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
 
 import "../styles/toolsPage.css";
 import ToolKitCard from "../components/toolKitCard";
+import { API_URL } from "../config/api";
 
 export default function ToolsPage() {
     const [tools, setTools] = useState([]);
@@ -46,7 +47,7 @@ export default function ToolsPage() {
         try {
             setToolKitError("");
 
-            const res = await fetch("/api/loggedIn/tool-kits", {
+            const res = await fetch(`${API_URL}/api/loggedIn/tool-kits`, {
                 headers: { Authorization: `Bearer ${accessToken}` },
                 signal,
             });
@@ -85,7 +86,7 @@ export default function ToolsPage() {
         try {
             setToolsError("");
 
-            const res = await fetch("/api/loggedIn/tools", {
+            const res = await fetch(`${API_URL}/api/loggedIn/tools`, {
                 headers: { Authorization: `Bearer ${accessToken}` },
                 signal,
             });
@@ -122,9 +123,11 @@ export default function ToolsPage() {
     useEffect(() => {
         if (!accessToken) return;
 
-        const socketUrl = `http://${window.location.hostname}:3000`;
+        const socketUrl = import.meta.env.VITE_API_URL || `http://${window.location.hostname}:3000`;
         const s = io(socketUrl, {
             auth: { token: accessToken },
+            withCredentials: true,
+            transports: ["websocket", "polling"],
         });
 
         s.on("connect", () => {
@@ -172,7 +175,7 @@ async function handleDeleteTool(toolId) {
     try {
         setToolsError("");
         
-        const res = await fetch(`/api/loggedIn/tools/${toolId}`, {
+        const res = await fetch(`${API_URL}/api/loggedIn/tools/${toolId}`, {
             method: "DELETE",
             headers: { Authorization: `Bearer ${accessToken}` },
         });
