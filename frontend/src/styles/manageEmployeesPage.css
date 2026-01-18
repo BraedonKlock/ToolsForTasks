@@ -81,9 +81,12 @@
   box-shadow: none;
 }
 
-.employees-tabs button.pill.pill--active {
-  background-color: var(--md-secondary-container);
-  color: var(--md-on-secondary-container);
+.employees-tabs button.pill.pill--active,
+.employees-tabs button.pill.pill--active:hover,
+.employees-tabs button.pill.pill--active:active,
+.employees-tabs button.pill.pill--active:focus {
+  background-color: var(--md-primary) !important;
+  color: var(--md-on-primary) !important;
   box-shadow: none;
   border: none;
   transform: none;
