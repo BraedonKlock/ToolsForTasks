@@ -11,8 +11,8 @@
     "test:loggedinController": "jest _tests_/controllers/loggedin",
     "test:404render": "jest _tests_/controller/loggedin",
     "test:loggedinRoute": "jest _tests_/routes/loggedin",
-    "start": "nodemon app.js",
-    "start-server": "node app.js"
+    "start": "node app.js",
+    "dev": "nodemon app.js"
   },
   "dependencies": {
     "@dr.pogodin/csurf": "^1.16.5",
