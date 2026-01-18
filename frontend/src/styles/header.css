@@ -9,7 +9,7 @@ header {
   position: sticky;
   top: 0;
   z-index: 1000;
-  background: rgba(255, 249, 245, 0.95);
+  background: #FFFFFF;
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--md-outline-variant);
@@ -168,8 +168,8 @@ header nav {
 }
 
 .nav-link.active {
-  background-color: var(--md-primary-container);
-  color: var(--md-on-primary-container);
+  background-color: var(--md-primary);
+  color: var(--md-on-primary);
 }
 
 .hamburger-line {
@@ -285,13 +285,13 @@ header nav {
   }
 
   .nav-link.active {
-    background-color: var(--md-primary-container);
-    color: var(--md-on-primary-container);
+    background-color: var(--md-primary);
+    color: var(--md-on-primary);
   }
 
   .nav-link.active::after {
     transform: translateX(-50%) scaleX(1);
-    background: var(--md-on-primary-container);
+    background: var(--md-on-primary);
   }
 
   .hamburger-line {

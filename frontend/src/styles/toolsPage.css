@@ -66,8 +66,8 @@
 }
 
 .tools-tabs button.pill.pill--active {
-  background-color: var(--md-secondary-container);
-  color: var(--md-on-secondary-container);
+  background-color: var(--md-primary);
+  color: var(--md-on-primary);
   box-shadow: none;
   border: none;
   transform: none;

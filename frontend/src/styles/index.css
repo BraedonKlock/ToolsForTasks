@@ -1,54 +1,54 @@
 @import url("https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&display=swap");
 
 :root {
-  /* Material Design 3 - Warm Terracotta Palette */
+  /* Material Design 3 - Loadout Orange Palette */
 
-  /* Primary - Refined terracotta/rust */
+  /* Primary - Terracotta/rust */
   --md-primary: #B5543B;
   --md-on-primary: #FFFFFF;
   --md-primary-container: #FFDAD1;
   --md-on-primary-container: #3B0800;
 
-  /* Secondary - Warm gray */
-  --md-secondary: #77574D;
+  /* Secondary - Dark charcoal (from logo outlines) */
+  --md-secondary: #44403C;
   --md-on-secondary: #FFFFFF;
-  --md-secondary-container: #FFDAD1;
-  --md-on-secondary-container: #2C150F;
+  --md-secondary-container: #E7E5E4;
+  --md-on-secondary-container: #1C1917;
 
-  /* Tertiary - Warm gold */
-  --md-tertiary: #6E5D00;
+  /* Tertiary - Deep rust (complements terracotta) */
+  --md-tertiary: #9A4430;
   --md-on-tertiary: #FFFFFF;
-  --md-tertiary-container: #FFE25B;
-  --md-on-tertiary-container: #211B00;
+  --md-tertiary-container: #FFDAD1;
+  --md-on-tertiary-container: #3B0800;
 
   /* Surface colors */
-  --md-surface: #FFFBFF;
-  --md-surface-dim: #E4D7D4;
-  --md-surface-bright: #FFFBFF;
+  --md-surface: #FAFAFA;
+  --md-surface-dim: #E7E5E4;
+  --md-surface-bright: #FFFFFF;
   --md-surface-container-lowest: #FFFFFF;
-  --md-surface-container-low: #FEF1ED;
-  --md-surface-container: #F8EBE7;
-  --md-surface-container-high: #F2E5E1;
-  --md-surface-container-highest: #ECDFD9;
-  --md-surface-variant: #F5DED8;
-  --md-on-surface: #231917;
-  --md-on-surface-variant: #534340;
+  --md-surface-container-low: #F5F5F4;
+  --md-surface-container: #F5F5F4;
+  --md-surface-container-high: #F5F5F4;
+  --md-surface-container-highest: #D8C2BC;
+  --md-surface-variant: #F5F5F4;
+  --md-on-surface: #1C1917;
+  --md-on-surface-variant: #57534E;
 
   /* Background */
-  --md-background: #FFF9F5;
-  --md-on-background: #231917;
+  --md-background: #FFFFFF;
+  --md-on-background: #1C1917;
 
   /* Outline */
-  --md-outline: #85736E;
-  --md-outline-variant: #D8C2BC;
+  --md-outline: #A8A29E;
+  --md-outline-variant: #E7E5E4;
 
   /* Status colors */
-  --md-error: #BA1A1A;
+  --md-error: #DC2626;
   --md-on-error: #FFFFFF;
-  --md-error-container: #FFDAD6;
-  --md-on-error-container: #410002;
-  --md-success: #2E7D32;
-  --md-warning: #F9A825;
+  --md-error-container: #FEE2E2;
+  --md-on-error-container: #7F1D1D;
+  --md-success: #16A34A;
+  --md-warning: #D97706;
 
   /* Elevation shadows (Material 3) */
   --md-elevation-0: none;
@@ -95,6 +95,12 @@
   --radius-lg: var(--md-radius-lg);
   --radius-md: var(--md-radius-md);
   --radius-sm: var(--md-radius-sm);
+
+  /* Palette colors */
+  --terracotta: #B5543B;
+  --terracotta-dark: #9A4430;
+  --terracotta-light: #FFDAD1;
+  --charcoal: #1C1917;
 }
 
 *,
@@ -124,9 +130,9 @@ body::before {
   position: fixed;
   inset: 0;
   background-image:
-    radial-gradient(circle at 10% 10%, rgba(181, 84, 59, 0.06), transparent 40%),
-    radial-gradient(circle at 80% 0%, rgba(35, 25, 23, 0.04), transparent 45%),
-    radial-gradient(circle at 60% 90%, rgba(119, 87, 77, 0.05), transparent 40%);
+    radial-gradient(circle at 10% 10%, rgba(249, 115, 22, 0.05), transparent 40%),
+    radial-gradient(circle at 80% 0%, rgba(28, 25, 23, 0.03), transparent 45%),
+    radial-gradient(circle at 60% 90%, rgba(253, 186, 116, 0.06), transparent 40%);
   opacity: 0.8;
   pointer-events: none;
   z-index: -1;
@@ -499,10 +505,10 @@ button:focus-visible {
 
 @keyframes pulse-glow {
   0%, 100% {
-    box-shadow: 0 0 5px rgba(181, 84, 59, 0.2);
+    box-shadow: 0 0 5px rgba(249, 115, 22, 0.2);
   }
   50% {
-    box-shadow: 0 0 20px rgba(181, 84, 59, 0.4), 0 0 30px rgba(181, 84, 59, 0.2);
+    box-shadow: 0 0 20px rgba(249, 115, 22, 0.4), 0 0 30px rgba(249, 115, 22, 0.2);
   }
 }
 
