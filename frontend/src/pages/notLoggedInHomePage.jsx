@@ -275,7 +275,7 @@ export default function notLoggedInHomePage() {
         <div className="nl-section-header">
           <h2>Set up in minutes, not hours</h2>
           <p>
-            We built Tools for Tasks to respect your time. No clunky data entry,
+            We built Loadout to respect your time. No clunky data entry,
             no repetitive busywork. Get your entire operation configured fast
             and keep it running even faster.
           </p>
