@@ -120,10 +120,6 @@ export default function ToolKitCard({ toolKit, onToolKitDeleteSuccess, setToolKi
     return (
         <>
         <article className="kit-card">
-            <Link
-            to={`/loggedIn/toolKit-details/${toolKit.id}`}
-            className="kit-card__mainLink"
-            >
             <div className="kit-card__avatar">{firstLetter}</div>
 
             <div className="kit-card__body">
@@ -136,7 +132,6 @@ export default function ToolKitCard({ toolKit, onToolKitDeleteSuccess, setToolKi
                     }`}
                 </p>
             </div>
-            </Link>
 
             <div className="threeDotMenu-container" ref={menuRef}>
             {menuOpen && (
