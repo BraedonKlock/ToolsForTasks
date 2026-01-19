@@ -132,64 +132,41 @@ exports.createAccount = async (req, res) => {
 /**------------------------------------------------------------------------------------------------ */
 
 exports.forgotPassword = async (req, res, next) => {
-  // fixed-ish delay to reduce timing differences (prevents easy enumeration)
-  const MIN_RESPONSE_MS = 350;
-  const start = Date.now();
-
   try {
     const email = (req.body.email || "").trim().toLowerCase();
 
     if (!email) {
-      // still keep response timing consistent
-      const elapsed = Date.now() - start;
-      if (elapsed < MIN_RESPONSE_MS) {
-        await new Promise((r) => setTimeout(r, MIN_RESPONSE_MS - elapsed));
-      }
       return res.status(400).json({ error: "Email is required." });
     }
 
     // Check if account exists
     const [rows] = await User.findAccountByEmail(email);
 
-    // If account exists, create token + store + attempt to send email
+    // Always return success to prevent email enumeration
+    // But only send email if account exists
     if (rows && rows.length > 0) {
+      // Generate a secure random token
       const resetToken = crypto.randomBytes(32).toString("hex");
+
+      // Set expiry time (15 minutes from now)
       const expiry = new Date(Date.now() + RESET_TOKEN_EXPIRY_MINUTES * 60 * 1000);
 
+      // Store the token in database
       await User.storeResetToken(email, resetToken, expiry);
 
-      // IMPORTANT: await so failures are visible and Mailgun actually receives it
-      try {
-        const info = await sendPasswordResetEmail(email, resetToken);
-        console.log(
-          "Password reset email sent:",
-          info?.messageId || info?.response || "(no messageId/response)"
-        );
-      } catch (emailErr) {
-        // Log full error so you can debug in Railway
-        console.error("Failed to send password reset email:", emailErr);
-      }
+      // Send the email (don't await to prevent timing attacks)
+      sendPasswordResetEmail(email, resetToken).catch((err) => {
+        console.error("Failed to send password reset email:", err.message);
+      });
     }
 
     // Always return success (security best practice)
-    const elapsed = Date.now() - start;
-    if (elapsed < MIN_RESPONSE_MS) {
-      await new Promise((r) => setTimeout(r, MIN_RESPONSE_MS - elapsed));
-    }
-
     return res.status(200).json({
       ok: true,
       message: "If an account exists with that email, a reset link has been sent.",
     });
   } catch (err) {
     console.error("Forgot password error:", err);
-
-    // keep response timing consistent even on error
-    const elapsed = Date.now() - start;
-    if (elapsed < MIN_RESPONSE_MS) {
-      await new Promise((r) => setTimeout(r, MIN_RESPONSE_MS - elapsed));
-    }
-
     return res.status(500).json({ error: "Something went wrong. Please try again later." });
   }
 };
@@ -220,7 +197,7 @@ exports.resetPassword = async (req, res, next) => {
     const account = rows[0];
 
     // Check if token has expired
-    if (!account.password_reset_expiry || new Date(account.password_reset_expiry) < new Date()) {
+    if (new Date(account.password_reset_expiry) < new Date()) {
       return res.status(400).json({ error: "Reset token has expired. Please request a new one." });
     }
 
