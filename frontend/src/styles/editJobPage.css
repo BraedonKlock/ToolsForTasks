@@ -386,15 +386,20 @@
 .editJob-selectionSelectBtn {
   border-radius: var(--md-radius-full);
   border: 1px solid var(--md-outline);
-  padding: 8px 16px;
+  padding: 8px 14px;
   background: var(--md-surface);
   color: var(--md-on-surface);
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   font-weight: 600;
   cursor: pointer;
   box-shadow: none;
   -webkit-tap-highlight-color: transparent;
   transition: all var(--md-duration-short) var(--md-motion-standard);
+  white-space: nowrap;
+  flex-shrink: 0;
+  min-width: 85px;
+  text-align: center;
+  box-sizing: border-box;
 }
 
 .editJob-selectionSelectBtn:hover {
@@ -502,5 +507,9 @@
   #editJob-employeeDisplay {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .editJob-selectionCards {
+    grid-template-columns: repeat(2, minmax(min-content, 1fr));
   }
 }
