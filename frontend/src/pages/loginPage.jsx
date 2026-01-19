@@ -41,7 +41,7 @@ export default function LoginPage() {
 
   return (
     <main className="login-page">
-      <h1>Tools for Tasks</h1>
+      <h1>Loadout</h1>
       <h6>Never forget a tool again. Save time and money</h6>
 
       <div id="loginForm-container">

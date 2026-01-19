@@ -28,11 +28,11 @@ async function sendPasswordResetEmail(to, resetToken) {
   const mailOptions = {
     from: process.env.SMTP_FROM || process.env.SMTP_USER,
     to: to,
-    subject: "Password Reset - Tools for Tasks",
+    subject: "Password Reset - Loadout",
     html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
         <h2 style="color: #1a1a1a;">Password Reset Request</h2>
-        <p>You requested to reset your password for your Tools for Tasks account.</p>
+        <p>You requested to reset your password for your Loadout account.</p>
         <p>Click the button below to set a new password:</p>
         <div style="text-align: center; margin: 30px 0;">
           <a href="${resetLink}"
@@ -46,14 +46,14 @@ async function sendPasswordResetEmail(to, resetToken) {
         <p style="color: #666;">If you didn't request this password reset, you can safely ignore this email.</p>
         <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;">
         <p style="color: #999; font-size: 12px;">
-          Tools for Tasks - Never forget a tool again.
+          Loadout - Never forget a tool again.
         </p>
       </div>
     `,
     text: `
       Password Reset Request
 
-      You requested to reset your password for your Tools for Tasks account.
+      You requested to reset your password for your Loadout account.
 
       Click the link below to set a new password:
       ${resetLink}
