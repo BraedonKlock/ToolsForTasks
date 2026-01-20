@@ -292,7 +292,7 @@ export default function notLoggedInHomePage() {
             <p>See every job at a glance with dates and addresses.</p>
           </div>
           <div className="nl-preview-card">
-            <div className="nl-preview-image-wrapper">
+            <div className="nl-preview-image-wrapper nl-preview-scrollable">
               <img
                 src="/images/add_editJobs.jpg"
                 alt="Add or edit job details"

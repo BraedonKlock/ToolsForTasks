@@ -659,7 +659,7 @@
 
 .nl-preview-image-wrapper {
   width: 100%;
-  height: 500px;
+  height: 340px;
   overflow: hidden;
   background: var(--md-surface-container-low);
   border-bottom: 1px solid var(--md-outline-variant);
@@ -671,10 +671,14 @@
 
 .nl-preview-image {
   width: 100%;
-  height: 100%;
+  height: auto;
   object-fit: contain;
   object-position: top center;
   transition: transform 0.4s ease;
+}
+
+.nl-preview-scrollable {
+  overflow-y: auto;
 }
 
 .nl-preview-card h3 {
@@ -691,6 +695,7 @@
   padding: 0 16px 16px;
   margin: 0;
   font-size: 0.85rem;
+  min-height: 85px;
 }
 
 /* Speed Section */
@@ -1192,6 +1197,15 @@
     height: 450px;
   }
 
+  .nl-preview-image {
+    height: 100%;
+  }
+
+  .nl-preview-scrollable {
+    max-height: none;
+    overflow-y: hidden;
+  }
+
   .nl-cta {
     flex-direction: row;
     align-items: center;
@@ -1225,6 +1239,10 @@
 
   .nl-preview-image-wrapper {
     height: 550px;
+  }
+
+  .nl-preview-image {
+    height: 100%;
   }
 
   .nl-preview-card h3 {
