@@ -616,6 +616,83 @@
   line-height: 1.7;
 }
 
+/* App Preview Section */
+.nl-app-preview {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.nl-preview-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  justify-items: center;
+}
+
+.nl-preview-card {
+  background: var(--md-surface);
+  border-radius: var(--md-radius-lg);
+  border: 1px solid var(--md-outline-variant);
+  box-shadow: var(--md-elevation-1);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  animation: scale-up 0.6s var(--md-motion-decelerate) backwards;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.nl-preview-card:nth-child(1) { animation-delay: 0.1s; }
+.nl-preview-card:nth-child(2) { animation-delay: 0.2s; }
+.nl-preview-card:nth-child(3) { animation-delay: 0.3s; }
+.nl-preview-card:nth-child(4) { animation-delay: 0.4s; }
+
+.nl-preview-card:hover {
+  box-shadow: var(--md-elevation-3), 0 12px 40px rgba(0, 0, 0, 0.15);
+  transform: translateY(-8px);
+}
+
+.nl-preview-card:hover .nl-preview-image {
+  transform: scale(1.05);
+}
+
+.nl-preview-image-wrapper {
+  width: 100%;
+  height: 500px;
+  overflow: hidden;
+  background: var(--md-surface-container-low);
+  border-bottom: 1px solid var(--md-outline-variant);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 8px;
+}
+
+.nl-preview-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: top center;
+  transition: transform 0.4s ease;
+}
+
+.nl-preview-card h3 {
+  font-weight: 600;
+  color: var(--md-on-surface);
+  padding: 14px 16px 6px;
+  margin: 0;
+  font-size: 1rem;
+}
+
+.nl-preview-card p {
+  color: var(--md-on-surface-variant);
+  line-height: 1.5;
+  padding: 0 16px 16px;
+  margin: 0;
+  font-size: 0.85rem;
+}
+
 /* Speed Section */
 .nl-speed {
   display: flex;
@@ -1106,6 +1183,15 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .nl-preview-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+  }
+
+  .nl-preview-image-wrapper {
+    height: 450px;
+  }
+
   .nl-cta {
     flex-direction: row;
     align-items: center;
@@ -1130,5 +1216,18 @@
 
   .nl-hero-card {
     padding: 32px 36px;
+  }
+
+  .nl-preview-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 32px;
+  }
+
+  .nl-preview-image-wrapper {
+    height: 550px;
+  }
+
+  .nl-preview-card h3 {
+    font-size: 1.05rem;
   }
 }

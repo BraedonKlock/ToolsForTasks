@@ -270,6 +270,63 @@ export default function notLoggedInHomePage() {
         </div>
       </section>
 
+      {/* App Preview Section */}
+      <section className="nl-app-preview">
+        <div className="nl-section-header">
+          <h2>See it in action</h2>
+          <p>
+            Here is what you will be working with. A clean, intuitive interface
+            designed for real job sites.
+          </p>
+        </div>
+        <div className="nl-preview-grid">
+          <div className="nl-preview-card">
+            <div className="nl-preview-image-wrapper">
+              <img
+                src="/images/viewJobs.jpg"
+                alt="Jobs list view showing all scheduled jobs"
+                className="nl-preview-image"
+              />
+            </div>
+            <h3>View All Jobs</h3>
+            <p>See every job at a glance with dates and addresses.</p>
+          </div>
+          <div className="nl-preview-card">
+            <div className="nl-preview-image-wrapper">
+              <img
+                src="/images/add_editJobs.jpg"
+                alt="Add or edit job details"
+                className="nl-preview-image"
+              />
+            </div>
+            <h3>Add & Edit Jobs</h3>
+            <p>Create and update jobs, assign employees, and select the tools needed for the task.</p>
+          </div>
+          <div className="nl-preview-card">
+            <div className="nl-preview-image-wrapper">
+              <img
+                src="/images/checkTools.jpg"
+                alt="Tool checklist interface"
+                className="nl-preview-image"
+              />
+            </div>
+            <h3>Check Off Tools</h3>
+            <p>Crews check off tools as they load. Everyone knows when the truck is ready.</p>
+          </div>
+          <div className="nl-preview-card">
+            <div className="nl-preview-image-wrapper">
+              <img
+                src="/images/employees.jpg"
+                alt="Employee management screen"
+                className="nl-preview-image"
+              />
+            </div>
+            <h3>Manage Your Team</h3>
+            <p>View your crew, assign roles, and create accounts all in one place.</p>
+          </div>
+        </div>
+      </section>
+
       {/* Speed Section */}
       <section className="nl-speed">
         <div className="nl-section-header">
