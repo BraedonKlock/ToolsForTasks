@@ -1,32 +1,36 @@
-# 🛠️ TOOLS FOR TASKS
+# 🧰 Loadout
 
 Job, tool, and materials tracking for trade teams.
 
-This is not a complete product yet, i expect to ship in March 2026.
+**Live:** https://www.loadouts.com  
+**Hosting:** Railway (frontend + backend + database)
+
+This is not a complete product yet — I expect to ship in **March 2026**.
 
 Frontend: React (Vite) · Backend: Node/Express (REST, JSON) · DB: SQL
 
-Reduce wasted time on job sites by knowing exactly what tools and materials each job needs—before anyone leaves the shop.
+Reduce wasted time on job sites by knowing exactly what tools and materials each job needs — **before anyone leaves the shop.**
 
-# ✨ Features
+---
 
-CRUD (Create, Read, Update, Delete) operations on Jobs, Tools, Materials, and Employees
+## ✨ Features
 
-Real-time job updates using Socket.IO (whenever a job is created, updated, or modified, owners and employees assigned to that job see the changes instantly)
+- CRUD (Create, Read, Update, Delete) for **Jobs, Tools, Materials, and Employees**
+- **Real-time job updates** using Socket.IO  
+  (when a job is created/updated/modified, owners and assigned employees see changes instantly)
+- **JWT-based authentication** with a RESTful JSON API
+- Clean HTTP verbs (GET / POST / PUT / PATCH / DELETE)
 
-JWT-based authentication with a RESTful JSON API
+---
 
-Clean HTTP verbs (GET/POST/PUT/PATCH/DELETE)
+## 🧱 Tech Stack
 
-# 🧱 Tech Stack
+- **Frontend:** React (Vite), Fetch API, CSS/Tailwind or CSS Modules
+- **Backend:** Node.js, Express, REST, JSON
+- **Database:** SQL (MySQL/PostgreSQL — pick one in your env)
+- **Testing:** Cypress (E2E)
 
-Frontend: React (Vite), Fetch API, CSS/Tailwind or CSS Modules
-
-Backend: Node.js, Express, REST, JSON
-
-Database: SQL (MySQL/PostgreSQL—pick one in your env)
-
-Testing: Cypress (E2E)
+---
 
 ## 🎥 Watch Demo
 
