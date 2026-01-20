@@ -242,6 +242,15 @@
   color: var(--md-on-primary-container);
 }
 
+.kit-card__avatar-img,
+.tool-card__avatar-img {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--md-radius-full);
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
 .kit-card__mainLink {
   grid-column: 1 / 3;
   display: grid;

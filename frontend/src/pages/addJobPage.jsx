@@ -438,9 +438,18 @@ export default function AddJob() {
                                         const name = employee?.name ?? "";
                                         const firstLetter = name ? name.charAt(0).toUpperCase() : "?";
                                         const selected = isEmployeeSelected(employee.id);
+                                        const avatar = employee.avatar;
+                                        const hasImage = avatar && avatar !== '' && avatar !== null;
+                                        const avatarSrc = hasImage
+                                            ? (!isNaN(avatar) ? `/images/user${avatar}.png` : `${API_URL}/uploads/employees/${avatar}`)
+                                            : null;
                                         return (
                                             <article key={employee.id ?? employee.employeeid} className="tool-card tool-card--compact addJob-selectionCard addJob-employeeCard">
-                                                <div className="tool-card__avatar">{firstLetter}</div>
+                                                {avatarSrc ? (
+                                                    <img className="tool-card__avatar-img" src={avatarSrc} alt={`${name}'s avatar`} />
+                                                ) : (
+                                                    <div className="tool-card__avatar">{firstLetter}</div>
+                                                )}
                                                 <div className="tool-card__body">
                                                     <h4 className="tool-card__title">{name || "Unnamed employee"}</h4>
                                                     <p className="addJob-selectionMeta">#{employee.employeeid} • {employee.role}</p>
