@@ -5,7 +5,7 @@ Job, tool, and materials tracking for trade teams.
 **Live:** https://www.loadouts.com  
 **Hosting:** Railway (frontend + backend + database)
 
-This is not a complete product yet — I expect to ship in **March 2026**.
+**Status:** Currently in **beta testing**.
 
 Frontend: React (Vite) · Backend: Node/Express (REST, JSON) · DB: SQL
 
