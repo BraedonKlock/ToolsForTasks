@@ -2,7 +2,7 @@
 
 Job, tool, and materials tracking for trade teams.
 
-**Live:** https://www.loadouts.com  
+**Live:** https://www.loadouts.ca  
 **Hosting:** Railway (frontend + backend + database)
 
 **Status:** Currently in **beta testing**.
