@@ -18,7 +18,6 @@ const ACCESS_SECRET = process.env.JWT_ACCESS_SECRET;
 if (!ACCESS_SECRET) {
   throw new Error("Missing JWT_ACCESS_SECRET (set it in backend/.env for dev or env vars in prod)");
 }
-console.log("CWD:", process.cwd());
 
 // ---- Routers ----
 const notLoggedInRoutes = require("./api/notLoggedIn");
