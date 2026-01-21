@@ -56,8 +56,7 @@ app.use(
 );
 
 // ---- Serve uploaded files statically ----
-const UPLOADS_DIR = path.join(__dirname, "backend", "uploads");
-console.log("STATIC UPLOADS PATH:", UPLOADS_DIR);
+const UPLOADS_DIR = path.join(__dirname, "uploads");
 app.use("/uploads", express.static(UPLOADS_DIR));
 
 
