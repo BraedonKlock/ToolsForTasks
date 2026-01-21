@@ -1,5 +1,7 @@
 # 🧰 Loadout
 
+**Renamed to Loadout**
+
 Job, tool, and materials tracking for trade teams.
 
 **Live:** https://www.loadouts.ca  
