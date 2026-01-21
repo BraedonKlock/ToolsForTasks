@@ -15,18 +15,27 @@ export default function employeeCard({employee, onDeleteSuccess}) {
 
     // Handle both old (number) and new (filename) avatar formats
     const getAvatarSrc = () => {
-        const avatar = employee.avatar;
-        // If avatar is a number or numeric string, use old format
-        if (!isNaN(avatar) && avatar !== null && avatar !== '') {
-            return `/images/user${avatar}.png`;
-        }
-        // If avatar is a filename, use uploads path
-        if (avatar && typeof avatar === 'string') {
-            return `${API_URL}/uploads/employees/${avatar}`;
-        }
-        // Default fallback
-        return `${API_URL}/uploads/employees/default.png`;
+    const avatar = employee.avatar;
+
+    // Old numeric avatar format
+    if (!isNaN(avatar) && avatar !== null && avatar !== "") {
+        return `/images/user${avatar}.png`;
+    }
+
+    // If DB says "default.png", use frontend public default
+    if (avatar === "default.png") {
+        return `/images/default.png`;
+    }
+
+    // Uploaded filename
+    if (avatar && typeof avatar === "string") {
+        return `${API_URL}/uploads/employees/${avatar}`;
+    }
+
+    // Fallback
+    return `/images/default.png`;
     };
+
 
     useEffect(() => {
         function handleClickOutside(event) {
