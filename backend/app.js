@@ -56,6 +56,7 @@ app.use(
 );
 
 // ---- Serve uploaded files statically ----
+console.log("STATIC UPLOADS PATH:", path.join(__dirname, "uploads"));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // ---- Minimal JWT auth middleware for HTTP ----
