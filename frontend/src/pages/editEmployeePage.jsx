@@ -21,13 +21,16 @@ export default function EditEmployee() {
 
     // Get avatar source based on current or new avatar
     const getAvatarSrc = () => {
-        if (avatarPreview) return avatarPreview;
-        if (!currentAvatar) return null;
-        // If it's a filename, use uploads path
-        return `${API_URL}/uploads/employees/${currentAvatar}`;
+    if (avatarPreview) return avatarPreview;
+
+    // no saved avatar OR default marker => use frontend default
+    if (!currentAvatar || currentAvatar === "default.png") return "/images/default.png";
+
+    // otherwise it's a real uploaded filename
+    return `${API_URL}/uploads/employees/${currentAvatar}`;
     };
 
-    const hasAvatar = avatarPreview || currentAvatar;
+    const hasAvatar = true; // always show something now
 
     function handleFileChange(e) {
         const file = e.target.files[0];
