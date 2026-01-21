@@ -25,7 +25,7 @@ export default function employeeCard({employee, onDeleteSuccess}) {
             return `${API_URL}/uploads/employees/${avatar}`;
         }
         // Default fallback
-        return `/images/user0.png`;
+        return `${API_URL}/uploads/employees/default.png`;
     };
 
     useEffect(() => {
