@@ -145,11 +145,6 @@ exports.getToolsForJob = async (req, res) => {
   try {
     if (!req.user) return res.status(401).json({ error: "unauthenticated" });
 
-    const role = (req.user.role || "").trim().toLowerCase();
-    if (role !== "owner" && role !== "manager") {
-      return res.status(403).json({ error: "Do not have permission." });
-    }
-
     const { id } = req.params;
     const { orgId } = req.user;
     const [rows] = await Jobs.getToolsForJob(id, orgId);
@@ -167,11 +162,6 @@ exports.getToolsForJob = async (req, res) => {
 exports.updateJobToolSelection = async (req, res) => {
   try {
     if (!req.user) return res.status(401).json({ error: "unauthenticated" });
-
-    const role = (req.user.role || "").trim().toLowerCase();
-    if (role !== "owner" && role !== "manager") {
-      return res.status(403).json({ error: "Do not have permission." });
-    }
 
     const jobId = Number(req.params.id);
     const toolId = Number(req.params.toolId);
