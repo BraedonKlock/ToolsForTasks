@@ -1070,6 +1070,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
+  -webkit-tap-highlight-color: transparent;
 }
 
 /* Footer */

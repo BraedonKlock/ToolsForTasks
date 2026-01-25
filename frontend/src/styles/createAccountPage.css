@@ -88,6 +88,7 @@
   letter-spacing: 0.02em;
   box-shadow: var(--md-elevation-1);
   transition: all var(--md-duration-short) var(--md-motion-standard);
+  -webkit-tap-highlight-color: transparent;
 }
 
 #create-form button:hover {
