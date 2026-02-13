@@ -6,14 +6,26 @@ const nodemailer = require("nodemailer");
 
 // Create transporter using environment variables
 const transporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST,
-  port: parseInt(process.env.SMTP_PORT) || 587,
-  secure: process.env.SMTP_SECURE === "true", // true for 465, false for other ports
+  host: process.env.SMTP_HOST || "smtp.mailgun.org",
+
+  // Mailgun recommends 587 or 2525 for TLS (STARTTLS). 2525 is often more allowed.
+  port: Number(process.env.SMTP_PORT) || 2525,
+
+  // true ONLY for 465. For 587/2525 keep false (STARTTLS).
+  secure: String(process.env.SMTP_SECURE).toLowerCase() === "true",
+
   auth: {
     user: process.env.SMTP_USER,
     pass: process.env.SMTP_PASS,
   },
+
+  // ✅ Fixes many cloud "timeout" cases
+  family: 4,                 // force IPv4
+  connectionTimeout: 20000,  // 20s
+  greetingTimeout: 20000,
+  socketTimeout: 20000,
 });
+
 
 /**
  * Send password reset email
