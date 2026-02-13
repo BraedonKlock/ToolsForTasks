@@ -4,11 +4,9 @@
  */
 const nodemailer = require("nodemailer");
 
-// Create transporter using environment variables
 const transporter = nodemailer.createTransport({
   host: process.env.SMTP_HOST || "smtp.mailgun.org",
 
-  // Mailgun recommends 587 or 2525 for TLS (STARTTLS). 2525 is often more allowed.
   port: Number(process.env.SMTP_PORT) || 2525,
 
   // true ONLY for 465. For 587/2525 keep false (STARTTLS).
@@ -19,7 +17,6 @@ const transporter = nodemailer.createTransport({
     pass: process.env.SMTP_PASS,
   },
 
-  // ✅ Fixes many cloud "timeout" cases
   family: 4,                 // force IPv4
   connectionTimeout: 20000,  // 20s
   greetingTimeout: 20000,
