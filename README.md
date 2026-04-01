@@ -29,7 +29,7 @@ Reduce wasted time on job sites by knowing exactly what tools and materials each
 
 - **Frontend:** React (Vite), Fetch API, CSS/Tailwind or CSS Modules
 - **Backend:** Node.js, Express, REST, JSON
-- **Database:** SQL (MySQL/PostgreSQL — pick one in your env)
+- **Database:** SQL
 - **Testing:** Cypress (E2E)
 
 ---
